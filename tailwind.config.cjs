@@ -6,11 +6,12 @@ module.exports = {
 
 			colors:{
 				'transparent':'transparent',
-				'esl':{
-					'primary' : '#015CB9',
-					'secondary':'#23085A',
-					'tertiary' :'#00DCFF',
-					'quarternary': '#23085A',
+				'esl-c':{
+					'1' : '#015CB9',
+					'2':'#23085A',
+					'3' :'#00DCFF',
+					'4': '#23085A',
+					'5' : '#CAECFF'
 				},
 			},
 			fontSize:{
