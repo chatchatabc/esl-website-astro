@@ -1,31 +1,99 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+
+//section 1
+import ImageCard from "../components/landing-page/ImageCard.astro";
 ---
-<MainLayout currentPage = "Home">
 
-	<!--Section one-->
-	<div class="w-full mt-4">
-		<div class="rounded-tl-[60px] rounded-tr-none p-10 bg-esl-quarternary" >
-			<div class="text-esl-4">
-				<span class=" text-esl-tertiary">Explore the world <br/> with </span>
-				<span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">English</span></h1>
-			</div>
-			
-			<div class="mt-6 text-esl-2 text-white w-5/12">
-				Welcome to our expert English language teaching website, where we are dedicated to helping you achieve your language learning goals. Whether you're looking to improve your English skills for work, travel, or personal development, our team of experienced and qualified teachers is here to help you every step of the way.
-			</div>
-			<!--place image here -->
-		</div>
-		<div class="rounded-b-[60px] bg-white p-10">
-			<!--need to design a dashed line -->
-			<p class="text-esl-4 text-esl-quarternary">Welcome to ABC English</p>
-			<p></p>
-		</div>
-	</div>
+<MainLayout currentPage="Home">
+  <!--Section one-->
+  <div class="w-full mt-4">
+    <div class="rounded-tl-[3.75rem] rounded-tr-none p-10 bg-esl-c-4">
+      <div class="text-esl-4">
+        <span class="text-esl-c-3">Explore the world <br /> with</span>
+        <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"
+          >English</span
+        >
+      </div>
 
-		<!--Section two -->
+      <div class="mt-6 text-esl-2 text-white w-5/12">
+        Welcome to our expert English language teaching website, where we are
+        dedicated to helping you achieve your language learning goals. Whether
+        you're looking to improve your English skills for work, travel, or
+        personal development, our team of experienced and qualified teachers is
+        here to help you every step of the way.
+      </div>
+      <!--place image here -->
+    </div>
+    <div class="rounded-b-[3.75rem] bg-white px-20 py-12 space-y-[4rem]">
+      <div class="space-y-4">
+        <div class="w-[2.5rem] h-[5px] rounded-full bg-esl-c-3"></div>
+        <div class="space-y-4 text-esl-2">
+          <p class="text-esl-4 text-esl-c-4">Welcome to ABC English</p>
+          <p>
+            Welcome to ABCEnglish, your go-to destination for mastering the
+            English language. Our website is dedicated to providing you with
+            top-quality language learning resources and expert teaching services
+            to help you achieve your English language goals.
+          </p>
+          <p>
+            With personalized lessons and innovative teaching methods, we are
+            committed to helping you develop the skills and confidence you need
+            to communicate fluently in English. Whether you're a beginner or an
+            advanced learner, our courses are tailored to meet your individual
+            needs and learning style.
+          </p>
+          <p>
+            Our team of experienced and qualified teachers is passionate about
+            helping you succeed in your language learning journey. We believe
+            that learning English should be engaging, fun, and effective, which
+            is why we use a variety of teaching tools and resources to keep you
+            motivated and on track, including multimedia lessons, interactive
+            exercises, and real-life conversations.
+          </p>
+          <p>
+            At ABCEnglish, we also understand that everyone has different
+            schedules and learning needs, which is why we offer flexible and
+            affordable options to fit your schedule and budget. From one-on-one
+            tutoring to group classes and online courses, we have something for
+            everyone.
+          </p>
+          <p>
+            So, whether you're looking to improve your English skills for work,
+            travel, or personal development, we are here to help you every step
+            of the way. Join our community of learners and start your English
+            language journey today.
+          </p>
+        </div>
+      </div>
+      <!--cards section -->
+      <div class="flex justify-center">
+        <div class="flex w-10/12 space-x-3">
+          <ImageCard
+            cardImageUrl="./images/online-learning.jpg"
+            cardTitle="Online learning"
+            cardDesc="Follow your onw pace with the flexible , convinence, personalized learning"
+            cardLink="#"
+          />
+          <ImageCard
+            cardImageUrl="./images/zoom-teaching.jpg"
+            cardTitle="Teachers"
+            cardDesc="create engaging and effective lessons that meet the needs of diverse learners"
+            cardLink="#"
+          />
+          <ImageCard
+            cardImageUrl="./images/training.jpg"
+            cardTitle="Training"
+            cardDesc="help teachers become more effective educators and to keep up with the latest developments in their field"
+            cardLink="#"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Section two -->
 
-		<!--Section three -->
-		<!--Section four -->
-
+  <!--Section three -->
+  <!--Section four -->
 </MainLayout>
