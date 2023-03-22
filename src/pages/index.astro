@@ -3,11 +3,13 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 //section 1
 import ImageCard from "../components/landing-page/ImageCard.astro";
+//secont 3
+import ResourceCard from "../components/landing-page/ResourceCard.astro";
 ---
 
 <MainLayout currentPage="Home">
   <!--Section one-->
-  <div class="w-full mt-4">
+  <div class="w-full mt-4 mb-2">
     <div class="rounded-tl-[3.75rem] rounded-tr-none p-10 bg-esl-c-4">
       <div class="text-esl-4">
         <span class="text-esl-c-3">Explore the world <br /> with</span>
@@ -93,7 +95,72 @@ import ImageCard from "../components/landing-page/ImageCard.astro";
     </div>
   </div>
   <!--Section two -->
-
+  <div class="my-12 flex justify-center">
+    <div class="px-12 flex w-10/12">
+      <div class="w-5/12">
+        <div class="w-[2.5rem] h-[5px] rounded-full bg-esl-c-3"></div>
+        <div class="text-white">
+          <p class="text-esl-4">Service</p>
+          <p class="mt-4">
+            We provide a platform where teachers and students can connect and
+            engage in a free market environment. Teachers are able to showcase
+            their skills and expertise to a wide audience, while students have
+            the opportunity to browse and choose the teacher that best fits
+            their needs and preferences. Our platform facilitates a transparent
+            and open market for education, where both teachers and students have
+            the freedom to participate and benefit from the exchange of
+            knowledge and learning experiences.
+          </p>
+        </div>
+        <div class="mt-16">
+          <a
+            href="#"
+            class="mx-auto block rounded-full w-fit bg-white py-2 px-4 rounded-full bg-white text-esl-2 text-esl-c-4 hover:bg-esl-c-4 hover:text-white focus-visible:outline-none"
+            >See our teachers</a
+          >
+        </div>
+      </div>
+      <div class="w-7/12">
+        <!--TEACHER IMAGE GOES HERE-->
+      </div>
+    </div>
+  </div>
   <!--Section three -->
+  <div class="rounded-[1.87rem] mb-12">
+    <div class="bg-white">
+      <!--first half -->
+      <div class="p-12">
+        <div class="text-esl-4">
+          <span class="text-esl-c-1">Teaching Resources</span>
+        </div>
+      </div>
+      <!--second half -->
+      <div class="w-10/12 flex justify-center mx-auto">
+        <div class="grid grid-rows-2 grid-flow-col gap-12">
+          <ResourceCard
+            imageUrl="./images/read-more.jpg"
+            imageAlt="Read More"
+            captionText="Breaking News English"
+          />
+          <ResourceCard
+            imageUrl="./images/learning-book.jpg"
+            imageAlt="BBC Learning English"
+            captionText="BBC Learning English"
+          />
+          <ResourceCard
+            imageUrl="./images/learning-book.jpg"
+            imageAlt="BBC Learning English"
+            captionText="BBC Learning English"
+          />
+          <ResourceCard
+            imageUrl="./images/reading.jpg"
+            imageAlt="Reading"
+            captionText="How to improve your english"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!--Section four -->
 </MainLayout>
