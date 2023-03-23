@@ -1,0 +1,33 @@
+{
+  "resources": [
+    {
+      "image": "./images/read-more.jpg",
+      "alt": "Read More",
+      "text": "Breaking News English",
+      "link": "#"
+    },
+    {
+      "image": "./images/learning-book.jpg",
+      "alt": "BBC Learning English",
+      "text": "BBC Learning English",
+      "link": "#"
+    },
+    {
+      "image": "./images/open-book.jpg",
+      "alt": "Manythings.org",
+      "text": "Manything.org",
+      "link": "#"
+    },
+    {
+      "image": "./images/reading.jpg",
+      "alt": "How to improve your English",
+      "text": "How to improve your english",
+      "link": "#"
+    }
+  ],
+  "tips": [
+    "Practice consistently",
+    "Focus on speaking and listening",
+    "Immerse yourself in English"
+  ]
+}

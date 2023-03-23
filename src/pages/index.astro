@@ -1,5 +1,6 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import landingJson from "@data/landingPage.json";
 
 //section 1
 import ImageCard from "../components/landing-page/ImageCard.astro";
@@ -9,8 +10,8 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
 
 <MainLayout currentPage="Home">
   <!--Section one-->
-  <div class="w-full mt-4 mb-2">
-    <div class="rounded-tl-[3.75rem] rounded-tr-none p-10 bg-esl-c-4">
+  <div class="mt-4 mb-2 container mx-auto">
+    <div class="rounded-tl-[3.75rem] rounded-tr-none p-10 bg-esl-c-2">
       <div class="text-esl-4">
         <span class="text-esl-c-3">Explore the world <br /> with</span>
         <span
@@ -28,11 +29,11 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
       </div>
       <!--place image here -->
     </div>
-    <div class="rounded-b-[3.75rem] bg-white px-20 py-12 space-y-[4rem]">
-      <div class="space-y-4">
+    <div class="rounded-b-[3.75rem] bg-white py-12 space-y-[4rem]">
+      <div class="px-20 space-y-4">
         <div class="w-[2.5rem] h-[5px] rounded-full bg-esl-c-3"></div>
         <div class="space-y-4 text-esl-2">
-          <p class="text-esl-4 text-esl-c-4">Welcome to ABC English</p>
+          <p class="text-esl-4 text-esl-c-2">Welcome to ABC English</p>
           <p>
             Welcome to ABCEnglish, your go-to destination for mastering the
             English language. Our website is dedicated to providing you with
@@ -69,7 +70,6 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
           </p>
         </div>
       </div>
-      <!--cards section -->
       <div class="flex justify-center">
         <div class="flex w-10/12 space-x-3">
           <ImageCard
@@ -95,7 +95,7 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
     </div>
   </div>
   <!--Section two -->
-  <div class="my-12 flex justify-center">
+  <div class="my-12 flex justify-center container mx-auto">
     <div class="px-12 flex w-10/12">
       <div class="w-5/12">
         <div class="w-[2.5rem] h-[5px] rounded-full bg-esl-c-3"></div>
@@ -115,7 +115,7 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
         <div class="mt-16">
           <a
             href="#"
-            class="mx-auto block rounded-full w-fit bg-white py-2 px-4 rounded-full bg-white text-esl-2 text-esl-c-4 hover:bg-esl-c-4 hover:text-white focus-visible:outline-none"
+            class="mx-auto block rounded-full w-fit bg-white py-2 px-4 rounded-full bg-white text-esl-2 text-esl-c-2 hover:bg-esl-c-2 hover:text-white focus-visible:outline-none"
             >See our teachers</a
           >
         </div>
@@ -126,10 +126,12 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
     </div>
   </div>
   <!--Section three -->
-  <div class="rounded-[1.87rem] mb-12">
+  <div
+    class="rounded-[1.87rem] mb-12 overflow-hidden rounded-[3.75rem] container mx-auto"
+  >
     <div class="bg-white">
       <!--first half -->
-      <div class="p-12">
+      <div class="p-12 w-10/12 mx-auto">
         <div class="text-esl-4">
           <span class="text-esl-c-1">Teaching Resources</span>
         </div>
@@ -137,30 +139,42 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
       <!--second half -->
       <div class="w-10/12 flex justify-center mx-auto">
         <div class="grid grid-rows-2 grid-flow-col gap-12">
-          <ResourceCard
-            imageUrl="./images/read-more.jpg"
-            imageAlt="Read More"
-            captionText="Breaking News English"
-          />
-          <ResourceCard
-            imageUrl="./images/learning-book.jpg"
-            imageAlt="BBC Learning English"
-            captionText="BBC Learning English"
-          />
-          <ResourceCard
-            imageUrl="./images/learning-book.jpg"
-            imageAlt="BBC Learning English"
-            captionText="BBC Learning English"
-          />
-          <ResourceCard
-            imageUrl="./images/reading.jpg"
-            imageAlt="Reading"
-            captionText="How to improve your english"
-          />
+          {
+            landingJson.resources.map((resource: any) => {
+              return <ResourceCard resourceParameter={resource} />;
+            })
+          }
         </div>
       </div>
+      <div class="text-center py-10">
+        <a href="#" class="text-center text-esl-2 text-esl-c-2 hover:underline"
+          >See all teaching resources</a
+        >
+      </div>
+    </div>
+    <!--Tips section -->
+    <div class="bg-esl-c-3 py-12 px-6">
+      <div class="w-10/12 mx-auto">
+        <p class="text-esl-4">Tips</p>
+        <div class="w-10/12 mx-auto flex flex-1 justify-between">
+          {
+            landingJson.tips.map((tip) => {
+              return (
+                <div class="bg-white p-12 rounded-tl-[1.5rem] rounded-br-[1.5rem] text-center">
+                  {tip}
+                </div>
+              );
+            })
+          }
+        </div>
+        <a
+          href="#"
+          class="mx-auto block rounded-full w-fit bg-white py-2 px-4 rounded-full bg-white text-esl-2 text-esl-c-2 mt-5 hover:bg-esl-c-2 hover:text-white focus-visible:outline-none"
+          >More tips</a
+        >
+      </div>
+
+      <!--tips section -->
     </div>
   </div>
-
-  <!--Section four -->
 </MainLayout>
