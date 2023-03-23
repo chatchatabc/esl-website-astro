@@ -1,6 +1,7 @@
 ---
-import HeaderLayout from "../components/HeaderLayout.astro";
-import FooterLayout from "../components/FooterLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
 const { currentPage } = Astro.props;
 ---
 
@@ -13,8 +14,9 @@ const { currentPage } = Astro.props;
     <title>Astro</title>
   </head>
   <body class="mx-24 mt-10">
-    <HeaderLayout currentPage={currentPage} />
+    <Header currentPage={currentPage} />
     <!--main content container-->
     <slot />
+    <Footer />
   </body>
 </html>

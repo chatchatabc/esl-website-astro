@@ -1,10 +1,21 @@
 ---
-const { imageUrl, imageAlt, captionText } = Astro.props;
+const { resourceParameter } = Astro.props;
 ---
 
-<figure class="">
-  <div class="mb-5 h-[17.25rem] overflow-hidden rounded-b-[1.5rem]">
-    <img class="w-full h-full object-cover" src={imageUrl} alt={imageAlt} />
-  </div>
-  <figcaption class="text-center text-esl-3">{captionText}</figcaption>
-</figure>
+<a
+  href={resourceParameter.link ? resourceParameter.link : "#"}
+  class="hover:underline"
+>
+  <figure class="">
+    <div class="mb-5 h-[17.25rem] overflow-hidden rounded-b-[1.5rem]">
+      <img
+        class="w-full h-full object-cover"
+        src={resourceParameter.image}
+        alt={resourceParameter.imageAlt}
+      />
+    </div>
+    <figcaption class="text-center text-esl-3">
+      {resourceParameter.text}
+    </figcaption>
+  </figure>
+</a>
