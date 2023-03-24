@@ -1,34 +1,85 @@
 ---
 import headerJson from "@data/header.json";
+import {Icon} from "astro-icon";
 const { currentPage } = Astro.props;
 
-let style1 = `inline-block text-white  m-4 border-b-2 border-b-transparent pb-2 text-esl-2`;
+let style1 = `inline-block text-white  m-4 border-b-2 pb-2 text-esl-2 cursor-pointer`;
 let style2 =
-  "inline-block  py-2 px-4 mt-2 rounded-full bg-white text-esl-2 text-esl-c-4 hover:bg-esl-c-4 hover:text-white focus-visible:outline-none";
+  "inline-block  py-2 px-4 mt-2 rounded-full bg-white text-esl-2 text-esl-c-4 hover:bg-esl-c-2";
+
+  let mobileStyle1 =`max-lg:block max-lg:p-[1rem] max-lg:m-0 max-lg:border-b-0  text-esl-c-2`;
+
 ---
 
-<nav class="flex justify-between container mx-auto">
-  <div class="fit inline-block">
-    {
-      headerJson.links.map((linkSet) => (
-        <a
-          class={
-            (linkSet[0] === currentPage
-              ? "border-b-esl-c-3 "
-              : "hover:border-b-esl-c-3 ") +
-            (linkSet[0] === "Home" ? "ml-0 " : "") +
-            style1
-          }
-          href={linkSet[1]}
-        >
-          {linkSet[0]}
-        </a>
-      ))
-    }
+
+<nav class=" mt-10  items-center max-lg:mt-0 max-lg:mb-10">
+  <!--mobile -->
+  <div class="block lg:hidden" >
+    <div class="p-[9px]">
+      <Icon name="charm:menu-hamburger" class="text-white h-[1.5rem] w-[1.5rem] hamburger"/>
+    </div>
+    <div class="p-[9px]">
+      <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem] text-esl-c-2"/>
+    </div>
+    <div class="nav-items visible flex justify-between max-lg:block">
+      <div class="fit">
+        {
+  
+          headerJson.links.map((linkSet) => (
+            <a
+              class={
+                (linkSet[0] === currentPage
+                  ? " border-b-esl-c-3 "
+                  : "hover:border-b-esl-c-3 ") +
+                (linkSet[0] === "Home" ? "ml-0 " : "") +
+                mobileStyle1
+              }
+              href={linkSet[1]}
+            >
+              {linkSet[0]}
+            </a>
+          ))
+        }
+      </div>
+      <div class="fit inline-block lg:block">
+        <a class={mobileStyle1} href="#">Register</a>
+        <a class={mobileStyle1} href="#">Login</a>
+        <a class={mobileStyle1} href="#">Contact Us</a>
+      </div>
+    </div>
   </div>
-  <div class="fit inline-block">
-    <a class={style2 + " mr-2"} href="#">Register</a>
-    <a class={style2} href="#">Login</a>
-    <a class={style2 + " ml-2"} href="#">Contact Us</a>
+  <!--desktop -->
+  <div class="hidden lg:block container flex flex-1 mx-24 container" >
+    <div class="nav-items visible flex justify-between max-lg:block">
+      <div class="fit">
+        {
+  
+          headerJson.links.map((linkSet) => (
+            <a
+              class={
+                (linkSet[0] === currentPage
+                  ? "border-b-esl-c-3 hover:border-b-esl-c-2 "
+                  : "border-b-transparent hover:border-b-esl-c-3 ") +
+                (linkSet[0] === "Home" ? "ml-0 " : "") +
+                style1
+              }
+              href={linkSet[1]}
+            >
+              {linkSet[0]}
+            </a>
+          ))
+        }
+      </div>
+      <div class="fit inline-block lg:block">
+        <a class={style2 + " mr-2"} href="#">Register</a>
+        <a class={style2} href="#">Login</a>
+        <a class={style2 + " ml-2"} href="#">Contact Us</a>
+      </div>
+    </div>
   </div>
 </nav>
+<script>
+  document.querySelector(".hamburger")!.addEventListener('click',()=>{
+  document.querySelector('.burger-items')!.classList.toggle("open");
+})
+</script>

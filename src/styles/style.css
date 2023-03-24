@@ -3,3 +3,6 @@
 @tailwind utilities;
 
 
+.nav-items.open, .nav-items.open a {
+  display:block
+}

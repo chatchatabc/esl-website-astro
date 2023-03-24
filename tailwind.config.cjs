@@ -20,6 +20,9 @@ module.exports = {
         'esl-4': '1.77em',
         'esl-5': '2.369em',
         'esl-6': '3.157em',
+      },
+      backgroundPosition:{
+        'landing': '25% 25%'
       }
 
     },
