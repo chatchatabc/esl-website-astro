@@ -2,7 +2,7 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
-const { currentPage } = Astro.props;
+const { currentPage,config } = Astro.props;
 ---
 
 <html lang="en" class="bg-esl-c-1">
@@ -14,9 +14,9 @@ const { currentPage } = Astro.props;
     <title>Astro</title>
   </head>
   <body class="">
-    <Header currentPage={currentPage} />
+    <Header currentPage={currentPage} config={config}/>
     <!--main content container-->
     <slot />
-    <Footer />
+    <Footer config={config} />
   </body>
 </html>
