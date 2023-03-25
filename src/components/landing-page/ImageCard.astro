@@ -1,24 +1,36 @@
 ---
-const { cardImageUrl, cardTitle, cardDesc, cardLink, cardImageAlt } =
-  Astro.props;
+
+
+const { params,config } = Astro.props;
+// definitions
+//params = {
+//   image:string,
+//   title:string,
+//   desc:string,
+//   link:string
+// },
+// lite:boolean
+
+
+
 ---
 
 <figure
   class="w-4/12 rounded-tl-[1.87rem] rounded-b-[1.87rem] overflow-hidden flex flex-col bg-[#CAECFF]"
 >
-  <img src={cardImageUrl} alt={cardImageAlt} class="h-[11rem] object-cover" />
+  
+  <img src={config.lite?"":params.image} alt={params.title} class={`h-[11rem] object-cover `+(config.lite?config.placeholder:"")} />
   <figcaption
     class="p-4 flex flex-1 flex-col bg-esl-c-4 text-esl-2 rounded-b-[1.87rem] px-[1.5rem] pt-[1.5rem]"
   >
     <div class="mb-auto">
-      <p class="text-esl-4 text-esl-c-2">{cardTitle ? cardTitle : ""}</p>
-      <p class="mb-10">{cardDesc ? cardDesc : ""}</p>
+      <p class="text-esl-4 text-esl-c-2">{params.title ? params.title : ""}</p>
+      <p class="mb-10">{params.desc ? params.desc : ""}</p>
     </div>
 
     <a
-      href={cardLink}
+      href={params.link}
       class="mx-auto block rounded-full w-fit bg-white py-2 px-4 rounded-full bg-white text-esl-2 text-esl-c-2 hover:bg-esl-c-2 hover:text-white focus-visible:outline-none"
-      >learn more</a
-    >
+      >learn more</a>
   </figcaption>
 </figure>
