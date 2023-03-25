@@ -1,5 +1,5 @@
 ---
-const { resourceParameter } = Astro.props;
+const { resourceParameter, config } = Astro.props;
 ---
 
 <a
@@ -9,8 +9,8 @@ const { resourceParameter } = Astro.props;
   <figure class="">
     <div class="mb-5 h-[17.25rem] overflow-hidden rounded-b-[1.5rem]">
       <img
-        class="w-full h-full object-cover"
-        src={resourceParameter.image}
+        class={`w-full h-full object-cover min-w-[30rem] `+(config.lite?config.placeholder:"")}
+        src={config.lite?"":resourceParameter.image}
         alt={resourceParameter.imageAlt}
       />
     </div>
