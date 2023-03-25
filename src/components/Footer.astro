@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon";
 import footerJson from "@data/footer.json";
+const {config} = Astro.props;
 ---
 
 <div class="bg-esl-c-2 py-[5rem] text-white rounded-t-[5rem] container mx-auto">
@@ -29,7 +30,7 @@ import footerJson from "@data/footer.json";
       footerJson.qr.map((qrSet: any) => (
         <div class=" flex flex-col">
           <div class="text-center text-esl-4 bold">{qrSet.url}</div>
-          <img class="h-[10rem] w-[10rem]" src={`./images/${qrSet.qrCode}`} />
+          <img class={"h-[10rem] w-[10rem] "+(config.lite?config.placeholder:"")} src={  config.lite? "": `./images/${qrSet.qrCode}`} />
         </div>
       ))
     }
