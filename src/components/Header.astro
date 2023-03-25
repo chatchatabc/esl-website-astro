@@ -12,16 +12,20 @@ let style2 =
 ---
 
 
-<nav class=" mt-10  items-center max-lg:mt-0 max-lg:mb-10">
+<nav class=" lg:mt-10  items-center  ">
   <!--mobile -->
-  <div class="block lg:hidden" >
-    <div class="p-[9px]">
-      <Icon name="charm:menu-hamburger" class="text-white h-[1.5rem] w-[1.5rem] hamburger"/>
-    </div>
-    <div class="p-[9px]">
-      <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem] text-esl-c-2"/>
-    </div>
-    <div class="nav-items visible flex justify-between max-lg:block">
+  <div class="block relative lg:hidden m-nav" >
+    <button class="menu-toggle w-full block">
+      <div class="p-[1rem] burger w-fit text-white block ">
+        <Icon name="charm:menu-hamburger" class=" h-[1.5rem] w-[1.5rem]"/>
+      </div>
+      <div class="p-[1rem] bg-white hidden m-close w-full text-esl-c-2 ">
+        <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem] "/>
+      </div>
+    </button>
+    
+    <div class="burger-items absolute max-h-0 w-full z-[1] overflow-hidden bg-white transition-[max-height] duration-500">
+      
       <div class="fit">
         {
   
@@ -42,7 +46,7 @@ let style2 =
           ))
         }
       </div>
-      <div class="fit inline-block lg:block">
+      <div class="fit block">
         <a class={mobileStyle1} href="#">Register</a>
         <a class={mobileStyle1} href="#">Login</a>
         <a class={mobileStyle1} href="#">Contact Us</a>
@@ -50,8 +54,8 @@ let style2 =
     </div>
   </div>
   <!--desktop -->
-  <div class="hidden lg:block container flex flex-1 mx-24 container" >
-    <div class="nav-items visible flex justify-between max-lg:block">
+  <div class="container mx-auto" >
+    <div class="hidden  justify-between lg:flex">
       <div class="fit">
         {
   
@@ -80,7 +84,21 @@ let style2 =
   </div>
 </nav>
 <script>
-  document.querySelector(".hamburger")!.addEventListener('click',()=>{
-  document.querySelector('.burger-items')!.classList.toggle("open");
-})
+  let toggle:HTMLButtonElement = document.querySelector(".menu-toggle")!;
+  toggle.addEventListener('click',()=>{
+    document.querySelector('.m-nav')!.classList.toggle("open");
+  });
+
+
 </script>
+<style>
+  .m-nav.open .burger{
+    display: none;
+} 
+  .m-nav.open .m-close{
+   display: block;
+  }
+  .m-nav.open .burger-items {
+    max-height: 100vh;
+  }
+</style>
