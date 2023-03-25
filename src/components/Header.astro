@@ -28,11 +28,12 @@ let style2 =
           headerJson.links.map((linkSet) => (
             <a
               class={
+                mobileStyle1 + 
                 (linkSet[0] === currentPage
                   ? " border-b-esl-c-3 "
                   : "hover:border-b-esl-c-3 ") +
-                (linkSet[0] === "Home" ? "ml-0 " : "") +
-                mobileStyle1
+                (linkSet[0] === "Home" ? "ml-0 " : "")
+                
               }
               href={linkSet[1]}
             >
