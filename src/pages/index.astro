@@ -6,9 +6,11 @@ import landingJson from "@data/landingPage.json";
 import ImageCard from "../components/landing-page/ImageCard.astro";
 //secont 3
 import ResourceCard from "../components/landing-page/ResourceCard.astro";
+
+import {liteImageConfig} from "../scripts/liteImageConfig";
 ---
 
-<MainLayout currentPage="Home">
+<MainLayout currentPage="Home" config={liteImageConfig}>
   <div class="mx-24">
     <!--Section one-->
     <div class="mt-4 mb-2 container mx-auto">
@@ -31,7 +33,10 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
             </div>
           </div>
         </div>
-        <div style="clip-path:polygon(0 0, 100% 0, 100% 100%, 63% 100%, 8% 56%)" class="w-7/12 bg-[url('./images/teaching.jpg')] bg-cover bg-landing">
+        <div style="clip-path:polygon(0 0, 100% 0, 100% 100%, 63% 100%, 8% 56%)" 
+        class={
+          'w-7/12 bg-cover bg-landing ' + (liteImageConfig.lite? liteImageConfig.placeholder+"":"bg-[url('./images/teaching.jpg')]")
+          }>
           <!--place image here -->
           <div ></div>
           
@@ -83,24 +88,11 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
         </div>
         <div class="flex justify-center">
           <div class="flex w-10/12 space-x-3">
-            <ImageCard
-              cardImageUrl="./images/online-learning.jpg"
-              cardTitle="Online learning"
-              cardDesc="Follow your onw pace with the flexible , convinence, personalized learning"
-              cardLink="#"
-            />
-            <ImageCard
-              cardImageUrl="./images/zoom-teaching.jpg"
-              cardTitle="Teachers"
-              cardDesc="create engaging and effective lessons that meet the needs of diverse learners"
-              cardLink="#"
-            />
-            <ImageCard
-              cardImageUrl="./images/training.jpg"
-              cardTitle="Training"
-              cardDesc="help teachers become more effective educators and to keep up with the latest developments in their field"
-              cardLink="#"
-            />
+          
+            {
+              
+              landingJson.section1.map((cardDetails) => <ImageCard params={cardDetails} config={liteImageConfig}/>)
+            }
           </div>
         </div>
       </div>
@@ -132,7 +124,7 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
           </div>
         </div>
         <div class="w-7/12 flex items-center justify-center">
-          <img class="w-[25rem] h-[25rem] object-cover" src="./images/teacher.jpg" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" />
+          <img class={"w-[25rem] h-[25rem] object-cover "+(liteImageConfig.lite?liteImageConfig.placeholder:"")} src={liteImageConfig.lite?"":"./images/teacher.jpg"} style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" />
           <!--TEACHER IMAGE GOES HERE-->
         </div>
       </div>
@@ -150,10 +142,10 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
         </div>
         <!--second half -->
         <div class="w-10/12 flex justify-center mx-auto">
-          <div class="grid grid-rows-2 grid-flow-col gap-12">
+          <div class="grid grid-cols-2 grid-rows-2 grid-flow-col gap-12">
             {
               landingJson.resources.map((resource: any) => {
-                return <ResourceCard resourceParameter={resource} />;
+                return <ResourceCard resourceParameter={resource} config={liteImageConfig} />;
               })
             }
           </div>
