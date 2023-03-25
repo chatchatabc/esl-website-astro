@@ -1,4 +1,24 @@
 {
+  "section1":[
+    {
+      "image":"./images/online-learning.jpg",
+      "title":"Online learning",
+      "desc":"Follow your onw pace with the flexible , convinence, personalized learning",
+      "link":"#"
+    },
+    {
+      "image":"./images/zoom-teaching.jpg",
+      "title":"Teachers",
+      "desc":"create engaging and effective lessons that meet the needs of diverse learners",
+      "link":"#"
+    },
+    {
+      "image":"./images/training.jpg",
+      "title":"Training",
+      "desc":"help teachers become more effective educators and to keep up with the latest developments in their field",
+      "link":"#"
+    }
+  ],
   "resources": [
     {
       "image": "./images/read-more.jpg",
