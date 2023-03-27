@@ -92,7 +92,7 @@ import {liteImageConfig} from "../scripts/liteImageConfig";
           </div>
         </div>
         <div class="flex justify-center">
-          <div class="w-10/12 space-y-10
+          <div class="w-10/12 space-y-10 justify-center
           lg:flex lg:space-x-3 lg:space-y-0
           ">
             {
@@ -159,7 +159,7 @@ import {liteImageConfig} from "../scripts/liteImageConfig";
         </div>
         <!--second half -->
         <div class="w-10/12 flex justify-center mx-auto">
-          <div class="w-full grid grid-cols-2 grid-rows-2 grid-flow-col gap-12">
+          <div class="w-full grid grid-cols-2 gap-12">
             {
               landingJson.resources.map((resource: any) => {
                 return <ResourceCard resourceParameter={resource} config={liteImageConfig} />;
