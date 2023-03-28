@@ -14,12 +14,12 @@ module.exports = {
         },
       },
       fontSize: {
-        'esl-1': '0.75em',
-        'esl-2': '1em',
-        'esl-3': '1.33em',
-        'esl-4': '1.77em',
-        'esl-5': '2.369em',
-        'esl-6': '3.157em',
+        'esl-1': '0.75rem',
+        'esl-2': '1rem',
+        'esl-3': '1.33rem',
+        'esl-4': '1.77rem',
+        'esl-5': '2.369rem',
+        'esl-6': '3.157rem',
       },
       backgroundPosition:{
         'landing': '25% 25%'
