@@ -1,0 +1,207 @@
+---
+import MainLayoutCh from "../layouts/MainLayoutCh.astro";
+import { liteImageConfig } from "../scripts/liteImageConfig";
+import { Icon } from "astro-icon";
+
+import landingJson from "@data/landingPage.json";
+import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
+let teacher = landingJson.teachers[0];
+changeLanguage("en");
+---
+
+<MainLayoutCh currentPage="Teachers" config={liteImageConfig}>
+  <!--main container -->
+  <div class="container block mx-auto lg:flex lg:flex-1 lg:w-10/12">
+    <!--left side -->
+    <div class="w-full lg:w-7/12">
+      <!--teacher details section -->
+      <div>
+        <div class="bg-white sm:rounded-tl-[1rem] shadow-lg">
+          <!--nameplate section -->
+          <div>
+            <div class="flex flex-1 pt-4">
+              <!--teacher image -->
+              <div class="px-4 pb-0">
+                <img
+                  src="https://via.placeholder.com/50"
+                  alt="Teacher Image"
+                  class="object-fit rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem]"
+                />
+              </div>
+              <!--name,verification and occupation -->
+              <div class="flex-grow flex items-center">
+                <div>
+                  <div>
+                    <span class="text-esl-3">{teacher.name}</span>&nbsp;<Icon
+                      name="mdi:verified-user"
+                      class="h-[1.5rem] w-[1.5rem] inline-block text-[#64C01B]"
+                    />
+                  </div>
+                  <div class="text-esl-2">{teacher.occupation}</div>
+                </div>
+              </div>
+              <!--favorites -->
+              <div class="favorites px-4">
+                <div>
+                  <Icon
+                    name="mdi:cards-heart"
+                    class="w-[1.5rem] h-[1.5rem] text-[#D1095C] hidden"
+                  />
+                  <Icon
+                    name="mdi:cards-heart-outline"
+                    class="w-[1.5rem] h-[1.5rem] text-[#BEBEBE]"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!--reserve button section -->
+            <div
+              class="flex flex-1 space-x-5 items-center justify-end pt-2 px-4"
+            >
+              <div class="payDefinition">
+                <span class="font-medium">{teacher.rate}元</span>
+                <span class="text-[#9B9B9B]">/40分钟</span>
+              </div>
+              <button
+                class="bg-[#FF4438] py-1 px-[2rem] rounded-full text-white"
+              >
+                {t("common:reserve")}
+              </button>
+            </div>
+          </div>
+
+          <!--tabified details -->
+          <div class="mt-4 tab-menu">
+            <!--tab collection -->
+            <div class="flex flex-1 text-esl-3">
+              <!--tab item -->
+              <button class="py-4 px-4 flex-auto">
+                <div class="flex flex-1 flex-col justify-center">
+                  <div class="">About Me</div>
+                  <div
+                    class="w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-4"
+                  >
+                  </div>
+                </div>
+              </button>
+              <button class="py-4 text-[#B6B6B6] px-4 flex-auto">
+                <div class="flex flex-1 flex-col justify-center">
+                  <div>Me as a Teacher</div>
+                  <div
+                    class="w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-4 invisible"
+                  >
+                  </div>
+                </div>
+              </button>
+              <button class="py-4 text-[#B6B6B6] px-4 flex-auto">
+                <div class="flex flex-1 flex-col justify-center">
+                  <div>My lessons & Teaching plan</div>
+                  <div
+                    class="w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-4 invisible"
+                  >
+                  </div>
+                </div>
+              </button>
+            </div>
+            <!--tab contents -->
+            <div class="px-8 mt-4">
+              <!--tab 1 content -->
+              <div class="px-4 space-y-4 pb-4">
+                <div class="text-esl-2 space-y-2">
+                  <p>From Philippines</p>
+                  <p>Living in Davao City,Philippines</p>
+                  <p>Licensed Teacher with 6 years experience in teaching</p>
+                </div>
+                <div class="text-esl-3">About Me</div>
+                <div class="text-esl-2">
+                  Hello world! I'm teacher Laura from Philippines. I'm a native
+                  speaker of Filipino (Tagalog) with Bachelor's Degree in
+                  Secondary Education major in English. Some of my highlighted
+                  traits in teaching field are being a goal-oriented, patient,
+                  having good command of language, committed to work or craft
+                  and I highly value sincerity and honesty. Learners believe
+                  that you can and you're halfway there. See you! =)
+                </div>
+              </div>
+              <!--tab 2 content -->
+              <div class="px-4 space-y-4 pb-4 hidden">
+                <div class="text-esl-3">Me as a teacher</div>
+                <div class="text-esl-2">
+                  I'm the kind of a teacher who is approachable and I can
+                  establish a rapport with my students . Since I was a child, I
+                  really want to become a teacher. I know deep in my core, that
+                  I'm meant to be in teaching field. In fact, I started teaching
+                  pre-school and elementary students after I passed the
+                  Licensure Examination for Teachers in 2014. Then I moved to
+                  Secondary School where I have been teaching English and
+                  Filipino (Tagalog) for six years.
+                </div>
+              </div>
+              <!--tab 3 content -->
+              <div class="px-4 space-y-4 pb-4 hidden">
+                <div class="text-esl-3">My lessons & Teaching plan</div>
+                <div class="text-esl-2">
+                  no placeholder no placeholder no placeholder no placeholder no
+                  placeholder no placeholder no placeholder
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--stats -->
+        <div class="bg-white flex flex-1 shadow-lg mt-4 py-4">
+          <!--rating -->
+          <div class="flex flex-1 flex-col">
+            <div
+              class="text-[#FFCC3E] flex flex-1 items-center justify-center text-esl-4"
+            >
+              <Icon
+                name="ic:baseline-star-rate"
+                class="h-[1.77rem] w-[1.77rem] inline"
+              />
+              <span>{teacher.rating}</span>
+            </div>
+            <div class="text-center text-esl-2 text-[#7E7E7E]">Rating</div>
+          </div>
+          <!--students -->
+          <div class="section flex flex-1 flex-col">
+            <div class="text-center text-esl-4">2</div>
+            <div class="text-center text-esl-2 text-[#7E7E7E]">Students</div>
+          </div>
+          <!--lessons -->
+          <div class="section flex flex-1 flex-col">
+            <div class="text-center text-esl-4">10</div>
+            <div class="text-center text-esl-2 text-[#7E7E7E]">Lessons</div>
+          </div>
+          <!--attendance -->
+          <div class="section flex flex-1 flex-col">
+            <div class="text-center text-esl-4">100%</div>
+            <div class="text-center text-esl-2 text-[#7E7E7E]">Attendance</div>
+          </div>
+          <!--response -->
+          <div class="section flex flex-1 flex-col">
+            <div class="text-center text-esl-4">100%</div>
+            <div class="text-center text-esl-2 text-[#7E7E7E]">Response</div>
+          </div>
+        </div>
+      </div>
+      <!--lessons enumeration section -->
+      <div>
+        <div>English Lessons</div>
+        <div class="bg-white p-5">
+          <!--lesson item -->
+          <div class="bg-white">
+            <div>Lesson 1</div>
+            <button>interact</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--right side -->
+    <div class="hidden sm:block sm:w-10/12 lg:w-5/12">
+      <!--insert youtube video here -->
+    </div>
+  </div>
+</MainLayoutCh>
