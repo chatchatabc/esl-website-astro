@@ -1,11 +1,13 @@
 ---
-import MainLayoutCh from "../layouts/MainLayoutCh.astro";
-import {liteImageConfig} from "../scripts/liteImageConfig";
+import { changeLanguage } from "i18next";
+import MainLayoutCh from "../../layouts/MainLayoutCh.astro";
+import { liteImageConfig } from "../../scripts/liteImageConfig";
+
+changeLanguage("zh");
 ---
 
 <MainLayoutCh currentPage="Teachers" config={liteImageConfig}>
-
-<!--main container -->
+  <!--main container -->
   <div class="">
     <!--left side -->
     <div>
@@ -14,7 +16,7 @@ import {liteImageConfig} from "../scripts/liteImageConfig";
         <!--nameplate section -->
         <div class="">
           <!--teacher image -->
-          <div class=""><img src=""/></div>
+          <div class=""><img src="" /></div>
           <!--name,verification and occupation -->
           <div>
             <div><span>Teacher Name</span><span>Verification Badge</span></div>
@@ -48,7 +50,7 @@ import {liteImageConfig} from "../scripts/liteImageConfig";
             <!--tab item -->
             <button>About Me</button>
             <button>Me as a Teacher</button>
-            <button>My </button>
+            <button>My</button>
           </div>
           <!--tab contents -->
           <div>
@@ -61,11 +63,11 @@ import {liteImageConfig} from "../scripts/liteImageConfig";
           </div>
         </div>
       </div>
-      
+
       <!--lessons enumeration section -->
       <div>
         <div>English Lessons</div>
-        <div class="bg-white p-5" >
+        <div class="bg-white p-5">
           <!--lesson item -->
           <div class="bg-white">
             <div>Lesson 1</div>
@@ -73,12 +75,10 @@ import {liteImageConfig} from "../scripts/liteImageConfig";
           </div>
         </div>
       </div>
-      
     </div>
     <!--right side -->
     <div>
       <!--insert youtube video here -->
     </div>
   </div>
-
 </MainLayoutCh>

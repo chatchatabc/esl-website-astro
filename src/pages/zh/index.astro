@@ -1,18 +1,16 @@
 ---
-import MainLayoutCh from "../layouts/MainLayoutCh.astro";
+import MainLayoutCh from "../../layouts/MainLayoutCh.astro";
 import landingJson from "@data/landingPage.json";
 import { Icon } from "astro-icon";
-
 //section 1
-import ImageCard from "../components/landing-page/ImageCard.astro";
+import ImageCard from "../../components/landing-page/ImageCard.astro";
 //section 3
-import ResourceCard from "../components/landing-page/ResourceCard.astro";
-import TeacherListItem from "../components/landing-page/TeacherListItem.astro";
-import { liteImageConfig } from "../scripts/liteImageConfig";
+import ResourceCard from "../../components/landing-page/ResourceCard.astro";
+import TeacherListItem from "../../components/landing-page/TeacherListItem.astro";
+import { liteImageConfig } from "../../scripts/liteImageConfig";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
 
 changeLanguage("zh");
-console.log(t("common:reserve"));
 ---
 
 <MainLayoutCh currentPage="Home" config={liteImageConfig}>
@@ -24,7 +22,7 @@ console.log(t("common:reserve"));
       <div
         class="bg-esl-c-2 flex flex-1 justify-between flex-col-reverse lg:rounded-tr-none lg:flex-row"
       >
-        <div class="p-10 bg-esl-c-2 lg:w-5/12">
+        <div class="px-5 py-10 sm:px-10 bg-esl-c-2 lg:w-5/12">
           <div class="text-esl-4">
             <span class="text-esl-c-3">用英语的力量发现世界</span>
           </div>
@@ -42,7 +40,7 @@ console.log(t("common:reserve"));
           class={"landing-clipped min-h-[15rem] bg-cover bg-landing " +
             (liteImageConfig.lite
               ? liteImageConfig.placeholder + ""
-              : "bg-[url('./images/teaching.jpg')]") +
+              : "bg-[url('/images/teaching.jpg')]") +
             " lg:w-7/12"}
         >
         </div>
@@ -84,7 +82,7 @@ console.log(t("common:reserve"));
       <div class="space-y-10">
         <!--first -->
         <div>
-          <div class="mt-12 w-10/12 mx-auto">
+          <div class="px-5 w-full mt-12 mx-auto sm:w-10/12">
             <div
               class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block"
             >
@@ -96,43 +94,43 @@ console.log(t("common:reserve"));
         </div>
 
         <!--second -->
-        <div class="w-10/12 flex justify-center mx-auto">
+        <div class="px-5 w-full flex justify-center mx-auto sm:w-10/12">
           <div class="w-full grid grid-cols-1 gap-12 md:grid-cols-2">
             {
               [
                 {
                   link: "#",
-                  image: "./images/new-concept.jpg",
+                  image: "/images/new-concept.jpg",
                   imageAlt: "新概念",
                   text: "新概念",
                 },
                 {
                   link: "#",
-                  image: "./images/cambridge-english-young-learners-flyers.jpg",
+                  image: "/images/cambridge-english-young-learners-flyers.jpg",
                   imageAlt: "剑桥少儿英语",
                   text: "剑桥少儿英语",
                 },
                 {
                   link: "#",
-                  image: "./images/pep-english.jpg",
+                  image: "/images/pep-english.jpg",
                   imageAlt: "人教版英语",
                   text: "人教版英语",
                 },
                 {
                   link: "#",
-                  image: "./images/jijiao-english.jpg",
+                  image: "/images/jijiao-english.jpg",
                   imageAlt: "冀教版英语",
                   text: "冀教版英语",
                 },
                 {
                   link: "#",
-                  image: "./images/toefl.png",
+                  image: "../images/toefl.png",
                   imageAlt: "托福",
                   text: "托福",
                 },
                 {
                   link: "#",
-                  image: "./images/ielts.png",
+                  image: "/images/ielts.png",
                   imageAlt: "雅思",
                   text: "雅思",
                 },
@@ -148,7 +146,7 @@ console.log(t("common:reserve"));
           </div>
         </div>
         <!--third  -->
-        <div class="w-10/12 mx-auto space-y-[4rem]">
+        <div class="px-5 w-full mx-auto space-y-[4rem] sm:w-10/12">
           <div>
             <div
               class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block"
@@ -168,18 +166,18 @@ console.log(t("common:reserve"));
             </div>
             <div class="flex justify-center">
               <div
-                class="w-10/12 space-y-10 pb-12 mx-auto justify-center mt-10 lg:flex lg:space-x-3 lg:space-y-0 lg:pb-12"
+                class="w-11/12 space-y-10 pb-12 mx-auto justify-center mt-10 sm:w-10/12 lg:flex lg:space-x-3 lg:space-y-0 lg:pb-12"
               >
                 {
                   [
                     {
-                      image: "./images/online-learning.jpg",
+                      image: "/images/online-learning.jpg",
                       title: "1对1教学",
-                      desc: "Follow your onw pace with the flexible , convinence, personalized learning",
+                      desc: "Follow your own pace with the flexible , convinence, personalized learning",
                       link: "#",
                     },
                     {
-                      image: "./images/training.jpg",
+                      image: "/images/training.jpg",
                       title: "教师培训",
                       desc: "help teachers become more effective educators and to keep up with the latest developments in their field",
                       link: "#",
@@ -210,4 +208,13 @@ console.log(t("common:reserve"));
       }
     }
   </style>
+  <script>
+    //create a handler here in the future if ever i want to detect window resizes
+    let longDesc = document.querySelectorAll("span.longDesc");
+    longDesc.forEach((item, index) => {
+      if (item.clientHeight < item.scrollHeight) {
+        item.querySelector("descVisibility")!.classList.toggle("hidden");
+      }
+    });
+  </script>
 </MainLayoutCh>
