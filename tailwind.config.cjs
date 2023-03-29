@@ -13,13 +13,13 @@ module.exports = {
           '5': '#CAECFF'
         },
       },
-      fontSize: {
-        'esl-1': '0.75rem',
-        'esl-2': '1rem',
-        'esl-3': '1.33rem',
-        'esl-4': '1.77rem',
-        'esl-5': '2.369rem',
-        'esl-6': '3.157rem',
+      fontSize: { //figure based on figma design
+        'esl-1': '0.75rem', //15px
+        'esl-2': '1rem', //20px
+        'esl-3': '1.33rem', //26px
+        'esl-4': '1.77rem', //35.54 px
+        'esl-5': '2.369rem', //47.37 px
+        'esl-6': '3.157rem', //63.15 px
       },
       backgroundPosition:{
         'landing': '25% 25%'

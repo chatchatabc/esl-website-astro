@@ -1,19 +1,19 @@
 {
   "section1":[
     {
-      "image":"./images/online-learning.jpg",
+      "image":"/images/online-learning.jpg",
       "title":"Online learning",
       "desc":"Follow your onw pace with the flexible , convinence, personalized learning",
       "link":"#"
     },
     {
-      "image":"./images/zoom-teaching.jpg",
+      "image":"/images/zoom-teaching.jpg",
       "title":"Teachers",
       "desc":"create engaging and effective lessons that meet the needs of diverse learners",
       "link":"#"
     },
     {
-      "image":"./images/training.jpg",
+      "image":"/images/training.jpg",
       "title":"Training",
       "desc":"help teachers become more effective educators and to keep up with the latest developments in their field",
       "link":"#"
@@ -21,25 +21,25 @@
   ],
   "resources": [
     {
-      "image": "./images/read-more.jpg",
+      "image": "/images/read-more.jpg",
       "alt": "Read More",
       "text": "Breaking News English",
       "link": "#"
     },
     {
-      "image": "./images/learning-book.jpg",
+      "image": "/images/learning-book.jpg",
       "alt": "BBC Learning English",
       "text": "BBC Learning English",
       "link": "#"
     },
     {
-      "image": "./images/open-book.jpg",
+      "image": "/images/open-book.jpg",
       "alt": "Manythings.org",
       "text": "Manything.org",
       "link": "#"
     },
     {
-      "image": "./images/reading.jpg",
+      "image": "/images/reading.jpg",
       "alt": "How to improve your English",
       "text": "How to improve your english",
       "link": "#"
@@ -51,7 +51,7 @@
     "Immerse yourself in English"
   ],
   "teachers":[
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"./images/teachers/teacher-1.png","rating":"5.0","video":"https://www.youtube.com/embed/e4dZVZP-v2c"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"./images/teachers/teacher-2.png","rating":"5.0","video":"https://www.youtube.com/embed/e4dZVZP-v2c"}
+    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-1.png","rating":"5.0","video":"https://www.youtube.com/embed/e4dZVZP-v2c"},
+    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-2.png","rating":"5.0","video":"https://www.youtube.com/embed/e4dZVZP-v2c"}
   ]
 }
