@@ -1,7 +1,7 @@
 ---
+import { Img } from "astro-imagetools/components";
 
-
-const { params,config } = Astro.props;
+const { params, config } = Astro.props;
 // definitions
 // params = {
 //   image:string,
@@ -14,19 +14,24 @@ const { params,config } = Astro.props;
 //   lite:boolean,
 //   placeholder:string
 // }
-
-
-
 ---
 
 <figure
-  class="
-    rounded-tl-[1.87rem] rounded-b-[1.87rem] overflow-hidden flex flex-col bg-esl-c-5
-    lg:w-4/12 lg:mb-0
-  "
+  class="rounded-tl-[1.87rem] rounded-b-[1.87rem] overflow-hidden flex flex-col bg-esl-c-5 lg:w-4/12 lg:mb-0"
 >
-  
-  <img src={config.lite?"":params.image} alt={params.title} class={`h-[11rem] object-cover `+(config.lite?config.placeholder:"")} />
+  <Img
+    src={config.lite ? "" : params.image}
+    alt={params.title}
+    objectFit={"cover"}
+    layout={"fullWidth"}
+    aspect={28 / 16}
+  />
+  <!-- <img
+    src={config.lite ? "" : params.image}
+    alt={params.title}
+    class="h-[11rem] object-cover"
+    
+  /> -->
   <figcaption
     class="p-4 flex flex-1 flex-col bg-esl-c-4 text-esl-2 rounded-b-[1.87rem] px-[1.5rem] pt-[1.5rem]"
   >
@@ -38,6 +43,7 @@ const { params,config } = Astro.props;
     <a
       href={params.link}
       class="mx-auto block w-fit py-2 px-4 rounded-full bg-white text-esl-2 text-esl-c-2 hover:bg-esl-c-2 hover:text-white focus-visible:outline-none"
-      >{params.btnText?params.btnText:"learn more"}</a>
+      >{params.btnText ? params.btnText : "learn more"}</a
+    >
   </figcaption>
 </figure>
