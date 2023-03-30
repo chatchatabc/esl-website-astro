@@ -1,43 +1,42 @@
 ---
 import headerJson from "@data/header.json";
-import {Icon} from "astro-icon";
+import { Icon } from "astro-icon";
 const { currentPage } = Astro.props;
 
 let style1 = `inline-block text-white  m-4 border-b-2 pb-2 text-esl-2 cursor-pointer`;
 let style2 =
   "inline-block  py-2 px-4 mt-2 rounded-full bg-white text-esl-2 text-esl-c-4 hover:bg-esl-c-2";
 
-  let mobileStyle1 =`max-lg:block max-lg:p-[1rem] max-lg:m-0 max-lg:border-b-0  text-esl-c-2`;
-
+let mobileStyle1 = `max-lg:block max-lg:p-[1rem] max-lg:m-0 max-lg:border-b-0  text-esl-c-2`;
 ---
 
-
-<nav class=" lg:w-10/12 lg:mx-auto lg:mt-10  items-center  ">
+<nav class="lg:w-10/12 lg:mx-auto lg:mt-10 items-center">
   <!--mobile -->
-  <div class="block relative lg:hidden m-nav" >
-    <button class="menu-toggle w-full block">
-      <div class="p-[1rem] burger w-fit text-white block ">
-        <Icon name="charm:menu-hamburger" class=" h-[1.5rem] w-[1.5rem]"/>
-      </div>
-      <div class="p-[1rem] bg-white hidden m-close w-full text-esl-c-2 ">
-        <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem] "/>
-      </div>
-    </button>
-    
-    <div class="burger-items absolute max-h-0 w-full z-[1] overflow-hidden bg-white transition-[max-height] duration-500">
-      
+  <div class="relative lg:hidden m-nav">
+    <div class="block">
+      <button class="menu-toggle w-fit block">
+        <div class="p-[1rem] burger w-fit text-white block">
+          <Icon name="charm:menu-hamburger" class="h-[1.5rem] w-[1.5rem]" />
+        </div>
+        <div class="p-[1rem] m-close w-full text-esl-c-2 hidden">
+          <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem]" />
+        </div>
+      </button>
+    </div>
+
+    <div
+      class="burger-items absolute max-h-0 w-full z-[1] overflow-hidden bg-white transition-[max-height] duration-500 hidden"
+    >
       <div class="fit">
         {
-  
           headerJson.links.map((linkSet) => (
             <a
               class={
-                mobileStyle1 + 
+                mobileStyle1 +
                 (linkSet[0] === currentPage
                   ? " border-b-esl-c-3 "
                   : "hover:border-b-esl-c-3 ") +
                 (linkSet[0] === "Home" ? "ml-0 " : "")
-                
               }
               href={linkSet[1]}
             >
@@ -54,11 +53,10 @@ let style2 =
     </div>
   </div>
   <!--desktop -->
-  <div class="container mx-auto" >
-    <div class="hidden  justify-between lg:flex">
+  <div class="container mx-auto">
+    <div class="hidden justify-between lg:flex">
       <div class="fit">
         {
-  
           headerJson.links.map((linkSet) => (
             <a
               class={
@@ -84,21 +82,25 @@ let style2 =
   </div>
 </nav>
 <script>
-  let toggle:HTMLButtonElement = document.querySelector(".menu-toggle")!;
-  toggle.addEventListener('click',()=>{
-    document.querySelector('.m-nav')!.classList.toggle("open");
+  let toggle: HTMLButtonElement = document.querySelector(".menu-toggle")!;
+  toggle.addEventListener("click", () => {
+    document.querySelector(".m-nav")!.classList.toggle("open");
   });
-
-
 </script>
 <style>
-  .m-nav.open .burger{
+  .m-nav.open {
+    background-color: white;
+    filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
+      drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
+  }
+  .m-nav.open .burger {
     display: none;
-} 
-  .m-nav.open .m-close{
-   display: block;
+  }
+  .m-nav.open .m-close {
+    display: block;
   }
   .m-nav.open .burger-items {
     max-height: 100vh;
+    display: block;
   }
 </style>

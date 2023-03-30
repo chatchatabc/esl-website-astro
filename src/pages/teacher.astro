@@ -13,20 +13,29 @@ changeLanguage("en");
   <!--main container -->
   <div class="container block mx-auto lg:flex lg:flex-1 lg:w-10/12">
     <!--left side -->
-    <div class="w-full lg:w-7/12">
+    <div class="w-full lg:w-7/12 lg:pr-2">
       <!--teacher details section -->
-      <div>
-        <div class="bg-white sm:rounded-tl-[1rem] shadow-lg">
+      <div class="">
+        <div class="bg-white sm:rounded-tl-[1rem] shadow-lg p-8">
           <!--nameplate section -->
           <div>
-            <div class="flex flex-1 pt-4">
+            <div class="flex flex-1">
               <!--teacher image -->
               <div class="px-4 pb-0">
                 <img
                   src="https://via.placeholder.com/50"
                   alt="Teacher Image"
-                  class="object-fit rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem]"
+                  class="object-fit rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem] min-w-[6.25rem] min-h-[6.25rem]"
                 />
+                <div
+                  class="text-[#FFCC3E] text-[1.25rem] flex flex-1 items-center justify-center"
+                >
+                  <Icon
+                    name="ic:baseline-star-rate"
+                    class="h-[1.25rem] w-[1.25rem] inline"
+                  />
+                  <span>{teacher.rating}</span>
+                </div>
               </div>
               <!--name,verification and occupation -->
               <div class="flex-grow flex items-center">
@@ -41,8 +50,8 @@ changeLanguage("en");
                 </div>
               </div>
               <!--favorites -->
-              <div class="favorites px-4">
-                <div>
+              <div class="favorites">
+                <button class="p-4">
                   <Icon
                     name="mdi:cards-heart"
                     class="w-[1.5rem] h-[1.5rem] text-[#D1095C] hidden"
@@ -51,7 +60,7 @@ changeLanguage("en");
                     name="mdi:cards-heart-outline"
                     class="w-[1.5rem] h-[1.5rem] text-[#BEBEBE]"
                   />
-                </div>
+                </button>
               </div>
             </div>
 
@@ -72,33 +81,33 @@ changeLanguage("en");
           </div>
 
           <!--tabified details -->
-          <div class="mt-4 tab-menu">
+          <div class="mt-8">
             <!--tab collection -->
-            <div class="flex flex-1 text-esl-3">
+            <div class="tab-menu flex flex-1 text-esl-3">
               <!--tab item -->
+              <button class="py-4 px-4 flex-auto show">
+                <div class="flex flex-1 flex-col justify-center">
+                  <div class="tab-text">About Me</div>
+                  <div
+                    class="line w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-2"
+                  >
+                  </div>
+                </div>
+              </button>
               <button class="py-4 px-4 flex-auto">
                 <div class="flex flex-1 flex-col justify-center">
-                  <div class="">About Me</div>
+                  <div class="tab-text">Me as a Teacher</div>
                   <div
-                    class="w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-4"
+                    class="line w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-2"
                   >
                   </div>
                 </div>
               </button>
-              <button class="py-4 text-[#B6B6B6] px-4 flex-auto">
+              <button class="py-4 px-4 flex-auto">
                 <div class="flex flex-1 flex-col justify-center">
-                  <div>Me as a Teacher</div>
+                  <div class="tab-text">My lessons & Teaching plan</div>
                   <div
-                    class="w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-4 invisible"
-                  >
-                  </div>
-                </div>
-              </button>
-              <button class="py-4 text-[#B6B6B6] px-4 flex-auto">
-                <div class="flex flex-1 flex-col justify-center">
-                  <div>My lessons & Teaching plan</div>
-                  <div
-                    class="w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-4 invisible"
+                    class="line w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-2"
                   >
                   </div>
                 </div>
@@ -107,7 +116,7 @@ changeLanguage("en");
             <!--tab contents -->
             <div class="px-8 mt-4">
               <!--tab 1 content -->
-              <div class="px-4 space-y-4 pb-4">
+              <div class="tab-content px-4 space-y-4">
                 <div class="text-esl-2 space-y-2">
                   <p>From Philippines</p>
                   <p>Living in Davao City,Philippines</p>
@@ -125,7 +134,7 @@ changeLanguage("en");
                 </div>
               </div>
               <!--tab 2 content -->
-              <div class="px-4 space-y-4 pb-4 hidden">
+              <div class="tab-content px-4 space-y-4 pb-4 hidden">
                 <div class="text-esl-3">Me as a teacher</div>
                 <div class="text-esl-2">
                   I'm the kind of a teacher who is approachable and I can
@@ -139,7 +148,7 @@ changeLanguage("en");
                 </div>
               </div>
               <!--tab 3 content -->
-              <div class="px-4 space-y-4 pb-4 hidden">
+              <div class="tab-content px-4 space-y-4 pb-4 hidden">
                 <div class="text-esl-3">My lessons & Teaching plan</div>
                 <div class="text-esl-2">
                   no placeholder no placeholder no placeholder no placeholder no
@@ -151,7 +160,9 @@ changeLanguage("en");
         </div>
 
         <!--stats -->
-        <div class="bg-white flex flex-1 shadow-lg mt-4 py-4">
+        <div
+          class="bg-white flex flex-1 shadow-lg my-4 py-4 flex-col space-y-4 sm:flex-row sm:space-y-0"
+        >
           <!--rating -->
           <div class="flex flex-1 flex-col">
             <div
@@ -188,20 +199,99 @@ changeLanguage("en");
         </div>
       </div>
       <!--lessons enumeration section -->
-      <div>
-        <div>English Lessons</div>
-        <div class="bg-white p-5">
-          <!--lesson item -->
-          <div class="bg-white">
-            <div>Lesson 1</div>
-            <button>interact</button>
+      <div class="mt-8">
+        <div class="text-esl-4 text-white font-semibold px-8">
+          English Lessons
+        </div>
+        <div class="bg-white p-5 mt-4">
+          <div class="space-y-4 sm:w-10/12 sm:mx-auto">
+            <!--lesson item -->
+            <div class="bg-white drop-shadow-xl p-4 flex justify-between">
+              <div class="text-esl-2">Lesson 1</div>
+              <button
+                class="bg-[#FF4438] py-1 px-[2rem] rounded-full text-white"
+              >
+                {t("common:reserve")}
+              </button>
+            </div>
+            <div class="bg-white drop-shadow-xl p-4 flex justify-between">
+              <div class="text-esl-2">Lesson 1</div>
+              <button
+                class="bg-[#FF4438] py-1 px-[2rem] rounded-full text-white"
+              >
+                {t("common:reserve")}
+              </button>
+            </div>
+            <div class="bg-white drop-shadow-xl p-4 flex justify-between">
+              <div class="text-esl-2">Lesson 1</div>
+              <button
+                class="bg-[#FF4438] py-1 px-[2rem] rounded-full text-white"
+              >
+                {t("common:reserve")}
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!--right side -->
-    <div class="hidden sm:block sm:w-10/12 lg:w-5/12">
+    <div
+      class="hidden relative px-0 w-full sm:py-4 sm:block lg:w-5/12 lg:pl-2 lg:py-0"
+    >
       <!--insert youtube video here -->
+      <div class="pb-[56.67%] w-full relative">
+        <iframe
+          class="w-full h-full absolute"
+          src="https://www.youtube.com/embed/VrP3lO3aGDg"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
     </div>
   </div>
+  <!--right side -->
+
+  <style>
+    .line {
+      visibility: hidden;
+    }
+    .show .line {
+      visibility: visible;
+    }
+    .tab-text {
+      color: #b6b6b6;
+    }
+    .show .tab-text {
+      color: black;
+    }
+  </style>
+  <script>
+    const tabMenus = document.querySelectorAll(
+      ".tab-menu>button"
+    ) as NodeListOf<HTMLButtonElement>;
+    const tabContents = document.querySelectorAll(
+      ".tab-content"
+    ) as NodeListOf<Element>;
+    let tabIndex = 0;
+    tabMenus.forEach((tabMenu, index) => {
+      tabMenu.addEventListener("click", () => {
+        showTabContent(index);
+      });
+    });
+
+    function showTabContent(index: number) {
+      //get current and toggle hide to on
+      tabContents[tabIndex].classList.toggle("hidden");
+      tabContents[tabIndex].classList.toggle("block");
+      tabMenus[tabIndex].classList.toggle("show");
+      console.log(tabContents[tabIndex]);
+      //get change current to index
+      tabIndex = index;
+
+      //get current and toggle display
+      tabContents[tabIndex].classList.toggle("hidden");
+      tabContents[tabIndex].classList.toggle("block");
+      tabMenus[tabIndex].classList.toggle("show");
+    }
+  </script>
 </MainLayoutCh>
