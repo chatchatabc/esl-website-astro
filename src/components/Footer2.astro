@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon";
 import footerJson from "@data/footer.json";
-const { config } = Astro.props;
+import { Picture } from "astro-imagetools/components";
 ---
 
 <div
@@ -34,11 +34,12 @@ const { config } = Astro.props;
       [footerJson.qr[0]].map((qrSet: any) => (
         <div class=" flex flex-col px-[3rem] py-[1rem] lg:px-0 lg:py-0">
           <div class="text-center text-esl-4 bold">微信扫码入群</div>
-          <img
-            class={
-              "h-[10rem] w-[10rem] " + (config.lite ? config.placeholder : "")
-            }
-            src={config.lite ? "" : `/images/${qrSet.qrCode}`}
+          <Picture
+            alt="WeChat"
+            src={`/images/${qrSet.qrCode}`}
+            w={10 * 16}
+            h={10 * 16}
+            breakpoints={{ minWidth: 160 }}
           />
         </div>
       ))

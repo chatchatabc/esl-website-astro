@@ -1,6 +1,7 @@
 ---
-const { teacher, liteImageConfig, translation } = Astro.props;
+const { teacher, translation } = Astro.props;
 import { Icon } from "astro-icon";
+import { Img } from "astro-imagetools/components";
 ---
 
 <div class="flex flex-1 space-x-4 teacher-list-item">
@@ -9,24 +10,25 @@ import { Icon } from "astro-icon";
   >
     <div class="left-side flex flex-1">
       <div class="min-w-[6.25rem]">
-        <img
-          class={(liteImageConfig.lite ? liteImageConfig.placeholder : "") +
-            " object-fit rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem]"}
-          class=""
-          alt={teacher.name}
-          src={liteImageConfig.lite ? "" : teacher.image}
-        />
+        <div
+          class="rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem] overflow-hidden"
+        >
+          <Img
+            alt={teacher.name}
+            src={teacher.image}
+            w={6.25 * 16}
+            h={6.25 * 16}
+          />
+        </div>
+
         <div
           class="text-[#FFCC3E] text-[1.25rem] flex flex-1 items-center justify-center"
         >
-          {" "}
-          <>
-            <Icon
-              name="ic:baseline-star-rate"
-              class="h-[1.25rem] w-[1.25rem] inline"
-            />
-            <span>{teacher.rating}</span>
-          </>
+          <Icon
+            name="ic:baseline-star-rate"
+            class="h-[1.25rem] w-[1.25rem] inline"
+          />
+          <span>{teacher.rating}</span>
         </div>
       </div>
       <div class="flex-grow px-[1rem] space-y-1">

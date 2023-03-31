@@ -1,7 +1,7 @@
 ---
 import { Img } from "astro-imagetools/components";
 
-const { params, config } = Astro.props;
+const { params } = Astro.props;
 // definitions
 // params = {
 //   image:string,
@@ -20,7 +20,7 @@ const { params, config } = Astro.props;
   class="rounded-tl-[1.87rem] rounded-b-[1.87rem] overflow-hidden flex flex-col bg-esl-c-5 lg:w-4/12 lg:mb-0"
 >
   <Img
-    src={config.lite ? "" : params.image}
+    src={params.image}
     alt={params.title}
     objectFit={"cover"}
     layout={"fullWidth"}

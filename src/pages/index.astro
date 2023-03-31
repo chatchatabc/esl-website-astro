@@ -7,13 +7,26 @@ import ImageCard from "../components/landing-page/ImageCard.astro";
 //section 3
 import ResourceCard from "../components/landing-page/ResourceCard.astro";
 import TeacherListItem from "../components/landing-page/TeacherListItem.astro";
-import { liteImageConfig } from "../scripts/liteImageConfig";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
-
+import { BackgroundPicture, Img } from "astro-imagetools/components";
+import { renderBackgroundImage } from "astro-imagetools/api";
+//const content = await fetch(import.meta.env.CONTENT_URL).then((r) => r.text());
+const { link, style, htmlElement } = await renderBackgroundImage({
+  src: "/images/teaching.jpg",
+  content: `<div class='h-[100vh] w-[100vw]'></div>`,
+  artDirectives: [
+    {
+      src: "/images/teaching.jpg",
+      media: "(orientation: potrait)",
+      preload: "png",
+    },
+  ],
+});
+console.log("link: " + link);
 changeLanguage("en");
 ---
 
-<MainLayoutCh currentPage="Home" config={liteImageConfig}>
+<MainLayoutCh currentPage="Home" lang="en">
   <div class="">
     <!--Section one-->
     <div
@@ -39,206 +52,214 @@ changeLanguage("en");
 
         <div class="overflow-hidden lg:w-7/12">
           <div
-            class="landing-clipped relative w-full h-full bg-[url('/images/teaching.jpg')] bg-cover min-h-[15rem]"
+            class="landing-clipped relative top-[-5rem] h-[15rem] lg:h-0 lg:top-[0]"
+            style=""
           >
-            <svg class="absolute" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <clipPath id="landing-clip">
-                  <path
-                    id="landing-path"
-                    transform="translate(300 -900) rotate(30) scale(5)"
-                    d="M172.871,0a28.906,28.906,0,0,1,25.009,14.412L245.805,97.1a28.906,28.906,0,0,1,0,28.989L197.88,208.784A28.906,28.906,0,0,1,172.871,223.2H76.831a28.906,28.906,0,0,1-25.009-14.412L3.9,126.092A28.906,28.906,0,0,1,3.9,97.1L51.821,14.412A28.906,28.906,0,0,1,76.831,0Z"
-                  ></path>
-                </clipPath>
-              </defs>
-            </svg>
+            <Fragment set:html={link + style + htmlElement} />
           </div>
+
+          <svg
+            class="absolute"
+            xmlns="http://www.w3.org/2000/svg"
+            width="0"
+            height="0"
+          >
+            <defs>
+              <clipPath id="landing-clip">
+                <path
+                  id="landing-path"
+                  transform="translate(300 -900) rotate(30) scale(5)"
+                  d="M172.871,0a28.906,28.906,0,0,1,25.009,14.412L245.805,97.1a28.906,28.906,0,0,1,0,28.989L197.88,208.784A28.906,28.906,0,0,1,172.871,223.2H76.831a28.906,28.906,0,0,1-25.009-14.412L3.9,126.092A28.906,28.906,0,0,1,3.9,97.1L51.821,14.412A28.906,28.906,0,0,1,76.831,0Z"
+                ></path>
+              </clipPath>
+            </defs>
+          </svg>
         </div>
       </div>
     </div>
-    <!--Section two -->
-    <div class="my-6 flex justify-center container mx-auto lg:mt-10 lg:w-9/12">
-      <div class="w-full">
-        <!--dashed line -->
-        <div class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block">
+  </div>
+  <!--Section two -->
+  <div class="my-6 flex justify-center container mx-auto lg:mt-10 lg:w-9/12">
+    <div class="w-full">
+      <!--dashed line -->
+      <div class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block">
+      </div>
+      <div class="text-white">
+        <p class="text-esl-4 text-center lg:text-left">
+          教师队伍 <span
+            class="w-[2.5rem] h-[5px] rounded-full bg-white inline-block"
+          ></span>
+          <span class="text-[0.94rem]">寻找最合适你的老师</span>
+        </p>
+      </div>
+      <!--teacher list collection -->
+      <div class="space-y-4 mt-2 mx-2">
+        <!--teacher list item -->
+        {
+          landingJson.teachers.map((teacher) => (
+            <TeacherListItem
+              teacher={teacher}
+              translation={{ reserve: t("common:reserve") }}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+  <!--Section three -->
+  <div
+    class="sm:rounded-[1.75rem] overflow-hidden container mx-auto bg-white sm:mb-12 lg:rounded-[3.75rem] lg:mt-10 lg:w-10/12 lg:mx-auto"
+  >
+    <div class="space-y-10">
+      <!--first -->
+      <div>
+        <div class="px-5 w-full mt-12 mx-auto sm:w-10/12">
+          <div
+            class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block"
+          >
+          </div>
+          <div class="text-esl-4">
+            <span class="text-esl-c-1">教学资源</span>
+          </div>
         </div>
-        <div class="text-white">
-          <p class="text-esl-4 text-center lg:text-left">
-            教师队伍 <span
-              class="w-[2.5rem] h-[5px] rounded-full bg-white inline-block"
-            ></span>
-            <span class="text-[0.94rem]">寻找最合适你的老师</span>
-          </p>
-        </div>
-        <!--teacher list collection -->
-        <div class="space-y-4 mt-2 mx-2">
-          <!--teacher list item -->
+      </div>
+
+      <!--second -->
+      <div class="px-5 w-full flex justify-center mx-auto sm:w-10/12">
+        <div class="w-full grid grid-cols-1 gap-12 md:grid-cols-2">
           {
-            landingJson.teachers.map((teacher) => (
-              <TeacherListItem
-                teacher={teacher}
-                liteImageConfig={liteImageConfig}
-                translation={{ reserve: t("common:reserve") }}
-              />
-            ))
+            [
+              {
+                link: "#",
+                image: "/images/new-concept.jpg",
+                imageAlt: "新概念",
+                text: "新概念",
+              },
+              {
+                link: "#",
+                image: "/images/cambridge-english-young-learners-flyers.jpg",
+                imageAlt: "剑桥少儿英语",
+                text: "剑桥少儿英语",
+              },
+              {
+                link: "#",
+                image: "/images/pep-english.jpg",
+                imageAlt: "人教版英语",
+                text: "人教版英语",
+              },
+              {
+                link: "#",
+                image: "/images/jijiao-english.jpg",
+                imageAlt: "冀教版英语",
+                text: "冀教版英语",
+              },
+              {
+                link: "#",
+                image: "/images/toefl.png",
+                imageAlt: "托福",
+                text: "托福",
+              },
+              {
+                link: "#",
+                image: "/images/ielts.png",
+                imageAlt: "雅思",
+                text: "雅思",
+              },
+            ].map((resource: any) => {
+              return <ResourceCard resourceParameter={resource} />;
+            })
           }
         </div>
       </div>
-    </div>
-    <!--Section three -->
-    <div
-      class="sm:rounded-[1.75rem] overflow-hidden container mx-auto bg-white sm:mb-12 lg:rounded-[3.75rem] lg:mt-10 lg:w-10/12 lg:mx-auto"
-    >
-      <div class="space-y-10">
-        <!--first -->
+      <!--third  -->
+      <div class="px-5 w-full mx-auto space-y-[4rem] sm:w-10/12">
         <div>
-          <div class="px-5 w-full mt-12 mx-auto sm:w-10/12">
-            <div
-              class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block"
-            >
-            </div>
-            <div class="text-esl-4">
-              <span class="text-esl-c-1">{t("common:reserve")}</span>
-            </div>
+          <div
+            class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block"
+          >
           </div>
-        </div>
-
-        <!--second -->
-        <div class="px-5 w-full flex justify-center mx-auto sm:w-10/12">
-          <div class="w-full grid grid-cols-1 gap-12 md:grid-cols-2">
-            {
-              [
-                {
-                  link: "#",
-                  image: "/images/new-concept.jpg",
-                  imageAlt: "新概念",
-                  text: "新概念",
-                },
-                {
-                  link: "#",
-                  image: "/images/cambridge-english-young-learners-flyers.jpg",
-                  imageAlt: "剑桥少儿英语",
-                  text: "剑桥少儿英语",
-                },
-                {
-                  link: "#",
-                  image: "/images/pep-english.jpg",
-                  imageAlt: "人教版英语",
-                  text: "人教版英语",
-                },
-                {
-                  link: "#",
-                  image: "/images/jijiao-english.jpg",
-                  imageAlt: "冀教版英语",
-                  text: "冀教版英语",
-                },
-                {
-                  link: "#",
-                  image: "/images/toefl.png",
-                  imageAlt: "托福",
-                  text: "托福",
-                },
-                {
-                  link: "#",
-                  image: "/images/ielts.png",
-                  imageAlt: "雅思",
-                  text: "雅思",
-                },
-              ].map((resource: any) => {
-                return (
-                  <ResourceCard
-                    resourceParameter={resource}
-                    config={liteImageConfig}
-                  />
-                );
-              })
-            }
+          <div class="space-y-4 text-esl-2">
+            <p class="text-esl-4 text-esl-c-2">Welcome to ABC English</p>
+            <p>
+              欢迎来到ABCEnglish，这是您学习英语的首选目的地。我们致力于为您提供优质的语言学习资源和专业的教学服务，帮助您实现英语学习目标。我们采用个性化的教学方法和创新的教学方式，致力于帮助您提高英语沟通能力。无论您是初学者还是高级学习者，我们的课程都可以根据您的个人需求和学习风格量身定制。
+            </p>
+            <p>
+              我们的资深教师团队热情地帮助您在语言学习旅程中取得成功。我们认为学习英语应该是有趣、吸引人的和有效的，因此我们使用各种教学工具和资源来保持您的积极性并跟踪您的学习进度，包括多媒体课程、互动练习和真实对话。
+            </p>
+            <p>
+              在ABCEnglish，我们也明白每个人的时间规划和学习需求都不同，因此我们提供灵活和经济实惠的选项，以适应您的时间规划和预算。从而进行一对一的专业辅导，我们有适合每个人的课程。所以，无论您是为了工作、旅行还是个人发展而想提高英语能力，我们将一直在您学习的每一步中帮助您。加入我们的学习社区，开始您的英语学习之旅吧。
+            </p>
           </div>
-        </div>
-        <!--third  -->
-        <div class="px-5 w-full mx-auto space-y-[4rem] sm:w-10/12">
-          <div>
+          <div class="flex justify-center">
             <div
-              class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block"
+              class="w-11/12 space-y-10 pb-12 mx-auto justify-center mt-10 sm:w-10/12 lg:flex lg:space-x-3 lg:space-y-0 lg:pb-12"
             >
-            </div>
-            <div class="space-y-4 text-esl-2">
-              <p class="text-esl-4 text-esl-c-2">Welcome to ABC English</p>
-              <p>
-                欢迎来到ABCEnglish，这是您学习英语的首选目的地。我们致力于为您提供优质的语言学习资源和专业的教学服务，帮助您实现英语学习目标。我们采用个性化的教学方法和创新的教学方式，致力于帮助您提高英语沟通能力。无论您是初学者还是高级学习者，我们的课程都可以根据您的个人需求和学习风格量身定制。
-              </p>
-              <p>
-                我们的资深教师团队热情地帮助您在语言学习旅程中取得成功。我们认为学习英语应该是有趣、吸引人的和有效的，因此我们使用各种教学工具和资源来保持您的积极性并跟踪您的学习进度，包括多媒体课程、互动练习和真实对话。
-              </p>
-              <p>
-                在ABCEnglish，我们也明白每个人的时间规划和学习需求都不同，因此我们提供灵活和经济实惠的选项，以适应您的时间规划和预算。从而进行一对一的专业辅导，我们有适合每个人的课程。所以，无论您是为了工作、旅行还是个人发展而想提高英语能力，我们将一直在您学习的每一步中帮助您。加入我们的学习社区，开始您的英语学习之旅吧。
-              </p>
-            </div>
-            <div class="flex justify-center">
-              <div
-                class="w-11/12 space-y-10 pb-12 mx-auto justify-center mt-10 sm:w-10/12 lg:flex lg:space-x-3 lg:space-y-0 lg:pb-12"
-              >
-                {
-                  [
-                    {
-                      image: "/images/online-learning.jpg",
-                      title: "1对1教学",
-                      desc: "Follow your onw pace with the flexible , convinence, personalized learning",
-                      link: "#",
-                    },
-                    {
-                      image: "/images/training.jpg",
-                      title: "教师培训",
-                      desc: "help teachers become more effective educators and to keep up with the latest developments in their field",
-                      link: "#",
-                    },
-                  ].map((data) => (
-                    <ImageCard params={data} config={liteImageConfig} />
-                  ))
-                }
-              </div>
+              {
+                [
+                  {
+                    image: "/images/online-learning.jpg",
+                    title: "1对1教学",
+                    desc: "Follow your onw pace with the flexible , convinence, personalized learning",
+                    link: "#",
+                  },
+                  {
+                    image: "/images/training.jpg",
+                    title: "教师培训",
+                    desc: "help teachers become more effective educators and to keep up with the latest developments in their field",
+                    link: "#",
+                  },
+                ].map((data) => <ImageCard params={data} />)
+              }
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</MainLayoutCh>
 
-  <style>
-    .landing-clipped {
-      clip-path: none;
-    }
+<style>
+  .landing-clipped {
+    clip-path: none;
+  } /*
+  .landing-clipped > section {
+    height: 100%;
+    min-height: 500px;
+  } */
 
-    @media (min-width: 1024px) {
-      /* .teacher-list-item:hover .iframe-container {
+  @media (min-width: 1024px) {
+    /* .teacher-list-item:hover .iframe-container {
         display: block;
       } */
-      .landing-clipped {
-        clip-path: url(#landing-clip);
-      }
+    /* .landing-clipped section {
+      clip-path: url(#landing-clip);
+      height: 100%;
+    } */
+    .landing-clipped {
+      clip-path: url(#landing-clip);
     }
-  </style>
-  <script>
-    //create a handler here in the future if ever i want to detect window resizes and show and hide the see more and less respectively
-    let longDesc = document.querySelectorAll("div.longDesc");
+  }
+</style>
+<script>
+  //create a handler here in the future if ever i want to detect window resizes and show and hide the see more and less respectively
+  let longDesc = document.querySelectorAll("div.longDesc");
 
-    longDesc.forEach((item, index) => {
-      let span = item.querySelector("span.longDescText")! as HTMLSpanElement;
-      if (span.clientHeight < span.scrollHeight) {
-        item.querySelector(".descVisibility")!.classList.toggle("hidden");
-        let seeMoreLess = item.querySelectorAll(".descVisibility span");
+  longDesc.forEach((item, index) => {
+    let span = item.querySelector("span.longDescText")! as HTMLSpanElement;
+    if (span.clientHeight < span.scrollHeight) {
+      item.querySelector(".descVisibility")!.classList.toggle("hidden");
+      let seeMoreLess = item.querySelectorAll(".descVisibility span");
 
-        seeMoreLess[0].addEventListener("click", () => {
-          span.classList.toggle("clamped");
-          seeMoreLess[0].classList.toggle("hidden");
-          seeMoreLess[1].classList.toggle("hidden");
-        }); //see more
-        seeMoreLess[1].addEventListener("click", () => {
-          span.classList.toggle("clamped");
-          seeMoreLess[0].classList.toggle("hidden");
-          seeMoreLess[1].classList.toggle("hidden");
-        }); //see less
-      }
-    });
-  </script>
-</MainLayoutCh>
+      seeMoreLess[0].addEventListener("click", () => {
+        span.classList.toggle("clamped");
+        seeMoreLess[0].classList.toggle("hidden");
+        seeMoreLess[1].classList.toggle("hidden");
+      }); //see more
+      seeMoreLess[1].addEventListener("click", () => {
+        span.classList.toggle("clamped");
+        seeMoreLess[0].classList.toggle("hidden");
+        seeMoreLess[1].classList.toggle("hidden");
+      }); //see less
+    }
+  });
+</script>
