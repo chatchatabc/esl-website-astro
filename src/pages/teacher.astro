@@ -1,15 +1,15 @@
 ---
 import MainLayoutCh from "../layouts/MainLayoutCh.astro";
-import { liteImageConfig } from "../scripts/liteImageConfig";
 import { Icon } from "astro-icon";
-
 import landingJson from "@data/landingPage.json";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
-let teacher = landingJson.teachers[0];
+
 changeLanguage("en");
+
+let teacher = landingJson.teachers[0];
 ---
 
-<MainLayoutCh currentPage="Teachers" config={liteImageConfig}>
+<MainLayoutCh currentPage="Teachers">
   <!--main container -->
   <div class="container block mx-auto lg:flex lg:flex-1 lg:w-10/12">
     <!--left side -->

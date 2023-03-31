@@ -1,13 +1,16 @@
 ---
 import headerJson from "@data/header.json";
 import { Icon } from "astro-icon";
-const { currentPage } = Astro.props;
+import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
+const { currentPage, lang } = Astro.props;
 
 let style1 = `inline-block text-white  m-4 border-b-2 pb-2 text-esl-2 cursor-pointer`;
 let style2 =
   "inline-block  py-2 px-4 mt-2 rounded-full bg-white text-esl-2 text-esl-c-4 hover:bg-esl-c-2";
 
 let mobileStyle1 = `max-lg:block max-lg:p-[1rem] max-lg:m-0 max-lg:border-b-0  text-esl-c-2`;
+
+changeLanguage(lang);
 ---
 
 <nav class="lg:w-10/12 lg:mx-auto lg:mt-10 items-center">
@@ -68,7 +71,7 @@ let mobileStyle1 = `max-lg:block max-lg:p-[1rem] max-lg:m-0 max-lg:border-b-0  t
               }
               href={linkSet[1]}
             >
-              {linkSet[0]}
+              {t("menu:" + linkSet[0])}
             </a>
           ))
         }
@@ -76,7 +79,7 @@ let mobileStyle1 = `max-lg:block max-lg:p-[1rem] max-lg:m-0 max-lg:border-b-0  t
       <div class="fit inline-block lg:block">
         <a class={style2 + " mr-2"} href="#">Register</a>
         <a class={style2} href="#">Login</a>
-        <a class={style2 + " ml-2"} href="#">Contact Us</a>
+        <a class={style2 + " ml-2"} href="#">{t("menu:ContactUs")}</a>
       </div>
     </div>
   </div>
