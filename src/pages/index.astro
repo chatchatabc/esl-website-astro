@@ -227,13 +227,7 @@ changeLanguage("en");
   } */
 
   @media (min-width: 1024px) {
-    /* .teacher-list-item:hover .iframe-container {
-        display: block;
-      } */
-    /* .landing-clipped section {
-      clip-path: url(#landing-clip);
-      height: 100%;
-    } */
+
     .landing-clipped {
       clip-path: url(#landing-clip);
     }
@@ -270,19 +264,24 @@ changeLanguage("en");
   function UpdateVisibility(span:HTMLSpanElement,item:Element){
 
    
-
-    if(span.classList.contains("clamped")){
+    let descVisibility = item.querySelector(".descVisibility")!;
+    if(!span.classList.contains("unclamped")){
       if (span.clientHeight < span.scrollHeight) {
-        item.querySelector(".descVisibility")!.classList.remove("hidden");      
+        descVisibility.classList.remove("hidden");      
       }else{
-        item.querySelector(".descVisibility")!.classList.add("hidden");  
+        descVisibility.classList.add("hidden");  
       }
     }else{
-      //if current computed lineheight > computed lineheight *2.
-      let scrollHeight = parseInt(window.getComputedStyle(span).lineHeight);
+      
+      let lineHeight = parseInt(window.getComputedStyle(span).lineHeight);
       let height = span.clientHeight;
       let maxLines = 2;
-      console.log(height)
+      if(height <= lineHeight*maxLines){
+        descVisibility.classList.add("hidden");  
+      }
+      else{
+        descVisibility.classList.remove("hidden");      
+      }
     }
 }
 </script>
