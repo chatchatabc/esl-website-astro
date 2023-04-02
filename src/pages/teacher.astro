@@ -3,7 +3,7 @@ import MainLayoutCh from "../layouts/MainLayoutCh.astro";
 import { Icon } from "astro-icon";
 import landingJson from "@data/landingPage.json";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
-
+import { Img } from "astro-imagetools/components";
 changeLanguage("en");
 
 let teacher = landingJson.teachers[0];
@@ -22,11 +22,26 @@ let teacher = landingJson.teachers[0];
             <div class="flex flex-1">
               <!--teacher image -->
               <div class="px-4 pb-0">
-                <img
+                <div class="rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem] min-w-[6.25rem] min-h-[6.25rem] overflow-hidden">
+
+                  <Img
+                  src={teacher.image}
+                  alt="Teacher"
+                  objectFit={"cover"}
+                  layout={"fullWidth"}
+                  aspect={1}
+                  h={100}
+                  w={100}
+                  format="png"
+                />
+
+                </div>
+                <!-- <img
                   src="https://via.placeholder.com/50"
                   alt="Teacher Image"
-                  class="object-fit rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem] min-w-[6.25rem] min-h-[6.25rem]"
-                />
+                  class="object-fit "
+                /> -->
+                
                 <div
                   class="text-[#FFCC3E] text-[1.25rem] flex flex-1 items-center justify-center"
                 >
