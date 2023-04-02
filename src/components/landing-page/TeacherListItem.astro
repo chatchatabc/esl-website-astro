@@ -103,6 +103,9 @@ import { Img } from "astro-imagetools/components";
     overflow: hidden;
   }
 
+  span.longDescText.clamped.unclamped {
+    -webkit-line-clamp: unset;
+  }
   @media (min-width: 1024px) {
     .teacher-list-item:hover .iframe-container {
       display: block;

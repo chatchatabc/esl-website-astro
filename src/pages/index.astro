@@ -22,7 +22,6 @@ const { link, style, htmlElement } = await renderBackgroundImage({
     },
   ],
 });
-console.log("link: " + link);
 changeLanguage("en");
 ---
 
@@ -246,20 +245,44 @@ changeLanguage("en");
 
   longDesc.forEach((item, index) => {
     let span = item.querySelector("span.longDescText")! as HTMLSpanElement;
-    if (span.clientHeight < span.scrollHeight) {
-      item.querySelector(".descVisibility")!.classList.toggle("hidden");
-      let seeMoreLess = item.querySelectorAll(".descVisibility span");
+    let seeMoreLess = item.querySelectorAll(".descVisibility span");
 
-      seeMoreLess[0].addEventListener("click", () => {
-        span.classList.toggle("clamped");
-        seeMoreLess[0].classList.toggle("hidden");
-        seeMoreLess[1].classList.toggle("hidden");
-      }); //see more
-      seeMoreLess[1].addEventListener("click", () => {
-        span.classList.toggle("clamped");
-        seeMoreLess[0].classList.toggle("hidden");
-        seeMoreLess[1].classList.toggle("hidden");
-      }); //see less
-    }
+    UpdateVisibility(span,item);
+    window.addEventListener("resize", ()=>{
+      UpdateVisibility(span,item);
+    });
+
+
+    seeMoreLess[0].addEventListener("click", () => {
+      span.classList.add("unclamped");
+      seeMoreLess[0].classList.add("hidden");
+      seeMoreLess[1].classList.remove("hidden");
+    }); //see more
+    seeMoreLess[1].addEventListener("click", () => {
+      span.classList.remove("unclamped");
+      seeMoreLess[0].classList.remove("hidden");
+      seeMoreLess[1].classList.add("hidden");
+    }); //see less
+    
   });
+
+
+  function UpdateVisibility(span:HTMLSpanElement,item:Element){
+
+   
+
+    if(span.classList.contains("clamped")){
+      if (span.clientHeight < span.scrollHeight) {
+        item.querySelector(".descVisibility")!.classList.remove("hidden");      
+      }else{
+        item.querySelector(".descVisibility")!.classList.add("hidden");  
+      }
+    }else{
+      //if current computed lineheight > computed lineheight *2.
+      let scrollHeight = parseInt(window.getComputedStyle(span).lineHeight);
+      let height = span.clientHeight;
+      let maxLines = 2;
+      console.log(height)
+    }
+}
 </script>

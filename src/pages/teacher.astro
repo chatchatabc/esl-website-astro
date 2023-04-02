@@ -16,7 +16,7 @@ let teacher = landingJson.teachers[0];
     <div class="w-full lg:w-7/12 lg:pr-2">
       <!--teacher details section -->
       <div class="">
-        <div class="bg-white sm:rounded-tl-[1rem] shadow-lg p-8">
+        <div class="bg-white sm:rounded-tl-[1rem] shadow-lg p-5 md:p-8">
           <!--nameplate section -->
           <div>
             <div class="flex flex-1">
@@ -100,27 +100,27 @@ let teacher = landingJson.teachers[0];
             <!--tab collection -->
             <div class="tab-menu flex flex-1 text-esl-3">
               <!--tab item -->
-              <button class="py-4 px-4 flex-auto show">
+              <button class="py-4 px-4 flex-auto show hidden md:block">
                 <div class="flex flex-1 flex-col justify-center">
-                  <div class="tab-text">About Me</div>
+                  <div class="tab-text text-esl-3">About Me</div>
                   <div
                     class="line w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-2"
                   >
                   </div>
                 </div>
               </button>
-              <button class="py-4 px-4 flex-auto">
+              <button class="py-4 px-4 flex-auto hidden md:block">
                 <div class="flex flex-1 flex-col justify-center">
-                  <div class="tab-text">Me as a Teacher</div>
+                  <div class="tab-text text-esl-3">Me as a Teacher</div>
                   <div
                     class="line w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-2"
                   >
                   </div>
                 </div>
               </button>
-              <button class="py-4 px-4 flex-auto">
+              <button class="py-4 px-4 flex-auto hidden md:block">
                 <div class="flex flex-1 flex-col justify-center">
-                  <div class="tab-text">My lessons & Teaching plan</div>
+                  <div class="tab-text text-esl-3">My lessons & Teaching plan</div>
                   <div
                     class="line w-[2.5rem] h-[5px] rounded-full bg-[#FF4438] mx-auto mt-2"
                   >
@@ -129,15 +129,16 @@ let teacher = landingJson.teachers[0];
               </button>
             </div>
             <!--tab contents -->
-            <div class="px-8 mt-4">
+            <div class="px-4 md:px-8 mt-4">
               <!--tab 1 content -->
-              <div class="tab-content px-4 space-y-4">
+              
+              <div class="tab-content px-4 space-y-4 pb-4">
                 <div class="text-esl-2 space-y-2">
                   <p>From Philippines</p>
                   <p>Living in Davao City,Philippines</p>
                   <p>Licensed Teacher with 6 years experience in teaching</p>
                 </div>
-                <div class="text-esl-3">About Me</div>
+                <div class="text-esl-3 ">About Me</div>
                 <div class="text-esl-2">
                   Hello world! I'm teacher Laura from Philippines. I'm a native
                   speaker of Filipino (Tagalog) with Bachelor's Degree in
@@ -149,7 +150,8 @@ let teacher = landingJson.teachers[0];
                 </div>
               </div>
               <!--tab 2 content -->
-              <div class="tab-content px-4 space-y-4 pb-4 hidden">
+             
+              <div class="tab-content px-4 space-y-4 pb-4 md:hidden">
                 <div class="text-esl-3">Me as a teacher</div>
                 <div class="text-esl-2">
                   I'm the kind of a teacher who is approachable and I can
@@ -163,11 +165,13 @@ let teacher = landingJson.teachers[0];
                 </div>
               </div>
               <!--tab 3 content -->
-              <div class="tab-content px-4 space-y-4 pb-4 hidden">
+             
+              <div class="tab-content px-4 space-y-4 pb-4 md:hidden">
                 <div class="text-esl-3">My lessons & Teaching plan</div>
                 <div class="text-esl-2">
-                  no placeholder no placeholder no placeholder no placeholder no
-                  placeholder no placeholder no placeholder
+                  As an English teacher, I take pride in creating comprehensive and effective lesson plans for my students. My approach to teaching is student-centered, meaning that I focus on each individual's unique needs and goals. I understand that everyone has different learning styles, and I strive to create lessons that cater to a variety of preferences.
+
+                  In my lessons, I cover a wide range of topics, from grammar and vocabulary to conversational skills and pronunciation. I use a variety of teaching materials, including videos, podcasts, and interactive exercises, to keep my lessons engaging and interesting. I also provide regular feedback and encouragement to help my students build their confidence and proficiency in the English language. Whether you are a beginner or an advanced learner, I am committed to helping you achieve your language goals and succeed in your personal and professional endeavors.
                 </div>
               </div>
             </div>
@@ -296,16 +300,16 @@ let teacher = landingJson.teachers[0];
 
     function showTabContent(index: number) {
       //get current and toggle hide to on
-      tabContents[tabIndex].classList.toggle("hidden");
-      tabContents[tabIndex].classList.toggle("block");
+      tabContents[tabIndex].classList.toggle("md:hidden");
+      tabContents[tabIndex].classList.toggle("md:block");
       tabMenus[tabIndex].classList.toggle("show");
       console.log(tabContents[tabIndex]);
       //get change current to index
       tabIndex = index;
 
       //get current and toggle display
-      tabContents[tabIndex].classList.toggle("hidden");
-      tabContents[tabIndex].classList.toggle("block");
+      tabContents[tabIndex].classList.toggle("md:hidden");
+      tabContents[tabIndex].classList.toggle("md:block");
       tabMenus[tabIndex].classList.toggle("show");
     }
   </script>
