@@ -8,12 +8,12 @@ import ImageCard from "../components/landing-page/ImageCard.astro";
 import ResourceCard from "../components/landing-page/ResourceCard.astro";
 import TeacherListItem from "../components/landing-page/TeacherListItem.astro";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
-import { BackgroundPicture, Img } from "astro-imagetools/components";
+
 import { renderBackgroundImage } from "astro-imagetools/api";
 //const content = await fetch(import.meta.env.CONTENT_URL).then((r) => r.text());
 const { link, style, htmlElement } = await renderBackgroundImage({
   src: "/images/teaching.jpg",
-  content: `<div class='h-[100vh] w-[100vw]'></div>`,
+  content: `<div class='h-[30rem] w-[30rem]'></div>`,
   artDirectives: [
     {
       src: "/images/teaching.jpg",
