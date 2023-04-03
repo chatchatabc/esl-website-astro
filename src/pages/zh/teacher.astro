@@ -1,11 +1,11 @@
 ---
-import MainLayoutCh from "../layouts/MainLayoutCh.astro";
+import MainLayoutCh from "../../layouts/MainLayoutCh.astro";
 import { Icon } from "astro-icon";
 import landingJson from "@data/landingPage.json";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
 import { Img } from "astro-imagetools/components";
 
-changeLanguage("en");
+changeLanguage("zh");
 
 let teacher = landingJson.teachers[0];
 ---

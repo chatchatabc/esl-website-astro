@@ -1,31 +1,31 @@
 ---
-import MainLayoutCh from "../layouts/MainLayoutCh.astro";
+import MainLayoutCh from "../../layouts/MainLayoutCh.astro";
 import landingJson from "@data/landingPage.json";
 import { Icon } from "astro-icon";
 //section 1
-import ImageCard from "../components/landing-page/ImageCard.astro";
+import ImageCard from "../../components/landing-page/ImageCard.astro";
 //section 3
-import ResourceCard from "../components/landing-page/ResourceCard.astro";
-import TeacherListItem from "../components/landing-page/TeacherListItem.astro";
+import ResourceCard from "../../components/landing-page/ResourceCard.astro";
+import TeacherListItem from "../../components/landing-page/TeacherListItem.astro";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
 import { renderBackgroundImage } from "astro-imagetools/api";
 
-changeLanguage("en");
+changeLanguage("zh");
 
 const { link, style, htmlElement } = await renderBackgroundImage({
-    src: "/images/teaching.jpg",
-    content: `<div class='h-[30rem] w-[30rem]'></div>`,
-    artDirectives: [
-        {
-            src: "/images/teaching.jpg",
-            media: "(orientation: potrait)",
-            preload: "png",
-        },
-    ],
+  src: "/images/teaching.jpg",
+  content: `<div class='h-[30rem] w-[30rem]'></div>`,
+  artDirectives: [
+    {
+      src: "/images/teaching.jpg",
+      media: "(orientation: potrait)",
+      preload: "png",
+    },
+  ],
 });
 ---
 
-<MainLayoutCh currentPage="Home" lang="en">
+<MainLayoutCh currentPage="Home" lang="zh">
   <div class="">
     <!--Section one-->
     <div
