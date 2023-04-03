@@ -19,12 +19,6 @@ import { Img } from "astro-imagetools/components";
 >
   <figure class="">
     <div class="mb-5 h-[17.25rem] overflow-hidden rounded-b-[1.5rem]">
-      <!-- <img
-        class={`w-full h-full object-cover min-w-[30rem] `+(config.lite?config.placeholder:"")}
-        src={config.lite?"":resourceParameter.image}
-        alt={resourceParameter.imageAlt}
-      /> -->
-      <!--need image optimizations for images per image instead of using staticc values which is goign to be difficult -->
       <Img
         src={resourceParameter.image}
         alt={resourceParameter.imageAlt}

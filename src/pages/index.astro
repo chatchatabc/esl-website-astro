@@ -10,7 +10,7 @@ import TeacherListItem from "../components/landing-page/TeacherListItem.astro";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
 
 import { renderBackgroundImage } from "astro-imagetools/api";
-//const content = await fetch(import.meta.env.CONTENT_URL).then((r) => r.text());
+
 const { link, style, htmlElement } = await renderBackgroundImage({
   src: "/images/teaching.jpg",
   content: `<div class='h-[30rem] w-[30rem]'></div>`,
@@ -227,7 +227,6 @@ changeLanguage("en");
   } */
 
   @media (min-width: 1024px) {
-
     .landing-clipped {
       clip-path: url(#landing-clip);
     }
@@ -241,11 +240,10 @@ changeLanguage("en");
     let span = item.querySelector("span.longDescText")! as HTMLSpanElement;
     let seeMoreLess = item.querySelectorAll(".descVisibility span");
 
-    UpdateVisibility(span,item);
-    window.addEventListener("resize", ()=>{
-      UpdateVisibility(span,item);
+    UpdateVisibility(span, item);
+    window.addEventListener("resize", () => {
+      UpdateVisibility(span, item);
     });
-
 
     seeMoreLess[0].addEventListener("click", () => {
       span.classList.add("unclamped");
@@ -257,31 +255,25 @@ changeLanguage("en");
       seeMoreLess[0].classList.remove("hidden");
       seeMoreLess[1].classList.add("hidden");
     }); //see less
-    
   });
 
-
-  function UpdateVisibility(span:HTMLSpanElement,item:Element){
-
-   
+  function UpdateVisibility(span: HTMLSpanElement, item: Element) {
     let descVisibility = item.querySelector(".descVisibility")!;
-    if(!span.classList.contains("unclamped")){
+    if (!span.classList.contains("unclamped")) {
       if (span.clientHeight < span.scrollHeight) {
-        descVisibility.classList.remove("hidden");      
-      }else{
-        descVisibility.classList.add("hidden");  
+        descVisibility.classList.remove("hidden");
+      } else {
+        descVisibility.classList.add("hidden");
       }
-    }else{
-      
+    } else {
       let lineHeight = parseInt(window.getComputedStyle(span).lineHeight);
       let height = span.clientHeight;
       let maxLines = 2;
-      if(height <= lineHeight*maxLines){
-        descVisibility.classList.add("hidden");  
-      }
-      else{
-        descVisibility.classList.remove("hidden");      
+      if (height <= lineHeight * maxLines) {
+        descVisibility.classList.add("hidden");
+      } else {
+        descVisibility.classList.remove("hidden");
       }
     }
-}
+  }
 </script>
