@@ -1,0 +1,49 @@
+---
+import MainLayoutCh from "../layouts/MainLayoutCh.astro";
+let entries = [
+  {
+    header: "个性化定制",
+    body: "一对一在线学习可以针对每个学生的学习能力和学习节奏进行个性化定制教学计划。教师可以根据学生的学习进度和理解情况，灵活调整授课内容和难度，确保每个学生都能在自己的能力范围内进行学习，从而提高学习效率。",
+  },
+  {
+    header: "灵活性",
+    body: "一对一在线学习不受时间和地点的限制，学生可以根据自己的时间安排选择学习时间，可以在家里、图书馆或者咖啡店等不同场所进行学习，方便快捷。",
+  },
+  {
+    header: "专业性",
+    body: "一对一在线学习可以选择专业的教师进行教学，教师可以根据自己的专业知识和经验，针对学生的不同需求提供专业的指导和建议，从而帮助学生更好地掌握知识和技能。",
+  },
+  {
+    header: "互动性",
+    body: "一对一在线学习可以提供更好的互动环境。学生和教师之间可以进行实时的交流和互动，可以根据学生的问题和疑惑进行针对性的解答和讲解。同时，学生还可以通过在线互动课程、视频讲解、在线讨论等多种方式，与其他学生进行互动和交流，促进知识的共享和交流。",
+  },
+  {
+    header: "便利性",
+    body: "一对一在线学习可以不受地域限制，学生可以随时随地进行学习，不需要进行长时间的通勤或者住宿。此外，在线学习可以节约学生的时间和成本，不需要支付额外的交通、食宿和杂费用，更为经济实惠。",
+  },
+];
+---
+
+<MainLayoutCh currentPage="one-on-one-teaching" lang="en">
+  <div class="">
+    <!--section one -->
+    <div
+      class="container mx-auto w-full bg-esl-c-2 color-white text-center py-8 text-esl-5 text-white sm:rounded-[1.75rem] lg:rounded-[3.75] lg:w-10/12"
+    >
+      <span>1对1教学的优势</span>
+    </div>
+    <!--section two -->
+    <div
+      class="container mx-auto w-11/12 lg:w-10/12 grid grid-cols-1 gap-8 mt-4 lg:gap-12md:grid-cols-2 lg:grid-cols-3 lg:mt-10"
+    >
+      {
+        entries.map((entry) => (
+          <div class="rounded-t-[1.75rem] overflow-hidden text-esl-2 flex flex-col lg:rouned-t-[3.75rem] ">
+            <div class="p-8 text-center bg-esl-c-3">{entry.header}</div>
+            <div class="p-8 bg-esl-c-5 flex-1">{entry.body}</div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</MainLayoutCh>
