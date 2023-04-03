@@ -9,19 +9,20 @@ import ResourceCard from "../components/landing-page/ResourceCard.astro";
 import TeacherListItem from "../components/landing-page/TeacherListItem.astro";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
 import { renderBackgroundImage } from "astro-imagetools/api";
+import { Img } from "astro-imagetools/components";
 
 changeLanguage("en");
 
 const { link, style, htmlElement } = await renderBackgroundImage({
-    src: "/images/teaching.jpg",
-    content: `<div class='h-[30rem] w-[30rem]'></div>`,
-    artDirectives: [
-        {
-            src: "/images/teaching.jpg",
-            media: "(orientation: potrait)",
-            preload: "png",
-        },
-    ],
+  src: "/images/teaching.jpg",
+  content: `<div class='h-[30rem] w-[30rem]'></div>`,
+  artDirectives: [
+    {
+      src: "/images/teaching.jpg",
+      media: "(orientation: potrait)",
+      preload: "png",
+    },
+  ],
 });
 ---
 
@@ -49,16 +50,13 @@ const { link, style, htmlElement } = await renderBackgroundImage({
         </div>
         <!--clipped image -->
 
-        <div class="overflow-hidden lg:w-7/12">
-          <div
-            class="landing-clipped relative top-[-5rem] h-[15rem] lg:h-0 lg:top-[0]"
-            style=""
-          >
-            <Fragment set:html={link + style + htmlElement} />
+        <div class="overflow-hidden flex lg:w-7/12">
+          <div class="landing-clipped w-full">
+            <Img src="/images/teaching.jpg" alt="" layout="fill" />
           </div>
 
           <svg
-            class="absolute"
+            class="border-black border-4"
             xmlns="http://www.w3.org/2000/svg"
             width="0"
             height="0"
