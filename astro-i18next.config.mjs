@@ -3,5 +3,5 @@ export default {
   defaultLocale: "en",
   locales: ["","en","zh"],
   namespaces:["common","menu"],
-  defaultNamespace:["menu"]
+  defaultNamespace:["menu"],
 };
