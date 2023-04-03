@@ -1,0 +1,74 @@
+---
+import MainLayoutCh from "../layouts/MainLayoutCh.astro";
+import { Img } from "astro-imagetools/components";
+
+let entries = [
+  {
+    imageUrl: "/images/training-1.png",
+    header: "教学技能培训",
+    alt: "教学技能培训",
+    content:
+      "我们定期为教师提供针对性的教学技能培训，以帮助他们改善自己的教学技能和方法。这些培训包括语言能力、听力和发音技巧、口语表达、教学方法和策略等方面",
+  },
+  {
+    imageUrl: "/images/training-2.png",
+    header: "教学研讨会和讲座",
+    alt: "教学研讨会和讲座",
+    content:
+      "我们定期邀请教育专家和行业领袖来为我们的教师提供教学研讨会和讲座，以分享最新的教育理念、教学策略和课程设计技巧。这些活动旨在帮助我们的教师掌握最新的教育趋势和最好的教学实践",
+  },
+  {
+    imageUrl: "/images/training-3.png",
+    header: "教学反馈和指导",
+    alt: "教学反馈和指导",
+    content:
+      "我们定期给教师提供教学反馈和指导，以帮助他们发现自己的教学问题和不足，并提供针对性的改进建议。我们的反馈和指导旨在帮助我们的教师提高教学效果和学生满意度。",
+  },
+  {
+    imageUrl: "/images/training-4.png",
+    header: "职业发展支持",
+    alt: "职业发展支持",
+    content:
+      "我们为教师提供职业发展支持，帮助他们在职业生涯方面取得成功。我们提供了多个职业发展通道和机会，包括教学团队管理、教育管理、课程设计和教学研究等方面",
+  },
+];
+let orderLast = "order-last";
+let orderFirst = "order-first";
+---
+
+<MainLayoutCh currentPage="one-on-one-teaching" lang="en">
+  <div class="">
+    <!--section one -->
+    <div
+      class="container mx-auto w-full bg-esl-c-2 color-white text-center py-8 text-esl-5 text-white sm:rounded-[1.75rem] lg:w-10/12"
+    >
+      <span>教师培训</span>
+    </div>
+    <!--section two -->
+    <div class="container mx-auto w-11/12 lg:w-10/12 my-4 lg:mt-10">
+      {
+        entries.map((entry, index) => (
+          <div
+            class={`w-10/12 mx-auto space-x-4 lg:space-x-12 flex ${
+              index % 2 == 0 ? "flex-row" : "flex-row-reverse"
+            }`}
+          >
+            <div class="w-6/12 flex justify-center items-center  min-h-[25rem]">
+              <div class=" w-10/12">
+                <div class="h-0 w-full relative pb-[56.25%]">
+                  <div class="absolute w-full h-full">
+                    <Img src={entry.imageUrl} alt={entry.alt} />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="w-6/12 text-esl-2 text-white flex flex-col justify-center items-center">
+              <div class="text-center text-esl-4 p-2">{entry.header}</div>
+              <div class="p-4 text-esl-2">{entry.content}</div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</MainLayoutCh>
