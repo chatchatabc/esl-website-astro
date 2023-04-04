@@ -25,6 +25,7 @@ const { params } = Astro.props;
     objectFit={"cover"}
     layout={"fullWidth"}
     aspect={28 / 16}
+    breakpoints={{ count: 1, maxWidth: 512 }}
   />
   <!-- <img
     src={config.lite ? "" : params.image}
