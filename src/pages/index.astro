@@ -6,7 +6,7 @@ import { Icon } from "astro-icon";
 import ImageCard from "../components/landing-page/ImageCard.astro";
 //section 3
 import ResourceCard from "../components/landing-page/ResourceCard.astro";
-import TeacherListItem from "../components/landing-page/TeacherListItem.astro";
+import TeacherListItem from "../components/landing-page/TeacherListItem.svelte";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
 import { renderBackgroundImage } from "astro-imagetools/api";
 import { Img } from "astro-imagetools/components";
@@ -104,25 +104,11 @@ let rest = [...landingJson.teachers].splice(
       <!--teacher list collection -->
       <div class="space-y-4 mt-2 mx-2">
         <!--teacher list item -->
-        {
-          initial.map((teacher) => (
-            <TeacherListItem
-              teacher={teacher}
-              translation={{ reserve: t("common:reserve") }}
-            />
-          ))
-        }
+        {initial.map((teacher) => <TeacherListItem teacher={teacher} />)}
         <!--remaining list item -->
         <div class="remaining-list space-y-4 mt-2">
           <div class="list-container space-y-4 hidden">
-            {
-              rest.map((teacher) => (
-                <TeacherListItem
-                  teacher={teacher}
-                  translation={{ reserve: t("common:reserve") }}
-                />
-              ))
-            }
+            {rest.map((teacher) => <TeacherListItem teacher={teacher} />)}
           </div>
 
           <div class="w-full lg:w-7/12">
