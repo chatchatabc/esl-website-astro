@@ -62,16 +62,16 @@ import { Img } from "astro-imagetools/components";
         </div>
       </div>
       <div class="favorites">
-        <div>
+        <button>
           <Icon
             name="mdi:cards-heart"
             class="w-[1.5rem] h-[1.5rem] text-[#D1095C] hidden"
           />
           <Icon
             name="mdi:cards-heart-outline"
-            class="w-[1.5rem] h-[1.5rem] text-[#BEBEBE]"
+            class="w-[1.5rem] h-[1.5rem] text-[#BEBEBE] hover:text-[#FF78DC]"
           />
-        </div>
+        </button>
       </div>
     </div>
     <div class="flex flex-1 space-x-5 items-center justify-end pt-2">
@@ -110,6 +110,12 @@ import { Img } from "astro-imagetools/components";
     .teacher-list-item:hover .iframe-container {
       display: block;
     }
+  }
+  .favorites > button.toggle svg:last-child {
+    display: none;
+  }
+  .favorites > button.toggle svg:first-child {
+    display: block;
   }
 </style>
 <script></script>

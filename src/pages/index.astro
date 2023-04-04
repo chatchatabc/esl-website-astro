@@ -276,4 +276,12 @@ const { link, style, htmlElement } = await renderBackgroundImage({
       }
     }
   }
+
+  document
+    .querySelectorAll<HTMLButtonElement>(".favorites>button")
+    .forEach((button) => {
+      button.addEventListener("click", (e) => {
+        button.classList.toggle("toggle");
+      });
+    });
 </script>
