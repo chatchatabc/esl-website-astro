@@ -6,7 +6,7 @@ const { currentPage, lang } = Astro.props;
 
 let style1 = `inline-block text-white  m-4 border-b-2 pb-2 text-esl-2 cursor-pointer`;
 let style2 =
-  "inline-block  py-2 px-4 mt-2 rounded-full bg-white text-esl-2 text-esl-c-4 hover:bg-esl-c-2";
+  "inline-block  py-2 px-4 mt-2 rounded-full bg-white text-esl-2 text-esl-c-4 hover:bg-esl-c-2 hover:text-white";
 
 let mobileStyle1 = `max-lg:block max-lg:p-[1rem] max-lg:m-0 max-lg:border-b-0  text-esl-c-2`;
 
@@ -77,9 +77,8 @@ changeLanguage(lang);
         }
       </div>
       <div class="fit inline-block lg:block">
-        <a class={style2 + " mr-2"} href="#">Register</a>
-        <a class={style2} href="#">Login</a>
-        <a class={style2 + " ml-2"} href="#">{t("menu:ContactUs")}</a>
+        <a class={style2 + " mr-2"} href="#">登记</a>
+        <a class={style2} href="#">联系我们</a>
       </div>
     </div>
   </div>
