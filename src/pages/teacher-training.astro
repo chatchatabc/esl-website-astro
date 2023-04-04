@@ -32,8 +32,6 @@ let entries = [
       "我们为教师提供职业发展支持，帮助他们在职业生涯方面取得成功。我们提供了多个职业发展通道和机会，包括教学团队管理、教育管理、课程设计和教学研究等方面",
   },
 ];
-let orderLast = "order-last";
-let orderFirst = "order-first";
 ---
 
 <MainLayoutCh currentPage="one-on-one-teaching" lang="en">
@@ -61,7 +59,12 @@ let orderFirst = "order-first";
               <div class=" w-10/12">
                 <div class="h-0 w-full relative pb-[56.25%] overflow-hidden rounded-[1.75rem]">
                   <div class="absolute w-full h-full">
-                    <Img src={entry.imageUrl} alt={entry.alt} />
+                    <Img
+                      src={entry.imageUrl}
+                      alt={entry.alt}
+                      breakpoints={{ count: 1, maxWidth: 640 }}
+                      format="jpg"
+                    />
                   </div>
                 </div>
               </div>
