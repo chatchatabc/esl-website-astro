@@ -1,0 +1,121 @@
+<script>
+  export let teacher;
+
+  import { Icon } from "astro-icon";
+  import { Img } from "astro-imagetools/components";
+</script>
+
+<div class="flex flex-1 space-x-4 teacher-list-item">
+  <div
+    class="teacher-card bg-white overflow-hidden transition ease-in-out delay-100 drop-shadow-none hover:drop-shadow-esl-lg mx-auto rounded-tl-[1rem] p-5 lg:w-7/12 lg:mx-0"
+  >
+    <div class="left-side flex flex-1">
+      <div class="min-w-[6.25rem]">
+        <div
+          class="rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem] overflow-hidden"
+        >
+          <!-- <Img
+            alt={teacher.name}
+            src={teacher.image}
+            w={6.25 * 16}
+            h={6.25 * 16}
+          /> -->
+        </div>
+
+        <div
+          class="text-[#FFCC3E] text-[1.25rem] flex flex-1 items-center justify-center"
+        >
+          <!-- <Icon
+            name="ic:baseline-star-rate"
+            class="h-[1.25rem] w-[1.25rem] inline"
+          /> -->
+          <span>{teacher.rating}</span>
+        </div>
+      </div>
+      <div class="flex-grow px-[1rem] space-y-1">
+        <div class="nameAndVerified">
+          <p class="name tex-center font-medium">
+            <span>{teacher.name}</span>&nbsp;
+            {#if teacher.verified}
+              <!-- <Icon
+                name="mdi:verified-user"
+                class="h-[1.5rem] w-[1.5rem] inline-block text-[#64C01B]"
+              /> -->
+            {/if}
+          </p>
+        </div>
+        <div>
+          <span class="occupation">{teacher.occupation}</span>
+        </div>
+        <div>
+          <span class="shortDesc">{teacher.shortDesc}</span>
+        </div>
+        <div class="longDesc text-[#A6A6A6] pt-2">
+          <span class="longDescText clamped">{teacher.longDesc}</span>
+          <span class="descVisibility hidden">
+            <span>See More</span>
+            <span class="hidden">See Less</span>
+          </span>
+        </div>
+      </div>
+      <div class="favorites">
+        <button>
+          <!-- <Icon
+            name="mdi:cards-heart"
+            class="w-[1.5rem] h-[1.5rem] text-[#D1095C] hidden"
+          />
+          <Icon
+            name="mdi:cards-heart-outline"
+            class="w-[1.5rem] h-[1.5rem] text-[#BEBEBE] hover:text-[#FF78DC]"
+          /> -->
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-1 space-x-5 items-center justify-end pt-2">
+      <div class="payDefinition">
+        <span class="font-medium">{teacher.rate}元</span>
+        <span class="text-[#9B9B9B]">/40分钟</span>
+      </div>
+      <a
+        class="bg-[#FF4438] py-1 px-[2rem] rounded-full text-white"
+        href="/teacher"
+      >
+        了解更多
+      </a>
+    </div>
+  </div>
+  <div class="hidden flex-grow iframe-container">
+    <iframe
+      class="w-full h-full"
+      src={teacher.video}
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    />
+  </div>
+</div>
+
+<style>
+  span.longDescText.clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  span.longDescText.clamped.unclamped {
+    -webkit-line-clamp: unset;
+  }
+  @media (min-width: 1024px) {
+    .teacher-list-item:hover .iframe-container {
+      display: block;
+    }
+  }
+  .favorites > button.toggle svg:last-child {
+    display: none;
+  }
+  .favorites > button.toggle svg:first-child {
+    display: block;
+  }
+</style>
