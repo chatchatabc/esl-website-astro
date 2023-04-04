@@ -23,6 +23,9 @@ module.exports = {
       },
       backgroundPosition:{
         'landing': '25% 25%'
+      },
+      dropShadow: {
+        'esl-lg': '0 10px 8px rgb(0 0 0 / 0.30)',
       }
 
     },
