@@ -13,10 +13,7 @@ import { Img } from "astro-imagetools/components";
 // }
 ---
 
-<a
-  href={resourceParameter.link ? resourceParameter.link : "#"}
-  class="hover:underline"
->
+<div class="hover:underline">
   <figure class="">
     <div class="mb-5 h-[17.25rem] overflow-hidden rounded-b-[1.5rem]">
       <Img
@@ -32,4 +29,4 @@ import { Img } from "astro-imagetools/components";
       {resourceParameter.text}
     </figcaption>
   </figure>
-</a>
+</div>
