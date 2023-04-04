@@ -45,24 +45,28 @@ let orderFirst = "order-first";
       <span>教师培训</span>
     </div>
     <!--section two -->
-    <div class="container mx-auto w-11/12 lg:w-10/12 my-4 lg:mt-10">
+    <div
+      class="container mx-auto w-full my-6 space-y-8 lg:space-y-24 lg:w-10/12 lg:mt-12"
+    >
       {
         entries.map((entry, index) => (
           <div
-            class={`w-10/12 mx-auto space-x-4 lg:space-x-12 flex ${
-              index % 2 == 0 ? "flex-row" : "flex-row-reverse"
+            class={`w-full mx-auto space-y-4  lg:space-x-8 flex ${
+              index % 2 == 0
+                ? "flex-col lg:flex-row"
+                : "flex-col lg:flex-row-reverse  "
             }`}
           >
-            <div class="w-6/12 flex justify-center items-center  min-h-[25rem]">
+            <div class="w-full lg:w-8/12 flex justify-center items-center  lg:min-h-[25rem]">
               <div class=" w-10/12">
-                <div class="h-0 w-full relative pb-[56.25%]">
+                <div class="h-0 w-full relative pb-[56.25%] overflow-hidden rounded-[1.75rem]">
                   <div class="absolute w-full h-full">
                     <Img src={entry.imageUrl} alt={entry.alt} />
                   </div>
                 </div>
               </div>
             </div>
-            <div class="w-6/12 text-esl-2 text-white flex flex-col justify-center items-center">
+            <div class="w-8/12 mx-auto lg:w-4/12 text-esl-2 text-white flex flex-col justify-center items-center">
               <div class="text-center text-esl-4 p-2">{entry.header}</div>
               <div class="p-4 text-esl-2">{entry.content}</div>
             </div>
