@@ -24,6 +24,12 @@ const { link, style, htmlElement } = await renderBackgroundImage({
     },
   ],
 });
+const cutOff = 6;
+let initial = [...landingJson.teachers].splice(0, cutOff);
+let rest = [...landingJson.teachers].splice(
+  cutOff,
+  landingJson.teachers.length - 1
+);
 ---
 
 <MainLayoutCh currentPage="Home" lang="en">
@@ -94,13 +100,35 @@ const { link, style, htmlElement } = await renderBackgroundImage({
       <div class="space-y-4 mt-2 mx-2">
         <!--teacher list item -->
         {
-          landingJson.teachers.map((teacher) => (
+          initial.map((teacher) => (
             <TeacherListItem
               teacher={teacher}
               translation={{ reserve: t("common:reserve") }}
             />
           ))
         }
+        <!--remaining list item -->
+        <div class="remaining-list space-y-4 mt-2">
+          <div class="list-container space-y-4 hidden">
+            {
+              rest.map((teacher) => (
+                <TeacherListItem
+                  teacher={teacher}
+                  translation={{ reserve: t("common:reserve") }}
+                />
+              ))
+            }
+          </div>
+
+          <div class="w-full lg:w-7/12">
+            <button
+              class="block text-white text-esl-2 mx-auto hover:underline text-center"
+            >
+              <span>Show More</span>
+              <span>Show Less</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -226,6 +254,19 @@ const { link, style, htmlElement } = await renderBackgroundImage({
     min-height: 500px;
   } */
 
+  .remaining-list button > span:first-child {
+    display: block;
+  }
+  .remaining-list button > span:last-child {
+    display: none;
+  }
+  .remaining-list button.toggled > span:first-child {
+    display: none;
+  }
+  .remaining-list button.toggled > span:last-child {
+    display: block;
+  }
+
   @media (min-width: 1024px) {
     .landing-clipped {
       clip-path: url(#landing-clip);
@@ -284,4 +325,23 @@ const { link, style, htmlElement } = await renderBackgroundImage({
         button.classList.toggle("toggle");
       });
     });
+  var listHandler = {
+    refs: {
+      remainingList: document.querySelector<HTMLDivElement>(".remaining-list")!,
+      listContainer: document.querySelector<HTMLDivElement>(
+        ".remaining-list .list-container"
+      )!,
+      button: document.querySelector<HTMLDivElement>(
+        ".remaining-list button.block"
+      )!,
+    },
+    init: () => {
+      listHandler.refs.button.addEventListener("click", () => {
+        listHandler.refs.button.classList.toggle("toggled");
+
+        listHandler.refs.listContainer.classList.toggle("hidden");
+      });
+    },
+  };
+  listHandler.init();
 </script>
