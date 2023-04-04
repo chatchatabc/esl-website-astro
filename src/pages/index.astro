@@ -60,7 +60,12 @@ let rest = [...landingJson.teachers].splice(
           <div
             class="landing-clipped w-full max-h-[15rem] sm:max-h-[20rem] md:max-h-[25rem] lg:max-h-none xl:absolute"
           >
-            <Img src="/images/teaching.jpg" alt="" layout="fill" />
+            <Img
+              src="/images/teaching.jpg"
+              alt=""
+              layout="fill"
+              breakpoints={{ count: 1, maxWidth: 768 }}
+            />
           </div>
         </div>
       </div>
