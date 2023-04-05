@@ -5,6 +5,7 @@ import { Picture } from "astro-imagetools/components";
 ---
 
 <div
+  id="contact"
   class="bg-esl-c-2 pt-[5rem] pb-[2.5rem] text-white container mx-auto sm:rounded-t-[1.75rem] lg:rounded-t-[3.75rem] lg:mt-10 lg:w-10/12"
 >
   <div class="w-fit mx-auto px-5 lg:px-0">
@@ -36,9 +37,9 @@ import { Picture } from "astro-imagetools/components";
           <Picture
             alt="WeChat"
             src={`/images/${qrSet.qrCode}`}
-            w={10 * 16}
-            h={10 * 16}
-            breakpoints={{ count: 1, minWidth: 160 }}
+            w={240}
+            h={240}
+            breakpoints={{ count: 1, minWidth: 240 }}
           />
         </div>
       ))
