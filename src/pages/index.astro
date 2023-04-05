@@ -6,7 +6,7 @@ import { Icon } from "astro-icon";
 import ImageCard from "../components/landing-page/ImageCard.astro";
 //section 3
 import ResourceCard from "../components/landing-page/ResourceCard.astro";
-import TeacherListItem from "../components/landing-page/TeacherListItem.svelte";
+import TeacherListItem from "../components/landing-page/TeacherListItem.astro";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
 import { renderBackgroundImage } from "astro-imagetools/api";
 import { Img } from "astro-imagetools/components";
@@ -102,12 +102,17 @@ let rest = [...landingJson.teachers].splice(
         </p>
       </div>
       <!--teacher list collection -->
-      <div class="space-y-4 mt-2 mx-2">
+      <div class="mt-2 mx-2">
         <!--teacher list item -->
-        {initial.map((teacher) => <TeacherListItem teacher={teacher} />)}
+        <div class="space-y-4">
+          {initial.map((teacher) => <TeacherListItem teacher={teacher} />)}
+        </div>
+
         <!--remaining list item -->
-        <div class="remaining-list space-y-4 mt-2">
-          <div class="list-container space-y-4 hidden">
+        <div class="remaining-list mt-0">
+          <div
+            class="list-container space-y-4 transition-all duration-200 overflow-hidden scale-y-0 h-0"
+          >
             {rest.map((teacher) => <TeacherListItem teacher={teacher} />)}
           </div>
 
@@ -309,13 +314,6 @@ let rest = [...landingJson.teachers].splice(
     }
   }
 
-  document
-    .querySelectorAll<HTMLButtonElement>(".favorites>button")
-    .forEach((button) => {
-      button.addEventListener("click", (e) => {
-        button.classList.toggle("toggle");
-      });
-    });
   var listHandler = {
     refs: {
       remainingList: document.querySelector<HTMLDivElement>(".remaining-list")!,
@@ -329,8 +327,16 @@ let rest = [...landingJson.teachers].splice(
     init: () => {
       listHandler.refs.button.addEventListener("click", () => {
         listHandler.refs.button.classList.toggle("toggled");
+        listHandler.refs.listContainer.classList.toggle("scale-y-0");
+        listHandler.refs.listContainer.classList.toggle("scale-y-100");
+        listHandler.refs.listContainer.classList.toggle("h-full");
+        listHandler.refs.listContainer.classList.toggle("h-0");
 
-        listHandler.refs.listContainer.classList.toggle("hidden");
+        // get the div element
+        if (listHandler.refs.listContainer.classList.contains("h-0")) {
+          const target = document.getElementById("teachers")!;
+          target.scrollIntoView();
+        }
       });
     },
   };
