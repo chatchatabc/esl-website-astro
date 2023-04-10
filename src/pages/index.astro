@@ -10,7 +10,6 @@ import TeacherListItem from "../components/landing-page/TeacherListItem.astro";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
 import { renderBackgroundImage } from "astro-imagetools/api";
 import { Img } from "astro-imagetools/components";
-
 changeLanguage("en");
 
 const { link, style, htmlElement } = await renderBackgroundImage({
