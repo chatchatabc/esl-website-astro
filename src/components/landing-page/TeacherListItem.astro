@@ -46,11 +46,6 @@ import YoutubeIframe from "../YoutubeIframe.svelte";
             <div class="nameAndVerified">
               <p class="name tex-center font-medium">
                 <span>{teacher.name}</span>&nbsp;
-
-                <!-- <Icon
-                name="mdi:verified-user"
-                class="h-[1.5rem] w-[1.5rem] inline-block text-[#64C01B]"
-              /> -->
                 <svg
                   name="mdi:verified-user"
                   xmlns="http://www.w3.org/2000/svg"
@@ -125,12 +120,7 @@ import YoutubeIframe from "../YoutubeIframe.svelte";
     <div
       class="youtube-thumbnail hidden flex-grow iframe-container group-hover:block"
     >
-      <YoutubeIframe teacher={teacher}>
-        <img
-          src={teacher.videoThumbnail}
-          alt="Video"
-          class="absolute w-[100%] h-[100%] top-0"
-        />
+      <YoutubeIframe client:load teacher={teacher} >
       </YoutubeIframe>
     </div>
   </div>
@@ -145,22 +135,6 @@ import YoutubeIframe from "../YoutubeIframe.svelte";
       button.addEventListener("click", () => {
         button.classList.toggle("toggle");
       });
-      // var youtubeVideo = this.querySelector<HTMLElement>("youtube-video")!;
-      // this.querySelector("youtube-thumbnail-button")!.addEventListener(
-      //   "click",
-      //   () => {
-      //     var iframe = document.createElement("iframe");
-      //     //iframe.className = "w-full h-full";
-      //     iframe.title = "YouTube video player";
-      //     iframe.frameBorder = "0";
-      //     iframe.allow =
-      //       "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-      //     iframe.allowFullscreen = true;
-      //     iframe.src = this.getAttribute("data-video")!;
-      //     youtubeVideo.appendChild(iframe);
-      //     this.classList.add("hidden");
-      //   }
-      // );
     }
   }
   customElements.define("teacher-list-item", TeacherListItem);
