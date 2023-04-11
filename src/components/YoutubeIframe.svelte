@@ -2,7 +2,6 @@
   export let teacher: Record<string, any>;
 
   let showIframe = false;
-  let count = 0;
   function BtnClick(event: any) {
     showIframe = true;
   }
@@ -27,11 +26,7 @@
             on:click={BtnClick}
             class="absolute w-full h-full left-0 top-0"
           >
-            <img
-              src={teacher.videoThumbnail}
-              alt="Video"
-              class="absolute w-[100%] h-[100%] top-0"
-            />
+            <slot />
           </button>
         </div>
       {/if}
