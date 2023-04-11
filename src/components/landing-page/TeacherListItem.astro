@@ -9,9 +9,9 @@ import YoutubeIframe from "../YoutubeIframe.svelte";
 
 <teacher-list-item>
   <div
-    class="flex flex-1 space-x-4 teacher-list-item transition-all ease-in-out delay-500 group p-2"
+    class="flex flex-1 teacher-list-item transition-all ease-in-out delay-500 group"
   >
-    <div class="lg:w-7/12 lg:mx-0">
+    <div class="p-2 w-full lg:w-7/12 lg:mx-0">
       <div
         class="teacher-card relative bg-white overflow-hidden drop-shadow-none hover:drop-shadow-esl-lg mx-auto rounded-tl-[1rem] p-5 h-full"
       >
@@ -118,10 +118,9 @@ import YoutubeIframe from "../YoutubeIframe.svelte";
       </div>
     </div>
     <div
-      class="youtube-thumbnail hidden flex-grow iframe-container group-hover:block"
+      class="youtube-thumbnail hidden opacity-0 pointer-events-none flex-grow iframe-container lg:group-hover:block lg:block"
     >
-      <YoutubeIframe client:load teacher={teacher} >
-      </YoutubeIframe>
+      <YoutubeIframe client:load teacher={teacher} />
     </div>
   </div>
 </teacher-list-item>
@@ -152,7 +151,8 @@ import YoutubeIframe from "../YoutubeIframe.svelte";
   }
   @media (min-width: 1024px) {
     .teacher-list-item:hover .iframe-container {
-      display: block;
+      opacity: 1;
+      pointer-events: auto;
     }
   }
   .favorites > button.toggle svg:last-child {
