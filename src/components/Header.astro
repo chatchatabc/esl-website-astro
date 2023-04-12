@@ -1,7 +1,7 @@
 ---
 import headerJson from "@data/header.json";
 import { Icon } from "astro-icon";
-import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
+
 const { currentPage, lang } = Astro.props;
 
 let style1 = `inline-block text-white  m-4 border-b-2 pb-2 text-esl-2 cursor-pointer`;
@@ -9,8 +9,6 @@ let style2 =
   "inline-block  py-2 px-4 mt-2 rounded-full bg-white text-esl-2 text-esl-c-4 hover:bg-esl-c-2 hover:text-white";
 
 let mobileStyle1 = `max-lg:block max-lg:p-[1rem] max-lg:m-0 max-lg:border-b-0  text-esl-c-2`;
-
-changeLanguage(lang);
 ---
 
 <nav class="lg:w-10/12 lg:mx-auto lg:mt-10 items-center">
@@ -39,17 +37,18 @@ changeLanguage(lang);
                 (linkSet[0] === currentPage
                   ? " border-b-esl-c-3 "
                   : "hover:border-b-esl-c-3 ") +
-                (linkSet[0] === "Home" ? "ml-0 " : "")
+                (linkSet[0] === "Home" ? "ml-0 " : "") +
+                " mobile-nav-link"
               }
               href={`/${linkSet[1]}`}
             >
-              {t("menu:" + linkSet[0])}
+              {linkSet[0]}
             </a>
           ))
         }
       </div>
       <div class="fit block">
-        <a class={style2} href="#contact">联系我们</a>
+        <a class={style2 + " mobile-nav-link"} href="#contact">联系我们</a>
       </div>
     </div>
   </div>
@@ -70,7 +69,7 @@ changeLanguage(lang);
               }
               href={`/${linkSet[1]}`}
             >
-              {t("menu:" + linkSet[0])}
+              {linkSet[0]}
             </a>
           ))
         }
@@ -83,8 +82,15 @@ changeLanguage(lang);
 </nav>
 <script>
   let toggle: HTMLButtonElement = document.querySelector(".menu-toggle")!;
+  let mobileNavLink: Record<string, any> =
+    document.querySelectorAll(".mobile-nav-link")!;
   toggle.addEventListener("click", () => {
     document.querySelector(".m-nav")!.classList.toggle("open");
+  });
+  mobileNavLink.forEach((navItem: HTMLAnchorElement, index: number) => {
+    navItem.addEventListener("click", () => {
+      document.querySelector(".m-nav")!.classList.remove("open");
+    });
   });
 </script>
 <style>
