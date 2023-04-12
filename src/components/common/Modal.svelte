@@ -1,30 +1,34 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
+  import { createEventDispatcher, onMount } from "svelte";
 
   export let open = false;
 
   function close() {
     open = false;
-    dispatch("close");
   }
+
+  onMount(() => {
+    const element = document.querySelector("#dynamic-modal");
+    const innerElement = document.querySelector("#dynamic-modal-content");
+    element?.addEventListener("click", (e) => {
+      if (
+        (e.target as Element).closest("#dynamic-modal-content") === innerElement
+      )
+        return;
+      close();
+    });
+  });
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-  class="fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-50 z-10"
+  id="dynamic-modal"
+  class="fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-md z-10"
   class:hidden={!open}
-  on:click={close}
 >
-  <div
-    class=" backdrop-blur-md max-w-[640px] relative bg-black bg-opacity-60 shadow-lg rounded-lg"
-    on:click={(e) => {
-      e.stopPropagation();
-    }}
-  >
-    <div class="flex justify-end">
+  <div id="dynamic-modal-inner" class="flex flex-col">
+    <div class="flex justify-end w-full relative">
       <button
-        class="close block text-white text-esl-3 p-2 hover:text-black focus:outline-none"
+        class="close block text-black text-esl-3 p-2 bg-white bg-opacity-60 shadow-lg rounded-full hover:text-black focus:outline-none"
         on:click={close}
       >
         <svg
@@ -39,8 +43,13 @@
         >
       </button>
     </div>
-    <div class="w-[300px] h-[300px] p-5 mx-auto">
-      <slot />
+    <div
+      id="dynamic-modal-content"
+      class="block max-w-[640px] relative bg-white bg-opacity-60 shadow-lg rounded-[2.5rem] mt-5"
+    >
+      <div class="w-[300px] h-[300px] p-3 mx-auto">
+        <slot />
+      </div>
     </div>
   </div>
 </div>
