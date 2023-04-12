@@ -25,15 +25,14 @@ let teacher = landingJson.teachers[0];
         format="png"
       />
     </div>
-    <div
-      slot="rating"
-      class="text-[#FFCC3E] text-[1.25rem] flex flex-1 items-center justify-center"
-    >
-      <Icon
-        name="ic:baseline-star-rate"
-        class="h-[1.25rem] w-[1.25rem] inline"
-      />
-      <span>{teacher.rating}</span>
+    <div slot="rating" class="inline-block">
+      <div class="text-[#FFCC3E] w-fit flex flex-1 items-center justify-center">
+        <Icon
+          name="ic:baseline-star-rate"
+          class="h-[1.25rem] w-[1.25rem] inline"
+        />
+        <span>{teacher.rating}</span>
+      </div>
     </div>
     <span slot="verified">
       <Icon

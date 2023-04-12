@@ -15,48 +15,56 @@
   <div class="w-full lg:w-7/12 lg:pr-2">
     <!--teacher details section -->
     <div class="">
-      <div class="bg-white sm:rounded-tl-[1rem] shadow-lg p-5 md:p-8">
+      <div class="bg-white sm:rounded-tl-[1rem] sm:shadow-lg p-3 md:p-8 lg:p-5">
         <!--nameplate section -->
         <div>
           <div class="flex flex-1">
             <!--teacher image -->
             <div class="px-4 pb-0">
               <slot name="img" />
+            </div>
 
-              <slot name="rating" />
-            </div>
-            <!--name,verification and occupation -->
-            <div class="flex-grow flex items-center">
-              <div>
-                <div>
-                  <span class="text-esl-3">{teacher.name}</span>&nbsp;<slot
-                    name="verified"
-                  />
+            <div class="flex flex-grow flex-col">
+              <!--name,verification and occupation -->
+              <div class="flex flex-row flex-grow">
+                <div class="flex-grow flex">
+                  <div>
+                    <div class="flex items-center">
+                      <span class="text-esl-3">{teacher.name}</span>&nbsp;<slot
+                        name="verified"
+                      />
+                    </div>
+                    <div class="text-esl-2 flex font-normal">
+                      {teacher.occupation}&nbsp;<slot name="rating" />
+                    </div>
+                  </div>
                 </div>
-                <div class="text-esl-2">{teacher.occupation}</div>
+                <!--favorites -->
+                <div class="">
+                  <Favorite />
+                </div>
               </div>
-            </div>
-            <!--favorites -->
-            <div class="flex items-center">
-              <Favorite />
+              <!--payrate-->
+              <div
+                class="flex items-center justify-between sm:justify-end space-x-5"
+              >
+                <div class="payDefinition">
+                  <span class="font-medium">{teacher.rate}元</span>
+                  <span class="text-[#9B9B9B]">/40分钟</span>
+                </div>
+                <button
+                  on:click={() => {
+                    teacherToggleBtn = true;
+                  }}
+                  class="bg-[#FF4438] py-1 px-[2rem] rounded-full text-white"
+                >
+                  预约
+                </button>
+              </div>
             </div>
           </div>
 
           <!--reserve button section -->
-          <div class="flex flex-1 space-x-5 items-center justify-end pt-2 px-4">
-            <div class="payDefinition">
-              <span class="font-medium">{teacher.rate}元</span>
-              <span class="text-[#9B9B9B]">/40分钟</span>
-            </div>
-            <button
-              on:click={() => {
-                teacherToggleBtn = true;
-              }}
-              class="bg-[#FF4438] py-1 px-[2rem] rounded-full text-white"
-            >
-              预约
-            </button>
-          </div>
         </div>
 
         <!--tabified details -->
@@ -68,7 +76,7 @@
               on:click={() => {
                 tabIndex = 0;
               }}
-              class="py-4 px-4 flex-auto show hidden md:block"
+              class="py-4 flex-auto show hidden md:px-4 md:block"
               class:show={tabIndex == 0}
             >
               <div class="flex flex-1 flex-col justify-center">
@@ -82,7 +90,7 @@
               on:click={() => {
                 tabIndex = 1;
               }}
-              class="py-4 px-4 flex-auto hidden md:block"
+              class="py-4 flex-auto hidden md:px-4 md:block"
               class:show={tabIndex == 1}
             >
               <div class="flex flex-1 flex-col justify-center">
@@ -97,7 +105,7 @@
                 tabIndex = 2;
               }}
               class:show={tabIndex == 2}
-              class="py-4 px-4 flex-auto hidden md:block"
+              class="py-4 flex-auto hidden md:px-4 md:block"
             >
               <div class="flex flex-1 flex-col justify-center">
                 <div class="tab-text text-esl-3">
@@ -114,7 +122,7 @@
             <!--tab 1 content -->
 
             <div
-              class="tab-content px-4 space-y-4 pb-4 {tabIndex == 0
+              class="tab-content md:px-4 space-y-4 pb-4 {tabIndex == 0
                 ? 'md:block'
                 : 'md:hidden'}"
             >
@@ -142,7 +150,7 @@
             <!--tab 2 content -->
 
             <div
-              class="tab-content px-4 space-y-4 pb-4 {tabIndex == 1
+              class="tab-content md:px-4 space-y-4 pb-4 {tabIndex == 1
                 ? 'md:block'
                 : 'md:hidden'}"
             >
@@ -165,7 +173,7 @@
             <!--tab 3 content -->
 
             <div
-              class="tab-content px-4 space-y-4 pb-4 {tabIndex == 2
+              class="tab-content md:px-4 space-y-4 pb-4 {tabIndex == 2
                 ? 'md:block'
                 : 'md:hidden'}"
             >
@@ -199,10 +207,10 @@
 
       <!--stats -->
       <div
-        class="bg-white flex flex-1 shadow-lg my-4 py-4 flex-col space-y-4 sm:flex-row sm:space-y-0"
+        class="bg-white flex flex-1 shadow-lg py-4 flex-row border-t-2 border-solid border-t-esl-c-1 sm:my-4 sm:border-t-0"
       >
         <!--rating -->
-        <div class="flex flex-1 flex-col">
+        <div class="hidden sm:flex flex-1 flex-col">
           <slot name="iconStar" />
 
           <div class="text-center text-esl-2 text-[#7E7E7E]">Rating</div>
