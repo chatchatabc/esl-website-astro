@@ -9,13 +9,13 @@ import Favorite from "../common/Favorite.svelte";
 ---
 
 <div
-  class="flex flex-1 teacher-list-item transition-all ease-in-out delay-500 group"
+  class="flex flex-1 teacher-list-item ease-in-out max-w-[312px] md:max-w-none"
 >
-  <div class="p-2 w-full lg:w-7/12 lg:mx-0">
+  <div class="p-2 md:w-full lg:w-7/12 lg:mx-0 md:block">
     <div
-      class="teacher-card relative bg-white overflow-hidden p-2 drop-shadow-none hover:drop-shadow-esl-lg mx-auto rounded-[1rem] sm:rounded-tr-none sm:rounded-br-none sm:rounded-bl-none"
+      class="teacher-card relative bg-white overflow-hidden p-2 drop-shadow-none hover:drop-shadow-esl-lg mx-auto rounded-[1rem] md:max-w-none md:rounded-tr-none md:rounded-br-none md:rounded-bl-none"
     >
-      <div class="flex flex-col-reverse">
+      <div class="flex flex-col-reverse md:flex-row">
         <div class="left-side py-8 md:py- md:flex md:flex-1 px-2">
           <div class="min-w-[6.25rem]">
             <div
@@ -24,63 +24,67 @@ import Favorite from "../common/Favorite.svelte";
               <Img src={teacher.image} alt={teacher.name} w={100} />
             </div>
           </div>
-          <div class="flex-grow space-y-1 text-center">
-            <div class="">
-              <div class="nameAndVerified">
-                <p class="name tex-center font-medium">
-                  <span>{teacher.name}</span>&nbsp;
-                  <svg
-                    name="mdi:verified-user"
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-[1.5rem] w-[1.5rem] inline-block text-[#64C01B]"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    ><path
-                      fill="currentColor"
-                      d="m10 17l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9m-6-8L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-6.45 9-12V5l-9-4Z"
-                    ></path></svg
-                  >
-                </p>
-              </div>
-              <div class="occupation text-esl-2 flex font-normal w-fit mx-auto">
-                {teacher.occupation}<div class="inline-block">
-                  <div
-                    class="text-[#FFCC3E] flex flex-1 items-center justify-center"
-                  >
+          <div class="space-y-2">
+            <div class="flex-grow text-center md:text-left md:px-5">
+              <div class="teacherDetails space-y-2">
+                <div class="nameAndVerified">
+                  <p class="name font-medium">
+                    <span>{teacher.name}</span>&nbsp;
                     <svg
-                      name="ic:baseline-star-rate"
+                      name="mdi:verified-user"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-[1.25rem] w-[1.25rem]"
+                      class="h-[1.5rem] w-[1.5rem] inline-block text-[#64C01B]"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
                       ><path
                         fill="currentColor"
-                        d="M14.43 10L12 2l-2.43 8H2l6.18 4.41L5.83 22L12 17.31L18.18 22l-2.35-7.59L22 10z"
+                        d="m10 17l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9m-6-8L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-6.45 9-12V5l-9-4Z"
                       ></path></svg
                     >
-                    &nbsp;
-                    <span>{teacher.rating}</span>
+                  </p>
+                </div>
+                <div
+                  class="occupation text-esl-2 flex font-normal w-fit mx-auto md:mx-0"
+                >
+                  {teacher.occupation}<div class="inline-block">
+                    <div
+                      class="text-[#FFCC3E] flex flex-1 items-center justify-center"
+                    >
+                      <svg
+                        name="ic:baseline-star-rate"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-[1.25rem] w-[1.25rem]"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        ><path
+                          fill="currentColor"
+                          d="M14.43 10L12 2l-2.43 8H2l6.18 4.41L5.83 22L12 17.31L18.18 22l-2.35-7.59L22 10z"
+                        ></path></svg
+                      >
+                      &nbsp;
+                      <span>{teacher.rating}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="desc-collection pt-5 px-5 md:pt-0 md:px-5">
-            <div>
-              <span class="shortDesc">{teacher.shortDesc}</span>
-            </div>
-            <div class="longDesc text-[#A6A6A6] pt-2">
-              <span class="longDescText clamped">{teacher.longDesc}</span>
-              <span class="descVisibility hidden">
-                <span>See More</span>
-                <span class="hidden">See Less</span>
-              </span>
+            <div class="desc-collection pt-5 px-5 md:pt-0 md:px-5">
+              <div>
+                <span class="shortDesc">{teacher.shortDesc}</span>
+              </div>
+              <div class="longDesc text-[#A6A6A6] pt-2">
+                <span class="longDescText clamped">{teacher.longDesc}</span>
+                <span class="descVisibility hidden">
+                  <span>See More</span>
+                  <span class="hidden">See Less</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="favorites absolute top-0 p-2 right-0">
+        <div class="favorites absolute md:relative top-0 p-2 md:py-8 right-0">
           <Favorite client:load />
         </div>
       </div>
@@ -101,13 +105,13 @@ import Favorite from "../common/Favorite.svelte";
       </div>
     </div>
   </div>
-</div>
-<div
-  class="youtube-thumbnail hidden opacity-0 pointer-events-none flex-grow iframe-container lg:group-hover:block lg:block"
->
-  <YoutubeIframe client:load teacher={teacher}>
-    <Img src={teacher.videoThumbnail} alt="Video" />
-  </YoutubeIframe>
+  <div
+    class="youtube-thumbnail hidden opacity-0 pointer-events-none flex-grow iframe-container lg:group-hover:block lg:block"
+  >
+    <YoutubeIframe client:load teacher={teacher}>
+      <Img src={teacher.videoThumbnail} alt="Video" />
+    </YoutubeIframe>
+  </div>
 </div>
 
 <script></script>
