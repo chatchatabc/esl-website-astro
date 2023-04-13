@@ -16,7 +16,11 @@
   class="fixed w-full top-0 lg:w-10/12 lg:mx-auto lg:mt-10 items-center lg:relative z-[2]"
 >
   <!--mobile -->
-  <div class="relative m-nav {navOpen ? 'open' : ''} lg:hidden">
+  <div
+    class="relative m-nav {navOpen
+      ? 'open'
+      : ''} border-b border-[#0057af] border-solid drop-shadow-md lg:hidden"
+  >
     <div class="block relative z-[2]">
       <div class="menu-toggle w-full block relative bg-esl-c-1">
         <div class="burger grid grid-cols-3">
