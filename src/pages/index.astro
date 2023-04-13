@@ -35,7 +35,7 @@ let rest = [...landingJson.teachers].splice(
   <div class="" id="home">
     <!--Section one-->
     <div
-      class="mb-2 container mx-auto sm:rounded-t-[1.75rem] overflow-hidden lg:rounded-t-[3.75rem] lg:mt-10 lg:w-10/12 lg:mx-auto"
+      class="mb-2 container mx-auto sm:rounded-t-[1.75rem] overflow-hidden lg:rounded-t-[3.75rem] lg:mt-5 lg:w-10/12 lg:mx-auto"
     >
       <div
         class="bg-esl-c-2 flex flex-1 justify-between flex-col-reverse lg:rounded-tr-none lg:flex-row"
@@ -103,21 +103,19 @@ let rest = [...landingJson.teachers].splice(
       <!--teacher list collection -->
       <div class="mt-2 mx-2">
         <!--teacher list item -->
-        <div
-          class="grid grid-cols-1 justify-items-center sm:grid-cols-2 md:block md:space-y-4"
-        >
+        <div class="grid grid-cols-1 justify-items-center sm:grid-cols-2">
           {initial.map((teacher) => <TeacherListItem teacher={teacher} />)}
         </div>
 
         <!--remaining list item -->
         <div class="remaining-list mt-0">
           <div
-            class="list-container transition-all duration-200 overflow-hidden scale-y-0 h-0 grid grid-cols-1 sm:grid-cols-2 md:block md:space-y-4"
+            class="list-container transition-all duration-200 overflow-hidden scale-y-0 h-0 grid grid-cols-1 justify-items-center sm:grid-cols-2"
           >
             {rest.map((teacher) => <TeacherListItem teacher={teacher} />)}
           </div>
 
-          <div class="w-full lg:w-7/12">
+          <div class="w-full">
             <button
               class="block text-white text-esl-2 mx-auto hover:underline text-center"
             >
