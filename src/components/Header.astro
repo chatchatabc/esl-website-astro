@@ -1,8 +1,9 @@
 ---
 import headerJson from "@data/header.json";
 import { Icon } from "astro-icon";
-
-const { currentPage, lang } = Astro.props;
+import { Picture } from "astro-imagetools/components";
+import Navigation from "./Navigation.svelte";
+const { currentPage } = Astro.props;
 
 let style1 = `inline-block text-white  m-4 border-b-2 pb-2 text-esl-2 cursor-pointer`;
 let style2 =
@@ -11,102 +12,36 @@ let style2 =
 let mobileStyle1 = `max-lg:block max-lg:p-[1rem] max-lg:m-0 max-lg:border-b-0  text-esl-c-2`;
 ---
 
-<nav class="lg:w-10/12 lg:mx-auto lg:mt-10 items-center">
-  <!--mobile -->
-  <div class="relative lg:hidden m-nav z-10">
-    <div class="block">
-      <button class="menu-toggle w-fit block">
-        <div class="p-[1rem] burger w-fit text-white block">
-          <Icon name="charm:menu-hamburger" class="h-[1.5rem] w-[1.5rem]" />
-        </div>
-        <div class="p-[1rem] m-close w-full text-esl-c-2 hidden">
-          <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem]" />
-        </div>
-      </button>
-    </div>
-
-    <div
-      class="burger-items absolute max-h-0 w-full z-[1] overflow-hidden bg-white transition-[max-height] duration-500 hidden"
-    >
-      <div class="fit">
-        {
-          headerJson.links.map((linkSet) => (
-            <a
-              class={
-                mobileStyle1 +
-                (linkSet[0] === currentPage
-                  ? " border-b-esl-c-3 "
-                  : "hover:border-b-esl-c-3 ") +
-                (linkSet[0] === "Home" ? "ml-0 " : "") +
-                " mobile-nav-link"
-              }
-              href={`/${linkSet[1]}`}
-            >
-              {linkSet[0]}
-            </a>
-          ))
-        }
-      </div>
-      <div class="fit block">
-        <a class={style2 + " mobile-nav-link"} href="#contact">联系我们</a>
-      </div>
-    </div>
+<Navigation client:load links={headerJson.links} currentPage={currentPage}>
+  <span slot="hamburger">
+    <Icon name="charm:menu-hamburger" class="h-[1.5rem] w-[1.5rem]" />
+  </span>
+  <span slot="close">
+    <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem]" />
+  </span>
+  <div slot="mobileCompanyLogo" class="w-fit mx-auto">
+    <a href="/" class="p-1 flex h-full brightness-0 invert items-center">
+      <Picture
+        h={50}
+        alt="logo"
+        src="/images/logo/logo-horizontal.png"
+        layout="fullWidth"
+        brightness={0}
+      />
+    </a>
   </div>
-
-  <!--desktop -->
-  <div class="container mx-auto">
-    <div class="hidden justify-between lg:flex">
-      <div class="fit">
-        {
-          headerJson.links.map((linkSet) => (
-            <a
-              class={
-                (linkSet[0] === currentPage
-                  ? "border-b-esl-c-3 hover:border-b-esl-c-2 "
-                  : "border-b-transparent hover:border-b-esl-c-3 ") +
-                (linkSet[0] === "Home" ? "ml-0 " : "") +
-                style1
-              }
-              href={`/${linkSet[1]}`}
-            >
-              {linkSet[0]}
-            </a>
-          ))
-        }
-      </div>
-      <div class="fit inline-block lg:block">
-        <a class={style2} href="#contact">联系我们</a>
-      </div>
-    </div>
+  <div slot="companyLogo" class="fit">
+    <a href="/" class="block h-full brightness-0 invert">
+      <Picture
+        h={50}
+        alt="logo"
+        src="/images/logo/logo-horizontal.png"
+        layout="fullWidth"
+        brightness={0}
+      />
+    </a>
   </div>
-</nav>
-<script>
-  let toggle: HTMLButtonElement = document.querySelector(".menu-toggle")!;
-  let mobileNavLink: Record<string, any> =
-    document.querySelectorAll(".mobile-nav-link")!;
-  toggle.addEventListener("click", () => {
-    document.querySelector(".m-nav")!.classList.toggle("open");
-  });
-  mobileNavLink.forEach((navItem: HTMLAnchorElement, index: number) => {
-    navItem.addEventListener("click", () => {
-      document.querySelector(".m-nav")!.classList.remove("open");
-    });
-  });
-</script>
-<style>
-  .m-nav.open {
-    background-color: white;
-    filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
-      drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
-  }
-  .m-nav.open .burger {
-    display: none;
-  }
-  .m-nav.open .m-close {
-    display: block;
-  }
-  .m-nav.open .burger-items {
-    max-height: 100vh;
-    display: block;
-  }
-</style>
+</Navigation>
+
+<script></script>
+<style></style>
