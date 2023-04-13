@@ -1,20 +1,8 @@
 {
   "links": [
-    [
-      "主页",
-      "#home"
-    ],
-    [
-      "教师队伍",
-      "#teachers"
-    ],
-    [
-      "教学资源",
-      "#resources"
-    ],
-    [
-      "关于我们",
-      "#about"
-    ]
+    {"text":"主页", "link":"#home"},
+    {"text":"教师队伍", "link":"#teachers"},
+    {"text":"教学资源", "link":"#resources"},
+    {"text":"关于我们", "link":"#about"}
   ]
 }
