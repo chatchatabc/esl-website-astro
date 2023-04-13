@@ -12,10 +12,10 @@
 <!--main container -->
 <div class="container block mx-auto lg:flex lg:flex-1 lg:w-10/12">
   <!--left side -->
-  <div class="w-full lg:w-7/12 lg:pr-2">
+  <div class="w-full lg:pr-2">
     <!--teacher details section -->
     <div class="">
-      <div class="bg-white sm:rounded-tl-[1rem] sm:shadow-lg p-3 md:p-8 lg:p-5">
+      <div class="bg-white sm:shadow-lg p-3 md:p-8 lg:p-5">
         <!--nameplate section -->
         <div>
           <div class="flex flex-1">
@@ -133,18 +133,33 @@
               </div>
               <div class="text-esl-3">About Me</div>
               <div class="text-esl-2">
-                <ClampText>
-                  <span
-                    >Hello world! I'm teacher Laura from Philippines. I'm a
-                    native speaker of Filipino (Tagalog) with Bachelor's Degree
-                    in Secondary Education major in English. Some of my
-                    highlighted traits in teaching field are being a
-                    goal-oriented, patient, having good command of language,
-                    committed to work or craft and I highly value sincerity and
-                    honesty. Learners believe that you can and you're halfway
-                    there. See you! =)</span
-                  >
-                </ClampText>
+                <div>
+                  <div class="relative px-0 w-10/12 mx-auto py-8">
+                    <!--insert youtube video here -->
+                    <div class="pb-[56.67%] w-full relative">
+                      <iframe
+                        class="w-full h-full absolute"
+                        src="https://www.youtube.com/embed/UCFrfYH9DCw"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                      />
+                    </div>
+                  </div>
+                  <ClampText>
+                    <span
+                      >Hello world! I'm teacher Laura from Philippines. I'm a
+                      native speaker of Filipino (Tagalog) with Bachelor's
+                      Degree in Secondary Education major in English. Some of my
+                      highlighted traits in teaching field are being a
+                      goal-oriented, patient, having good command of language,
+                      committed to work or craft and I highly value sincerity
+                      and honesty. Learners believe that you can and you're
+                      halfway there. See you! =)</span
+                    >
+                  </ClampText>
+                </div>
               </div>
             </div>
             <!--tab 2 content -->
@@ -250,21 +265,6 @@
           <slot name="qrCode" />
         </div>
       </LessonList>
-    </div>
-  </div>
-  <div
-    class="hidden relative px-0 w-full sm:py-4 sm:block lg:w-5/12 lg:pl-2 lg:py-0"
-  >
-    <!--insert youtube video here -->
-    <div class="pb-[56.67%] w-full relative">
-      <iframe
-        class="w-full h-full absolute"
-        src="https://www.youtube.com/embed/VrP3lO3aGDg"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-      />
     </div>
   </div>
 </div>
