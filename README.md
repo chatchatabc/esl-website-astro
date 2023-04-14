@@ -1,1 +1,3 @@
-"# esl-astro" 
+# esl-astro
+
+## Get Started
