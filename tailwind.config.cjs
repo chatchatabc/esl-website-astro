@@ -25,6 +25,8 @@ module.exports = {
         'landing': '25% 25%'
       },
       dropShadow: {
+        'esl-sm': '0 10px 8px rgb(0 0 0 / 0.18)',
+        'esl-md': '0 10px 8px rgb(0 0 0 / 0.25)',
         'esl-lg': '0 10px 8px rgb(0 0 0 / 0.45)',
       }
 
