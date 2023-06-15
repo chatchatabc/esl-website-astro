@@ -1,21 +1,21 @@
 ---
-import MainLayoutCh from "../layouts/MainLayoutCh.astro";
+import MainLayoutCh from "@layouts/MainLayoutCh.astro";
 import { Icon } from "astro-icon";
 import landingJson from "@data/landingPage.json";
 import { Img } from "astro-imagetools/components";
 import { Picture } from "astro-imagetools/components";
-import Teacher from "src/components/teacher/Teacher.svelte";
-let teacher = landingJson.teachers[0];
+import TeacherComponent from "@components/teacher/TeacherComponent.svelte";
+let currentTeacher = landingJson.teachers[0];
 ---
 
 <MainLayoutCh currentPage="Teachers">
-  <Teacher client:load teacher={teacher}>
+  <TeacherComponent teacher={currentTeacher} client:load>
     <div
       slot="img"
       class="rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem] min-w-[6.25rem] min-h-[6.25rem] overflow-hidden"
     >
       <Img
-        src={teacher.image}
+        src={currentTeacher.image}
         alt="Teacher"
         objectFit={"cover"}
         layout={"fullWidth"}
@@ -31,7 +31,7 @@ let teacher = landingJson.teachers[0];
           name="ic:baseline-star-rate"
           class="h-[1.25rem] w-[1.25rem] inline"
         />
-        <span>{teacher.rating}</span>
+        <span>{currentTeacher.rating}</span>
       </div>
     </div>
     <span slot="verified">
@@ -48,7 +48,7 @@ let teacher = landingJson.teachers[0];
         name="ic:baseline-star-rate"
         class="h-[1.77rem] w-[1.77rem] inline"
       />
-      <span>{teacher.rating}</span>
+      <span>{currentTeacher.rating}</span>
     </div>
     <div slot="qrCode">
       <Picture
@@ -59,7 +59,7 @@ let teacher = landingJson.teachers[0];
         breakpoints={{ count: 1, minWidth: 240 }}
       />
     </div>
-  </Teacher>
+  </TeacherComponent>
   <style>
     .line {
       visibility: hidden;

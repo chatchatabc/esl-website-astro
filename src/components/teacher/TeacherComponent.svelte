@@ -1,5 +1,17 @@
 <script lang="ts">
-  export let teacher: any;
+  export let teacher: {
+    name: string;
+    occupation: string;
+    shortDesc: string;
+    longDesc: string;
+    rate: string;
+    verified: boolean;
+    favorite: boolean;
+    image: string;
+    rating: string;
+    video: string;
+    videoThumbnail: string;
+  };
   import Favorite from "../common/Favorite.svelte";
   import LessonList from "./LessonList.svelte";
   import ClampText from "../common/ClampText.svelte";
@@ -136,15 +148,11 @@
                 <div>
                   <div class="relative px-0 w-10/12 mx-auto py-8">
                     <!--insert youtube video here -->
-                    <div class="pb-[56.67%] w-full relative">
-                      <iframe
-                        class="w-full h-full absolute"
-                        src="https://www.youtube.com/embed/UCFrfYH9DCw"
-                        title="YouTube video player"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
-                      />
+                    <div class="relative ">
+                      <div class="pb-[56.67%] w-full relative" />
+                      <video class="absolute top-0 left-0 w-full h-full" controls>
+                        <source src={teacher.video} />
+                      </video>
                     </div>
                   </div>
                   <ClampText>
