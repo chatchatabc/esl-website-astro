@@ -148,10 +148,14 @@
                 <div>
                   <div class="relative px-0 w-10/12 mx-auto py-8">
                     <!--insert youtube video here -->
-                    <div class="relative ">
+                    <div class="relative">
                       <div class="pb-[56.67%] w-full relative" />
-                      <video class="absolute top-0 left-0 w-full h-full" controls>
+                      <video
+                        class="absolute top-0 left-0 w-full h-full"
+                        controls
+                      >
                         <source src={teacher.video} />
+                        <track kind="captions" />
                       </video>
                     </div>
                   </div>
