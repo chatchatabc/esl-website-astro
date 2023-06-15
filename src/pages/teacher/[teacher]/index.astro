@@ -1,0 +1,120 @@
+---
+import LandingJson from "@data/landingPage.json";
+import MainLayoutCh from "@layouts/MainLayoutCh.astro";
+import { Icon } from "astro-icon";
+import landingJson from "@data/landingPage.json";
+import { Img } from "astro-imagetools/components";
+import { Picture } from "astro-imagetools/components";
+import TeacherComponent from "@components/teacher/TeacherComponent.svelte";
+
+export async function getStaticPaths() {
+  return LandingJson.teachers.map((el: any, index: number) => {
+    return {
+      params: {
+        teacher: index + 1,
+      },
+      props: {
+        teacher: el,
+      },
+    };
+  });
+}
+
+const currentTeacher = Astro.props.teacher;
+---
+
+<MainLayoutCh currentPage="Teachers">
+  <TeacherComponent teacher={currentTeacher} client:load>
+    <div
+      slot="img"
+      class="rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem] min-w-[6.25rem] min-h-[6.25rem] overflow-hidden"
+    >
+      <Img
+        src={currentTeacher.image}
+        alt="Teacher"
+        objectFit={"cover"}
+        layout={"fullWidth"}
+        aspect={1}
+        h={100}
+        w={100}
+        format="png"
+      />
+    </div>
+    <div slot="rating" class="inline-block">
+      <div class="text-[#FFCC3E] w-fit flex flex-1 items-center justify-center">
+        <Icon
+          name="ic:baseline-star-rate"
+          class="h-[1.25rem] w-[1.25rem] inline"
+        />
+        <span>{currentTeacher.rating}</span>
+      </div>
+    </div>
+    <span slot="verified">
+      <Icon
+        name="mdi:verified-user"
+        class="h-[1.5rem] w-[1.5rem] inline-block text-[#64C01B]"
+      />
+    </span>
+    <div
+      slot="iconStar"
+      class="text-[#FFCC3E] flex flex-1 items-center justify-center text-esl-4"
+    >
+      <Icon
+        name="ic:baseline-star-rate"
+        class="h-[1.77rem] w-[1.77rem] inline"
+      />
+      <span>{currentTeacher.rating}</span>
+    </div>
+    <div slot="qrCode">
+      <Picture
+        alt="WeChat"
+        src={`/images/static-qr-code-wechat-black.png`}
+        w={240}
+        h={240}
+        breakpoints={{ count: 1, minWidth: 240 }}
+      />
+    </div>
+  </TeacherComponent>
+  <style>
+    .line {
+      visibility: hidden;
+    }
+    .show .line {
+      visibility: visible;
+    }
+    .tab-text {
+      color: #b6b6b6;
+    }
+    .show .tab-text {
+      color: black;
+    }
+  </style>
+  <script>
+    const tabMenus = document.querySelectorAll(
+      ".tab-menu>button"
+    ) as NodeListOf<HTMLButtonElement>;
+    const tabContents = document.querySelectorAll(
+      ".tab-content"
+    ) as NodeListOf<Element>;
+    let tabIndex = 0;
+    tabMenus.forEach((tabMenu, index) => {
+      tabMenu.addEventListener("click", () => {
+        showTabContent(index);
+      });
+    });
+
+    function showTabContent(index: number) {
+      //get current and toggle hide to on
+      tabContents[tabIndex].classList.toggle("md:hidden");
+      tabContents[tabIndex].classList.toggle("md:block");
+      tabMenus[tabIndex].classList.toggle("show");
+      //get change current to index
+      tabIndex = index;
+
+      //get current and toggle display
+      tabContents[tabIndex].classList.toggle("md:hidden");
+      tabContents[tabIndex].classList.toggle("md:block");
+      tabMenus[tabIndex].classList.toggle("show");
+    }
+  </script>
+</MainLayoutCh>
