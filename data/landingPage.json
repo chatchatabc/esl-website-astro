@@ -1,22 +1,22 @@
 {
-  "section1":[
+  "section1": [
     {
-      "image":"/images/online-learning.jpg",
-      "title":"Online learning",
-      "desc":"Follow your onw pace with the flexible , convinence, personalized learning",
-      "link":"#"
+      "image": "/images/online-learning.jpg",
+      "title": "Online learning",
+      "desc": "Follow your onw pace with the flexible , convinence, personalized learning",
+      "link": "#"
     },
     {
-      "image":"/images/zoom-teaching.jpg",
-      "title":"Teachers",
-      "desc":"create engaging and effective lessons that meet the needs of diverse learners",
-      "link":"#"
+      "image": "/images/zoom-teaching.jpg",
+      "title": "Teachers",
+      "desc": "create engaging and effective lessons that meet the needs of diverse learners",
+      "link": "#"
     },
     {
-      "image":"/images/training.jpg",
-      "title":"Training",
-      "desc":"help teachers become more effective educators and to keep up with the latest developments in their field",
-      "link":"#"
+      "image": "/images/training.jpg",
+      "title": "Training",
+      "desc": "help teachers become more effective educators and to keep up with the latest developments in their field",
+      "link": "#"
     }
   ],
   "resources": [
@@ -50,19 +50,188 @@
     "Focus on speaking and listening",
     "Immerse yourself in English"
   ],
-  "teachers":[
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-1.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-2.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-3.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-4.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-5.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-6.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-7.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-8.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-9.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-10.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-11.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-12.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"},
-    {"name":"Teacher Laura","occupation":"English Tutor","shortDesc":"Licensed Teacher with 6 years experience in teaching","longDesc":"Hi, my name is Laura and I'm 25 years old","rate":"30","verified":true, "favorite":true, "image":"/images/teachers/teacher-13.png","rating":"5.0","video":"https://www.youtube.com/embed/UCFrfYH9DCw", "videoThumbnail":"https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"}
+  "teachers": [
+    {
+      "id": 1,
+      "name": "Teacher Michelle",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacherMichelle.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1681775117253.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Teacher Zandy",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacherZandy.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-3.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-4.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-5.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-6.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 7,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-7.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 8,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-8.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 9,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-9.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 10,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-10.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 11,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-11.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 12,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-12.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    },
+    {
+      "id": 13,
+      "name": "Teacher Laura",
+      "occupation": "English Tutor",
+      "shortDesc": "Licensed Teacher with 6 years experience in teaching",
+      "longDesc": "Hi, my name is Laura and I'm 25 years old",
+      "rate": "30",
+      "verified": true,
+      "favorite": true,
+      "image": "/images/teachers/teacher-13.png",
+      "rating": "5.0",
+      "video": "/videos/mmexport1685624338705.mp4",
+      "videoThumbnail": "https://img.youtube.com/vi/UCFrfYH9DCw/sddefault.jpg"
+    }
   ]
 }
