@@ -1,8 +1,20 @@
 ---
+import { SEO } from "astro-seo";
+import type {
+  PageMetaTag,
+  OpenGraphMetaTag,
+  TwitterMetaTag,
+  MetaTag,
+} from "@customTypes/SEO/types";
 import Header from "../components/Header.astro";
 import Footer2 from "../components/Footer2.astro";
 import { ImageSupportDetection } from "astro-imagetools/components";
-const { currentPage, lang } = Astro.props;
+type Props = {
+  currentPage: string;
+  metaTag: MetaTag;
+};
+const { currentPage, metaTag } = Astro.props as Props;
+const { page, openGraph, twitter } = metaTag as MetaTag;
 ---
 
 <html lang="en" class="bg-esl-c-1 scroll-smooth">
@@ -11,11 +23,35 @@ const { currentPage, lang } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <SEO
+      title={page.title}
+      description={page.description}
+      openGraph={{
+        basic: {
+          title: openGraph.title,
+          type: openGraph.type,
+          image: openGraph.image,
+        },
+        optional: {
+          siteName: openGraph.title,
+          description: openGraph.description,
+        },
+      }}
+      extend={{
+        link: [{ rel: "icon", href: "/favicon.ico" }],
+        meta: [
+          { name: "author", content: page.author },
+          { name: "keywords", content: page.keywords },
+          { name: "twitter:card", content: twitter.cardType },
+          { name: "twitter:description", content: twitter.description },
+          { name: "twitter:image", content: twitter.image },
+        ],
+      }}
+    />
     <ImageSupportDetection />
-    <title>Astro</title>
   </head>
   <body class="">
-    <Header currentPage={currentPage} lang={lang} />
+    <Header currentPage={currentPage} />
     <!--main content container-->
     <div class="w-full mt-[58px] sm:mt-[78px] lg:mt-0"></div>
     <slot />
