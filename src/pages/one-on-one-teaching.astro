@@ -1,5 +1,36 @@
 ---
 import MainLayoutCh from "../layouts/MainLayoutCh.astro";
+import DefaultSEO from "@data/defaultSEO.json";
+import type {
+  PageMetaTag,
+  OpenGraphMetaTag,
+  TwitterMetaTag,
+  MetaTag,
+} from "@customTypes/SEO/types";
+
+let page: PageMetaTag = {
+  title: DefaultSEO.metaTag.pageTitle,
+  description: DefaultSEO.metaTag.pageDescription,
+  keywords: DefaultSEO.metaTag.pageKeywords,
+  author: DefaultSEO.metaTag.pageAuthor,
+};
+let opengraph: OpenGraphMetaTag = {
+  title: DefaultSEO.metaTag.ogTitle,
+  type: DefaultSEO.metaTag.ogType,
+  image: DefaultSEO.metaTag.ogImage,
+  description: DefaultSEO.metaTag.ogDescription,
+};
+let twitter: TwitterMetaTag = {
+  cardType: DefaultSEO.metaTag.twitterCardType,
+  title: DefaultSEO.metaTag.twitterTitle,
+  description: DefaultSEO.metaTag.twitterDescription,
+  image: DefaultSEO.metaTag.twitterImage,
+};
+let metaTag: MetaTag = {
+  page: page,
+  openGraph: opengraph,
+  twitter: twitter,
+};
 let entries = [
   {
     header: "个性化定制",
@@ -24,7 +55,7 @@ let entries = [
 ];
 ---
 
-<MainLayoutCh currentPage="one-on-one-teaching" lang="en">
+<MainLayoutCh metaTag={metaTag} currentPage="one-on-one-teaching">
   <div class="">
     <!--section one -->
     <div

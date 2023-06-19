@@ -10,6 +10,13 @@ import TeacherListItem from "../components/landing-page/TeacherListItem.astro";
 import i18next, { t, changeLanguage, setDefaultNamespace } from "i18next";
 import { renderBackgroundImage } from "astro-imagetools/api";
 import { Img } from "astro-imagetools/components";
+import DefaultSEO from "@data/defaultSEO.json";
+import type {
+  PageMetaTag,
+  OpenGraphMetaTag,
+  TwitterMetaTag,
+  MetaTag,
+} from "@customTypes/SEO/types";
 changeLanguage("en");
 
 const { link, style, htmlElement } = await renderBackgroundImage({
@@ -29,9 +36,33 @@ let rest = [...landingJson.teachers].splice(
   cutOff,
   landingJson.teachers.length - 1
 );
+
+let page: PageMetaTag = {
+  title: DefaultSEO.metaTag.pageTitle,
+  description: DefaultSEO.metaTag.pageDescription,
+  keywords: DefaultSEO.metaTag.pageKeywords,
+  author: DefaultSEO.metaTag.pageAuthor,
+};
+let opengraph: OpenGraphMetaTag = {
+  title: DefaultSEO.metaTag.ogTitle,
+  type: DefaultSEO.metaTag.ogType,
+  image: DefaultSEO.metaTag.ogImage,
+  description: DefaultSEO.metaTag.ogDescription,
+};
+let twitter: TwitterMetaTag = {
+  cardType: DefaultSEO.metaTag.twitterCardType,
+  title: DefaultSEO.metaTag.twitterTitle,
+  description: DefaultSEO.metaTag.twitterDescription,
+  image: DefaultSEO.metaTag.twitterImage,
+};
+let metaTag: MetaTag = {
+  page: page,
+  openGraph: opengraph,
+  twitter: twitter,
+};
 ---
 
-<MainLayoutCh currentPage="Home" lang="en">
+<MainLayoutCh metaTag={metaTag} currentPage="Home">
   <div
     id="home"
     class="relative w-0 h-0 top-[-58px] sm:top-[-78px] md:top-[0px]"
