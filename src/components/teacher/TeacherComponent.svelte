@@ -154,7 +154,7 @@
                         class="absolute top-0 left-0 w-full h-full"
                         controls
                       >
-                        <source src={teacher.video} />
+                        <source src={teacher.video} type="video/mp4" />
                         <track kind="captions" />
                       </video>
                     </div>
