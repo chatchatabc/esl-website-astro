@@ -86,7 +86,7 @@ const { teacher } = Astro.props as Props;
       </header>
 
       <!-- Details Desktop -->
-      <section class="mt-8 lg:px-8">
+      <section class="border-blue-500 mt-4 lg:py-4 lg:border-t-2 lg:px-8">
         <!-- Navigations -->
         <header
           class="hidden justify-between max-w-5xl mx-auto text-xl font-medium md:flex"
@@ -163,7 +163,7 @@ const { teacher } = Astro.props as Props;
     </section>
 
     <!-- Section -->
-    <section class="bg-white p-4 mt-2 md:p-8">
+    <section class="bg-white p-4 mt-4 md:p-8">
       <ul class="flex flex-wrap justify-evenly text-center">
         <li class="p-2 w-1/2 md:w-1/5">
           <div
@@ -231,6 +231,11 @@ const { teacher } = Astro.props as Props;
     // Show active content
     const content = contents[index] as HTMLElement;
     content.classList.remove("lg:hidden");
+
+    navButtons.forEach((btn) => {
+      btn.classList.add("text-gray-400");
+    });
+    navButtons[index].classList.remove("text-gray-400");
   }
 
   setActiveNav(0);
