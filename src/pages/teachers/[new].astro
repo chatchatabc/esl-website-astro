@@ -161,6 +161,43 @@ const { teacher } = Astro.props as Props;
         </section>
       </section>
     </section>
+
+    <!-- Section -->
+    <section class="bg-white p-4 mt-2 md:p-8">
+      <ul class="flex flex-wrap justify-evenly text-center">
+        <li class="p-2 w-1/2 md:w-1/5">
+          <div
+            class="flex justify-center items-center text-3xl text-yellow-500"
+          >
+            <div class="w-8 h-8">
+              <StarIcon />
+            </div>
+            <p>{teacher.rating}</p>
+          </div>
+          <p class="text-gray-500 text-lg">Rating</p>
+        </li>
+
+        <li class="p-2 w-1/2 md:w-1/5">
+          <p class="text-3xl">2</p>
+          <p class="text-gray-500 text-lg">Students</p>
+        </li>
+
+        <li class="p-2 w-1/2 md:w-1/5">
+          <p class="text-3xl">10</p>
+          <p class="text-gray-500 text-lg">Lessons</p>
+        </li>
+
+        <li class="p-2 w-1/2 md:w-1/5">
+          <p class="text-3xl">100%</p>
+          <p class="text-gray-500 text-lg">Attendance</p>
+        </li>
+
+        <li class="p-2 w-1/2 md:w-1/5">
+          <p class="text-3xl">100%</p>
+          <p class="text-gray-500 text-lg">Response</p>
+        </li>
+      </ul>
+    </section>
   </section>
 </MainLayout>
 
