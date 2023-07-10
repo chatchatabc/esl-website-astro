@@ -84,6 +84,117 @@ const { teacher } = Astro.props as Props;
           </figcaption>
         </figure>
       </header>
+
+      <!-- Details Desktop -->
+      <section class="mt-8 px-8">
+        <!-- Navigations -->
+        <header
+          class="flex justify-between max-w-5xl mx-auto text-xl font-medium"
+        >
+          <button data-teacher-nav="aboutMe">
+            <p>About Me</p>
+            <div
+              data-nav-indicator
+              class="w-10 rounded-full mx-auto mt-2 h-1 bg-[#FF4438]"
+            >
+            </div>
+          </button>
+          <button data-teacher-nav="meAsATeacher">
+            <p>Me as a Teacher</p>
+            <div
+              data-nav-indicator
+              class="w-10 rounded-full mx-auto mt-2 h-1 bg-[#FF4438]"
+            >
+            </div>
+          </button>
+          <button data-teacher-nav="teachingPlan">
+            <p>My lessons & Teaching plan</p>
+            <div
+              data-nav-indicator
+              class="w-10 rounded-full mx-auto mt-2 h-1 bg-[#FF4438]"
+            >
+            </div>
+          </button>
+        </header>
+
+        <!-- About Me Content -->
+        <section data-teacher-content>
+          <header>
+            <h3 class="text-2xl font-bold mt-8">About Me</h3>
+          </header>
+
+          <!-- Details -->
+          <section class="mt-2 space-y-2">
+            <p class="whitespace-pre-wrap">{teacher.aboutMe}</p>
+
+            <video
+              class="w-3/4 h-96 mt-8"
+              controls
+              src={teacher.introductionVideo}></video>
+
+            <p>{teacher.videoSubtitle}</p>
+          </section>
+        </section>
+
+        <!-- Me as a Teacher Content -->
+        <section data-teacher-content>
+          <header>
+            <h3 class="text-2xl font-bold mt-8">Me as a Teacher</h3>
+          </header>
+
+          <!-- Details -->
+          <section class="mt-2">
+            <p class="whitespace-pre-wrap">{teacher.meAsATeacher}</p>
+          </section>
+        </section>
+
+        <!-- My lessons & Teaching plan Content -->
+        <section data-teacher-content>
+          <header>
+            <h3 class="text-2xl font-bold mt-8">My lessons & Teaching plan</h3>
+          </header>
+
+          <!-- Details -->
+          <section class="mt-2">
+            <p class="whitespace-pre-wrap">{teacher.teachingPlan}</p>
+          </section>
+        </section>
+      </section>
     </section>
   </section>
 </MainLayout>
+
+<script>
+  let activeNav = 0;
+  const navButtons = document.querySelectorAll("[data-teacher-nav]");
+  const navIndicators = document.querySelectorAll("[data-nav-indicator]");
+  const contents = document.querySelectorAll("[data-teacher-content]");
+
+  navButtons.forEach((btn, index) => {
+    btn.addEventListener("click", (e) => {
+      if (activeNav === index) return;
+      setActiveNav(index);
+    });
+  });
+
+  function setActiveNav(index: number) {
+    activeNav = index;
+    // Hide all indicators
+    navIndicators.forEach((div) => {
+      div.classList.add("opacity-0");
+    });
+    // Show active indicator
+    const indicator = navIndicators[index] as HTMLElement;
+    indicator.classList.remove("opacity-0");
+
+    // Hide all contents
+    contents.forEach((div) => {
+      div.classList.add("hidden");
+    });
+    // Show active content
+    const content = contents[index] as HTMLElement;
+    content.classList.remove("hidden");
+  }
+
+  setActiveNav(0);
+</script>
