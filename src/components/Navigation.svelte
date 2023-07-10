@@ -12,9 +12,7 @@
   };
 </script>
 
-<nav
-  class="fixed w-full top-0 lg:w-10/12 lg:mx-auto lg:mt-10 items-center lg:relative z-[2]"
->
+<nav class="w-full top-0 lg:w-10/12 lg:mx-auto lg:mt-10 items-center z-[2]">
   <!--mobile -->
   <div
     class="relative m-nav {navOpen
