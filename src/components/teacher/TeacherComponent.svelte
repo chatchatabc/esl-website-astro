@@ -1,20 +1,12 @@
 <script lang="ts">
-  export let teacher: {
-    name: string;
-    occupation: string;
-    shortDesc: string;
-    longDesc: string;
-    rate: string;
-    verified: boolean;
-    favorite: boolean;
-    image: string;
-    rating: string;
-    video: string;
-    videoThumbnail: string;
-  };
+  import teachersJson from "@data/teachers.json";
   import Favorite from "../common/Favorite.svelte";
   import LessonList from "./LessonList.svelte";
   import ClampText from "../common/ClampText.svelte";
+
+  const teachers = teachersJson.contents;
+  export let teacher: (typeof teachers)[number];
+
   let teacherToggleBtn = false;
 
   //for tab menu
@@ -42,12 +34,11 @@
                 <div class="flex-grow flex">
                   <div>
                     <div class="flex items-center">
-                      <span class="text-esl-3">{teacher.name}</span>&nbsp;<slot
-                        name="verified"
-                      />
+                      <span class="text-esl-3">{teacher.displayName}</span
+                      >&nbsp;<slot name="verified" />
                     </div>
                     <div class="text-esl-2 flex font-normal">
-                      {teacher.occupation}&nbsp;<slot name="rating" />
+                      {teacher.alias}&nbsp;<slot name="rating" />
                     </div>
                   </div>
                 </div>
@@ -61,7 +52,7 @@
                 class="flex items-center justify-between sm:justify-end space-x-5"
               >
                 <div class="payDefinition">
-                  <span class="font-medium">{teacher.rate}元</span>
+                  <span class="font-medium">{teacher.price}元</span>
                   <span class="text-[#9B9B9B]">/40分钟</span>
                 </div>
                 <button
@@ -139,9 +130,9 @@
                 : 'md:hidden'}"
             >
               <div class="text-esl-2 space-y-2">
-                <p>From Philippines</p>
-                <p>Living in Davao City,Philippines</p>
-                <p>Licensed Teacher with 6 years experience in teaching</p>
+                <p class="pr whitespace-pre-wrap">
+                  {teacher.aboutMe}
+                </p>
               </div>
               <div class="text-esl-3">About Me</div>
               <div class="text-esl-2">
@@ -154,22 +145,18 @@
                         class="absolute top-0 left-0 w-full h-full"
                         controls
                       >
-                        <source src={teacher.video} type="video/mp4" />
+                        <source
+                          src={teacher.introductionVideo}
+                          type="video/mp4"
+                        />
                         <track kind="captions" />
                       </video>
                     </div>
                   </div>
                   <ClampText>
-                    <span
-                      >Hello world! I'm teacher Laura from Philippines. I'm a
-                      native speaker of Filipino (Tagalog) with Bachelor's
-                      Degree in Secondary Education major in English. Some of my
-                      highlighted traits in teaching field are being a
-                      goal-oriented, patient, having good command of language,
-                      committed to work or craft and I highly value sincerity
-                      and honesty. Learners believe that you can and you're
-                      halfway there. See you! =)</span
-                    >
+                    <span>
+                      {teacher.videoSubtitle}
+                    </span>
                   </ClampText>
                 </div>
               </div>
@@ -184,16 +171,7 @@
               <div class="text-esl-3">Me as a teacher</div>
               <div class="text-esl-2">
                 <ClampText>
-                  <span
-                    >I'm the kind of a teacher who is approachable and I can
-                    establish a rapport with my students . Since I was a child,
-                    I really want to become a teacher. I know deep in my core,
-                    that I'm meant to be in teaching field. In fact, I started
-                    teaching pre-school and elementary students after I passed
-                    the Licensure Examination for Teachers in 2014. Then I moved
-                    to Secondary School where I have been teaching English and
-                    Filipino (Tagalog) for six years.</span
-                  >
+                  <span>{teacher.meAsATeacher}</span>
                 </ClampText>
               </div>
             </div>
@@ -208,22 +186,7 @@
               <div class="text-esl-2">
                 <ClampText>
                   <span>
-                    As an English teacher, I take pride in creating
-                    comprehensive and effective lesson plans for my students. My
-                    approach to teaching is student-centered, meaning that I
-                    focus on each individual's unique needs and goals. I
-                    understand that everyone has different learning styles, and
-                    I strive to create lessons that cater to a variety of
-                    preferences. In my lessons, I cover a wide range of topics,
-                    from grammar and vocabulary to conversational skills and
-                    pronunciation. I use a variety of teaching materials,
-                    including videos, podcasts, and interactive exercises, to
-                    keep my lessons engaging and interesting. I also provide
-                    regular feedback and encouragement to help my students build
-                    their confidence and proficiency in the English language.
-                    Whether you are a beginner or an advanced learner, I am
-                    committed to helping you achieve your language goals and
-                    succeed in your personal and professional endeavors.
+                    {teacher.teachingPlan}
                   </span>
                 </ClampText>
               </div>
