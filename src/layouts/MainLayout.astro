@@ -1,0 +1,36 @@
+---
+import Footer2 from "@components/Footer2.astro";
+import SeoLayout from "./SeoLayout.astro";
+import Header from "@components/Header.astro";
+
+type Props = {
+  pageTitle?: string;
+  pageDescription?: string;
+  pageAuthor?: string;
+  pageKeywords?: string;
+  ogTitle?: string;
+  ogType?: string;
+  ogImage?: string;
+  ogDescription?: string;
+  twitterCardType?: string;
+  twitterImage?: string;
+  twitterDescription?: string;
+  twitterTitle?: string;
+};
+
+const props = Astro.props as Props;
+---
+
+<SeoLayout {...props}>
+  <header>
+    <Header />
+    <slot name="header" />
+  </header>
+  <main>
+    <slot />
+  </main>
+  <footer>
+    <Footer2 />
+    <slot name="footer" />
+  </footer>
+</SeoLayout>

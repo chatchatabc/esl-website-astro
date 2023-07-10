@@ -1,0 +1,73 @@
+---
+import { SEO } from "astro-seo";
+import { ImageSupportDetection } from "astro-imagetools/components";
+
+type Props = {
+  pageTitle?: string;
+  pageDescription?: string;
+  pageAuthor?: string;
+  pageKeywords?: string;
+  ogTitle?: string;
+  ogType?: string;
+  ogImage?: string;
+  ogDescription?: string;
+  twitterCardType?: string;
+  twitterImage?: string;
+  twitterDescription?: string;
+  twitterTitle?: string;
+};
+const props = Astro.props as Props;
+
+// Fallbacks
+const pageTitle = props.pageTitle ?? "ESL - English as a Second Language";
+const pageDescription = props.pageDescription;
+const pageAuthor = props.pageAuthor;
+const pageKeywords = props.pageKeywords;
+const ogTitle = props.ogTitle ?? pageTitle;
+const ogType = props.ogType ?? "website";
+const ogImage = props.ogImage ?? "/images/og-image.png";
+const ogDescription = props.ogDescription;
+const twitterImage = props.twitterImage;
+const twitterDescription = props.twitterDescription;
+const twitterTitle = props.twitterTitle;
+---
+
+<html lang="en" class="bg-esl-c-1 scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <SEO
+      title={pageTitle}
+      description={pageDescription}
+      openGraph={{
+        basic: {
+          title: ogTitle,
+          type: ogType,
+          image: ogImage,
+        },
+        optional: {
+          siteName: ogTitle,
+          description: ogDescription,
+        },
+      }}
+      twitter={{
+        image: twitterImage,
+        description: twitterDescription,
+        title: twitterTitle,
+      }}
+      extend={{
+        link: [{ rel: "icon", href: "/favicon.ico" }],
+        meta: [
+          { name: "author", content: pageAuthor },
+          { name: "keywords", content: pageKeywords },
+        ],
+      }}
+    />
+    <ImageSupportDetection />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
