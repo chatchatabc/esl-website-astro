@@ -127,12 +127,29 @@ const { teacher } = Astro.props as Props;
           <section class="mt-2 space-y-2">
             <p class="whitespace-pre-wrap">{teacher.aboutMe}</p>
 
-            <video
-              class="mt-8 max-h-[24rem] lg:w-3/4"
-              controls
-              src={teacher.introductionVideo}></video>
+            <section class="py-4 max-w-4xl mx-auto">
+              <video
+                class="max-h-[24rem] w-full h-full p-1"
+                controls
+                src={teacher.introductionVideo}></video>
+              <ul class="flex">
+                {
+                  [...Array(5)].map((_, index) => {
+                    return (
+                      <li class="p-1 w-1/5">
+                        <div
+                          class={`pb-[50%] bg-black ${
+                            index === 0 ? "border-blue-500" : "border-black"
+                          } border-4`}
+                        />
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+            </section>
 
-            <p>{teacher.videoSubtitle}</p>
+            <p class="">{teacher.videoSubtitle}</p>
           </section>
         </section>
 
