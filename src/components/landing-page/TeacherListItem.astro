@@ -12,7 +12,7 @@ type Props = {
 const { teacher } = Astro.props as Props;
 ---
 
-<figure class="flex border bg-white rounded-xl">
+<figure class="flex border bg-white rounded-xl shadow-xl">
   <!-- Teacher Avatar -->
   <div class="p-4">
     <div
@@ -58,7 +58,7 @@ const { teacher } = Astro.props as Props;
     <footer class="flex justify-end space-x-2 mt-6 items-center">
       <p>{teacher.price} <span class="text-gray-500">/{teacher.time}</span></p>
       <a
-        class="bg-[#FF4438] py-1 px-[2rem] rounded-full text-white"
+        class="bg-[#FF4438] border-2 border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition hover:text-[#ff4438] hover:bg-white"
         href={`/teachers/${teacher.id}/`}
       >
         了解更多
