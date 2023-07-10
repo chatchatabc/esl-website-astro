@@ -85,7 +85,7 @@ const { teacher } = Astro.props as Props;
         </figure>
       </header>
 
-      <!-- Details Desktop -->
+      <!-- Details -->
       <section class="border-blue-500 mt-4 lg:py-4 lg:border-t-2 lg:px-8">
         <!-- Navigations -->
         <header
@@ -163,40 +163,64 @@ const { teacher } = Astro.props as Props;
     </section>
 
     <!-- Section -->
-    <section class="bg-white p-4 mt-4 md:p-8">
+    <section class="bg-white p-4 mt-4">
       <ul class="flex flex-wrap justify-evenly text-center">
         <li class="p-2 w-1/2 md:w-1/5">
           <div
-            class="flex justify-center items-center text-3xl text-yellow-500"
+            class="flex justify-center items-center text-2xl text-yellow-500"
           >
             <div class="w-8 h-8">
               <StarIcon />
             </div>
             <p>{teacher.rating}</p>
           </div>
-          <p class="text-gray-500 text-lg">Rating</p>
+          <p class="text-gray-500">Rating</p>
         </li>
 
         <li class="p-2 w-1/2 md:w-1/5">
-          <p class="text-3xl">2</p>
-          <p class="text-gray-500 text-lg">Students</p>
+          <p class="text-2xl">2</p>
+          <p class="text-gray-500">Students</p>
         </li>
 
         <li class="p-2 w-1/2 md:w-1/5">
-          <p class="text-3xl">10</p>
-          <p class="text-gray-500 text-lg">Lessons</p>
+          <p class="text-2xl">10</p>
+          <p class="text-gray-500">Lessons</p>
         </li>
 
         <li class="p-2 w-1/2 md:w-1/5">
-          <p class="text-3xl">100%</p>
-          <p class="text-gray-500 text-lg">Attendance</p>
+          <p class="text-2xl">100%</p>
+          <p class="text-gray-500">Attendance</p>
         </li>
 
         <li class="p-2 w-1/2 md:w-1/5">
-          <p class="text-3xl">100%</p>
-          <p class="text-gray-500 text-lg">Response</p>
+          <p class="text-2xl">100%</p>
+          <p class="text-gray-500">Response</p>
         </li>
       </ul>
+    </section>
+
+    <!-- English Lesson Section -->
+    <section class="mt-8">
+      <header class="px-2 lg:px-8">
+        <h2 class="text-3xl text-white font-bold">English Lessons</h2>
+      </header>
+
+      <section class="mt-4 p-4 bg-white md:px-8">
+        <ul class="flex flex-wrap">
+          {
+            [...Array(5)].map((_, index) => {
+              return (
+                <li class="p-2 w-full md:w-1/2 lg:w-1/3">
+                  <div class="p-4 bg-white shadow-lg border rounded-lg flex justify-between">
+                    <p>Lesson {index + 1}</p>
+                    <button>View</button>
+                  </div>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </section>
     </section>
   </section>
 </MainLayout>
