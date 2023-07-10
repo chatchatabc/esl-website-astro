@@ -12,20 +12,20 @@ type Props = {
 const { teacher } = Astro.props as Props;
 ---
 
-<figure class="flex border bg-white rounded-xl shadow-xl">
+<figure class="flex flex-wrap border bg-white rounded-xl shadow-xl">
   <!-- Teacher Avatar -->
-  <div class="p-4">
+  <div class="w-full pt-4 lg:p-4 lg:w-[unset]">
     <div
-      class="w-32 h-32 shrink-0 rounded-full overflow-hidden border-2 border-blue-500"
+      class="w-32 h-32 mx-auto shrink-0 rounded-full overflow-hidden border-2 border-blue-500"
     >
       <Img src={teacher.avatar} alt={teacher.displayName} />
     </div>
   </div>
 
   <!-- Description -->
-  <figcaption class="p-4 flex-1">
+  <figcaption class="p-4 flex-1 text-center lg:text-start">
     <!-- Title -->
-    <header class="flex">
+    <header class="flex justify-center lg:justify-start">
       <h3>{teacher.displayName}</h3>
       <div class="h-6 w-6 text-green-500">
         <VerifiedIcon />
@@ -34,7 +34,7 @@ const { teacher } = Astro.props as Props;
 
     <!-- Teacher Alias and Rating -->
     <section class="mt-2">
-      <div class="flex">
+      <div class="flex justify-center lg:justify-start">
         <p>{teacher.alias}</p>
 
         <div class="w-6 h-6 text-yellow-500">
@@ -51,14 +51,19 @@ const { teacher } = Astro.props as Props;
 
     <!-- Body Content -->
     <section class="mt-2">
-      <p class="line-clamp-1 text-gray-500">{teacher.videoSubtitle}</p>
+      <p class="line-clamp-2 text-gray-500 lg:line-clamp-1">
+        {teacher.videoSubtitle}
+      </p>
     </section>
 
     <!-- Footer -->
-    <footer class="flex justify-end space-x-2 mt-6 items-center">
-      <p>{teacher.price} <span class="text-gray-500">/{teacher.time}</span></p>
+    <footer class="justify-end mt-6 items-center lg:flex">
+      <p class="lg:pr-2">
+        {teacher.price}
+        <span class="text-gray-500">/{teacher.time}</span>
+      </p>
       <a
-        class="bg-[#FF4438] border-2 border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition hover:text-[#ff4438] hover:bg-white"
+        class="bg-[#FF4438] block border-2 border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition hover:text-[#ff4438] hover:bg-white"
         href={`/teachers/${teacher.id}/`}
       >
         了解更多
