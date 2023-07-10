@@ -12,9 +12,9 @@ type Props = {
 const { teacher } = Astro.props as Props;
 ---
 
-<figure class="flex border bg-white">
+<figure class="flex border bg-white rounded-xl">
   <!-- Teacher Avatar -->
-  <div class="p-2">
+  <div class="p-4">
     <div
       class="w-32 h-32 shrink-0 rounded-full overflow-hidden border-2 border-blue-500"
     >
@@ -23,7 +23,7 @@ const { teacher } = Astro.props as Props;
   </div>
 
   <!-- Description -->
-  <figcaption class="p-2 flex-1">
+  <figcaption class="p-4 flex-1">
     <!-- Title -->
     <header class="flex">
       <h3>{teacher.displayName}</h3>
@@ -32,31 +32,34 @@ const { teacher } = Astro.props as Props;
       </div>
     </header>
 
-    <!-- Sub info -->
-    <section class="mt-1 space-y-1">
+    <!-- Teacher Alias and Rating -->
+    <section class="mt-2">
       <div class="flex">
-        <p class="mr-2">{teacher.alias}</p>
+        <p>{teacher.alias}</p>
 
         <div class="w-6 h-6 text-yellow-500">
           <StarIcon />
         </div>
         <p class="text-yellow-500">{teacher.rating}</p>
       </div>
+    </section>
 
+    <!-- Teacher About me -->
+    <section class="mt-2">
       <p class="line-clamp-1">{teacher.aboutMe}</p>
     </section>
 
     <!-- Body Content -->
-    <section class="my-2">
+    <section class="mt-2">
       <p class="line-clamp-1 text-gray-500">{teacher.videoSubtitle}</p>
     </section>
 
     <!-- Footer -->
-    <footer class="flex justify-end space-x-2">
-      <p>{teacher.price}/{teacher.time}</p>
+    <footer class="flex justify-end space-x-2 mt-6 items-center">
+      <p>{teacher.price} <span class="text-gray-500">/{teacher.time}</span></p>
       <a
         class="bg-[#FF4438] py-1 px-[2rem] rounded-full text-white"
-        href={`/teacher/${teacher.id}/`}
+        href={`/teachers/${teacher.id}/`}
       >
         了解更多
       </a>
