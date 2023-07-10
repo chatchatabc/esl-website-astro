@@ -4,18 +4,10 @@ import teachersJson from "@data/teachers.json";
 import { Img } from "astro-imagetools/components";
 import { Picture } from "astro-imagetools/components";
 import TeacherComponent from "@components/teacher/TeacherComponent.svelte";
-import DefaultSEO from "@data/defaultSEO.json";
-import type {
-  PageMetaTag,
-  OpenGraphMetaTag,
-  TwitterMetaTag,
-  MetaTag,
-} from "@customTypes/SEO/types";
-import MainLayoutCh from "@layouts/MainLayoutCh.astro";
+import MainLayout from "@layouts/MainLayout.astro";
 
 export async function getStaticPaths() {
   const teachers = teachersJson.contents;
-
   return teachers.map((teacher) => {
     return {
       params: {
@@ -33,33 +25,9 @@ type Props = {
   teacher: (typeof teachers)[number];
 };
 const { teacher } = Astro.props as Props;
-
-let page: PageMetaTag = {
-  title: DefaultSEO.metaTag.pageTitle,
-  description: DefaultSEO.metaTag.pageDescription,
-  keywords: DefaultSEO.metaTag.pageKeywords,
-  author: DefaultSEO.metaTag.pageAuthor,
-};
-let opengraph: OpenGraphMetaTag = {
-  title: DefaultSEO.metaTag.ogTitle,
-  type: DefaultSEO.metaTag.ogType,
-  image: DefaultSEO.metaTag.ogImage,
-  description: DefaultSEO.metaTag.ogDescription,
-};
-let twitter: TwitterMetaTag = {
-  cardType: DefaultSEO.metaTag.twitterCardType,
-  title: DefaultSEO.metaTag.twitterTitle,
-  description: DefaultSEO.metaTag.twitterDescription,
-  image: DefaultSEO.metaTag.twitterImage,
-};
-let metaTag: MetaTag = {
-  page: page,
-  openGraph: opengraph,
-  twitter: twitter,
-};
 ---
 
-<MainLayoutCh metaTag={metaTag} currentPage="Teachers">
+<MainLayout>
   <TeacherComponent teacher={teacher} client:load>
     <div
       slot="img"
@@ -76,6 +44,7 @@ let metaTag: MetaTag = {
         format="png"
       />
     </div>
+
     <div slot="rating" class="inline-block">
       <div class="text-[#FFCC3E] w-fit flex flex-1 items-center justify-center">
         <Icon
@@ -85,12 +54,14 @@ let metaTag: MetaTag = {
         <span>{teacher.rating}</span>
       </div>
     </div>
+
     <span slot="verified">
       <Icon
         name="mdi:verified-user"
         class="h-[1.5rem] w-[1.5rem] inline-block text-[#64C01B]"
       />
     </span>
+
     <div
       slot="iconStar"
       class="text-[#FFCC3E] flex flex-1 items-center justify-center text-esl-4"
@@ -101,6 +72,7 @@ let metaTag: MetaTag = {
       />
       <span>{teacher.rating}</span>
     </div>
+
     <div slot="qrCode">
       <Picture
         alt="WeChat"
@@ -111,7 +83,7 @@ let metaTag: MetaTag = {
       />
     </div>
   </TeacherComponent>
-</MainLayoutCh>
+</MainLayout>
 
 <style>
   .line {

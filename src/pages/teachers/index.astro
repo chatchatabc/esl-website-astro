@@ -1,53 +1,24 @@
 ---
-import MainLayoutCh from "@layouts/MainLayoutCh.astro";
 import { Icon } from "astro-icon";
-import landingJson from "@data/landing-page.json";
 import { Img } from "astro-imagetools/components";
 import { Picture } from "astro-imagetools/components";
 import TeacherComponent from "@components/teacher/TeacherComponent.svelte";
-import DefaultSEO from "@data/defaultSEO.json";
-import type {
-  PageMetaTag,
-  OpenGraphMetaTag,
-  TwitterMetaTag,
-  MetaTag,
-} from "@customTypes/SEO/types";
-let currentTeacher = landingJson.teachers[0];
+import teachersJson from "@data/teachers.json";
+import MainLayout from "@layouts/MainLayout.astro";
 
-let page: PageMetaTag = {
-  title: DefaultSEO.metaTag.pageTitle,
-  description: DefaultSEO.metaTag.pageDescription,
-  keywords: DefaultSEO.metaTag.pageKeywords,
-  author: DefaultSEO.metaTag.pageAuthor,
-};
-let opengraph: OpenGraphMetaTag = {
-  title: DefaultSEO.metaTag.ogTitle,
-  type: DefaultSEO.metaTag.ogType,
-  image: DefaultSEO.metaTag.ogImage,
-  description: DefaultSEO.metaTag.ogDescription,
-};
-let twitter: TwitterMetaTag = {
-  cardType: DefaultSEO.metaTag.twitterCardType,
-  title: DefaultSEO.metaTag.twitterTitle,
-  description: DefaultSEO.metaTag.twitterDescription,
-  image: DefaultSEO.metaTag.twitterImage,
-};
-let lang = "cn";
-let metaTag: MetaTag = {
-  page: page,
-  openGraph: opengraph,
-  twitter: twitter,
-};
+const teachers = teachersJson.contents;
+
+const teacher = teachers[0];
 ---
 
-<MainLayoutCh metaTag={metaTag} currentPage="Teachers">
-  <TeacherComponent teacher={currentTeacher} client:load>
+<MainLayout>
+  <TeacherComponent teacher={teacher} client:load>
     <div
       slot="img"
       class="rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem] min-w-[6.25rem] min-h-[6.25rem] overflow-hidden"
     >
       <Img
-        src={currentTeacher.image}
+        src={teacher.avatar}
         alt="Teacher"
         objectFit={"cover"}
         layout={"fullWidth"}
@@ -63,7 +34,7 @@ let metaTag: MetaTag = {
           name="ic:baseline-star-rate"
           class="h-[1.25rem] w-[1.25rem] inline"
         />
-        <span>{currentTeacher.rating}</span>
+        <span>{teacher.rating}</span>
       </div>
     </div>
     <span slot="verified">
@@ -80,7 +51,7 @@ let metaTag: MetaTag = {
         name="ic:baseline-star-rate"
         class="h-[1.77rem] w-[1.77rem] inline"
       />
-      <span>{currentTeacher.rating}</span>
+      <span>{teacher.rating}</span>
     </div>
     <div slot="qrCode">
       <Picture
@@ -106,32 +77,33 @@ let metaTag: MetaTag = {
       color: black;
     }
   </style>
-  <script>
-    const tabMenus = document.querySelectorAll(
-      ".tab-menu>button"
-    ) as NodeListOf<HTMLButtonElement>;
-    const tabContents = document.querySelectorAll(
-      ".tab-content"
-    ) as NodeListOf<Element>;
-    let tabIndex = 0;
-    tabMenus.forEach((tabMenu, index) => {
-      tabMenu.addEventListener("click", () => {
-        showTabContent(index);
-      });
+</MainLayout>
+
+<script>
+  const tabMenus = document.querySelectorAll(
+    ".tab-menu>button"
+  ) as NodeListOf<HTMLButtonElement>;
+  const tabContents = document.querySelectorAll(
+    ".tab-content"
+  ) as NodeListOf<Element>;
+  let tabIndex = 0;
+  tabMenus.forEach((tabMenu, index) => {
+    tabMenu.addEventListener("click", () => {
+      showTabContent(index);
     });
+  });
 
-    function showTabContent(index: number) {
-      //get current and toggle hide to on
-      tabContents[tabIndex].classList.toggle("md:hidden");
-      tabContents[tabIndex].classList.toggle("md:block");
-      tabMenus[tabIndex].classList.toggle("show");
-      //get change current to index
-      tabIndex = index;
+  function showTabContent(index: number) {
+    //get current and toggle hide to on
+    tabContents[tabIndex].classList.toggle("md:hidden");
+    tabContents[tabIndex].classList.toggle("md:block");
+    tabMenus[tabIndex].classList.toggle("show");
+    //get change current to index
+    tabIndex = index;
 
-      //get current and toggle display
-      tabContents[tabIndex].classList.toggle("md:hidden");
-      tabContents[tabIndex].classList.toggle("md:block");
-      tabMenus[tabIndex].classList.toggle("show");
-    }
-  </script>
-</MainLayoutCh>
+    //get current and toggle display
+    tabContents[tabIndex].classList.toggle("md:hidden");
+    tabContents[tabIndex].classList.toggle("md:block");
+    tabMenus[tabIndex].classList.toggle("show");
+  }
+</script>
