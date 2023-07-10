@@ -1,0 +1,89 @@
+---
+import StarIcon from "@assets/StarIcon.astro";
+import VerifiedIcon from "@assets/VerifiedIcon.astro";
+import teachersJson from "@data/teachers.json";
+import MainLayout from "@layouts/MainLayout.astro";
+import { Img } from "astro-imagetools/components";
+
+export function getStaticPaths() {
+  const teachers = teachersJson.contents;
+  return teachers.map((teacher) => {
+    return {
+      params: {
+        new: teacher.id,
+      },
+      props: {
+        teacher,
+      },
+    };
+  });
+}
+
+const teachers = teachersJson.contents;
+type Props = {
+  teacher: (typeof teachers)[number];
+};
+
+const { teacher } = Astro.props as Props;
+---
+
+<MainLayout>
+  <!-- Container -->
+  <section class="container mx-auto px-4 lg:px-8">
+    <!-- Section -->
+    <section class="bg-white p-4 py-12 md:p-8">
+      <!-- Header -->
+      <header>
+        <figure class="flex flex-wrap">
+          <!-- Teacher Avatar -->
+          <div class="w-full md:w-[unset]">
+            <div
+              class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-blue-500"
+            >
+              <Img src={teacher.avatar} alt={teacher.displayName} />
+            </div>
+          </div>
+
+          <figcaption class="flex-1 flex flex-col pl-4 lg:pl-8">
+            <!-- Header -->
+            <header class="flex items-center justify-center md:justify-start">
+              <h3 class="text-xl">{teacher.displayName}</h3>
+
+              <div class="h-6 w-6 text-green-500">
+                <VerifiedIcon />
+              </div>
+            </header>
+
+            <!-- More info -->
+            <section class="flex justify-center md:justify-start">
+              <p>{teacher.alias}</p>
+
+              <div class="flex items-center text-yellow-500">
+                <div class="h-6 w-6">
+                  <StarIcon />
+                </div>
+                <p>{teacher.rating}</p>
+              </div>
+            </section>
+
+            <!-- Footer -->
+            <footer
+              class="mt-8 items-center justify-center md:flex md:mt-auto md:justify-end"
+            >
+              <p class="text-center md:pr-2">
+                {teacher.price}
+                <span class="text-gray-500">/{teacher.time}</span>
+              </p>
+              <a
+                class="bg-[#FF4438] block border-2 text-center border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition hover:text-[#ff4438] hover:bg-white"
+                href={`/teachers/${teacher.id}/`}
+              >
+                了解更多
+              </a>
+            </footer>
+          </figcaption>
+        </figure>
+      </header>
+    </section>
+  </section>
+</MainLayout>
