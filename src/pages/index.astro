@@ -209,7 +209,11 @@ const teachers = teachersJson.contents;
                 <figure class="rounded-b-3xl rounded-tl-3xl overflow-hidden flex flex-col">
                   <div class="pb-[60%] relative">
                     <div class="absolute top-0 w-full h-full">
-                      <Img src={data.image} alt={data.title} />
+                      <Img
+                        breakpoints={[480]}
+                        src={data.image}
+                        alt={data.title}
+                      />
                     </div>
                   </div>
 

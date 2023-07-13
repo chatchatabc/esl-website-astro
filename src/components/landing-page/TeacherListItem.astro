@@ -16,9 +16,9 @@ const { teacher } = Astro.props as Props;
   <!-- Teacher Avatar -->
   <div class="w-full pt-4 lg:p-4 lg:w-[unset]">
     <div
-      class="w-32 h-32 mx-auto shrink-0 rounded-full overflow-hidden border-2 border-blue-500"
+      class="w-32 h-32 mx-auto shrink-0 rounded-full overflow-hidden border-4 border-blue-500"
     >
-      <Img src={teacher.avatar} alt={teacher.displayName} />
+      <Img breakpoints={[144]} src={teacher.avatar} alt={teacher.displayName} />
     </div>
   </div>
 

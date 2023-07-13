@@ -41,7 +41,11 @@ const { teacher } = Astro.props as Props;
             <div
               class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-blue-500"
             >
-              <Img src={teacher.avatar} alt={teacher.displayName} />
+              <Img
+                breakpoints={[144]}
+                src={teacher.avatar}
+                alt={teacher.displayName}
+              />
             </div>
           </div>
 
@@ -85,6 +89,7 @@ const { teacher } = Astro.props as Props;
                 <div slot="content" class="pb-[100%] relative">
                   <div class="absolute w-full h-full top-0">
                     <Picture
+                      breakpoints={[480]}
                       src="/images/qr-codes/wechat-black.png"
                       alt="wechat qr code"
                     />
