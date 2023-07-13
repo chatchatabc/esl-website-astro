@@ -1,10 +1,10 @@
 {
-  "Home":"主页",
-  "About":"关于我们",
-  "Service":"service",
-  "Resources":"教学资源",
-  "Tips":"Tips",
-  "Register":"Register",
-  "Login":"Login",
-  "ContactUs":"联系我们"
+  "Home": "主页",
+  "About": "关于我们",
+  "Service": "service",
+  "Resources": "教学资源",
+  "Tips": "Tips",
+  "Register": "Register",
+  "Login": "Login",
+  "ContactUs": "联系我们"
 }

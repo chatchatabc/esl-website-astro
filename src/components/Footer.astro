@@ -1,10 +1,12 @@
 ---
 import { Icon } from "astro-icon";
 import footerJson from "@data/footer.json";
-const {config} = Astro.props;
+const { config } = Astro.props;
 ---
 
-<div class="bg-esl-c-2 pt-[5rem] pb-[2.5rem] text-white rounded-t-[1.75rem] container mx-auto lg:rounded-t-[3.75rem] lg:mt-10 lg:w-10/12 ">
+<div
+  class="bg-esl-c-2 pt-[5rem] pb-[2.5rem] text-white rounded-t-[1.75rem] container mx-auto lg:rounded-t-[3.75rem] lg:mt-10 lg:w-10/12"
+>
   <!--section1 - Take the first step... -->
   <div class="w-fit mx-auto px-5 lg:px-0">
     <figure class="flex flex-1 space-x-5">
@@ -25,18 +27,27 @@ const {config} = Astro.props;
   </div>
 
   <!--section2 - QR code section-->
-  <div class="w-fit mx-auto flex flex-1 flex-wrap justify-center  mt-6 lg:space-x-[3rem]">
+  <div
+    class="w-fit mx-auto flex flex-1 flex-wrap justify-center mt-6 lg:space-x-[3rem]"
+  >
     {
       footerJson.qr.map((qrSet: any) => (
         <div class=" flex flex-col px-[3rem] py-[1rem] lg:px-0 lg:py-0">
           <div class="text-center text-esl-4 bold">{qrSet.url}</div>
-          <img class={"h-[10rem] w-[10rem] "+(config.lite?config.placeholder:"")} src={  config.lite? "": `./images/${qrSet.qrCode}`} />
+          <img
+            class={
+              "h-[10rem] w-[10rem] " + (config.lite ? config.placeholder : "")
+            }
+            src={config.lite ? "" : `./images/${qrSet.qrCode}`}
+          />
         </div>
       ))
     }
   </div>
   <!--section3 - useful links section -->
-  <div class=" text-white space-y-6 px-5 mt-10 md:w-8/12 md:mx-auto lg:space-y-0  lg:mt-[6rem] lg:flex lg:flex-1  lg:justify-between">
+  <div
+    class="text-white space-y-6 px-5 mt-10 md:w-8/12 md:mx-auto lg:space-y-0 lg:mt-[6rem] lg:flex lg:flex-1 lg:justify-between"
+  >
     {
       footerJson.link1.map((link) => (
         <div class=" space-y-3">
@@ -53,7 +64,7 @@ const {config} = Astro.props;
         </div>
       ))
     }
-    <div class="space-y-3 ">
+    <div class="space-y-3">
       <div>
         <span class="text-esl-4">{footerJson.link2.parent}</span>
       </div>
