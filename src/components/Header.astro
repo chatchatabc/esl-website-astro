@@ -2,46 +2,113 @@
 import headerJson from "@data/header.json";
 import { Icon } from "astro-icon";
 import { Picture } from "astro-imagetools/components";
-import Navigation from "./Navigation.svelte";
-const { currentPage } = Astro.props;
 
-let style1 = `inline-block text-white  m-4 border-b-2 pb-2 text-esl-2 cursor-pointer`;
-let style2 =
-  "inline-block  py-2 px-4 mt-2 rounded-full bg-white text-esl-2 text-esl-c-4 hover:bg-esl-c-2 hover:text-white";
-
-let mobileStyle1 = `max-lg:block max-lg:p-[1rem] max-lg:m-0 max-lg:border-b-0  text-esl-c-2`;
+const { links } = headerJson;
 ---
 
-<Navigation client:load links={headerJson.links} currentPage={currentPage}>
-  <span slot="hamburger">
-    <Icon name="charm:menu-hamburger" class="h-[1.5rem] w-[1.5rem]" />
-  </span>
-  <span slot="close">
-    <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem]" />
-  </span>
-  <div slot="mobileCompanyLogo" class="w-fit mx-auto">
-    <a href="/" class="p-1 flex h-full brightness-0 invert items-center">
-      <Picture
-        h={50}
-        alt="logo"
-        src="/images/logo/logo-horizontal.png"
-        layout="fullWidth"
-        brightness={0}
-      />
-    </a>
-  </div>
-  <div slot="companyLogo" class="fit">
-    <a href="/" class="block h-full brightness-0 invert">
-      <Picture
-        h={50}
-        alt="logo"
-        src="/images/logo/logo-horizontal.png"
-        layout="fullWidth"
-        brightness={0}
-      />
-    </a>
-  </div>
-</Navigation>
+<section class="bg-esl-c-1 z-[1]">
+  <section
+    class="flex justify-center items-center container relative py-2 md:py-4 lg:py-8"
+  >
+    <!-- Mobile Menu Button -->
+    <button
+      data-navbar-menu-btn
+      class="absolute left-2 p-2 border rounded-md overflow-hidden text-white lg:hidden"
+    >
+      <div data-navbar-menu-icon class="bg-esl-c-1 absolute transition">
+        <Icon name="charm:menu-hamburger" class="h-[1.5rem] w-[1.5rem]" />
+      </div>
+      <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem]" />
+    </button>
 
-<script></script>
-<style></style>
+    <!-- Logo -->
+    <a class="block w-40 invert brightness-0" href="/">
+      <Picture
+        objectFit="contain"
+        src="/images/logo/logo-horizontal.png"
+        alt="logo"
+      />
+    </a>
+
+    <!-- Navigations Mobile -->
+    <nav
+      data-navbar-mobile-nav
+      class="bg-white absolute top-full w-full grid grid-rows-[0fr] transition-all lg:hidden"
+    >
+      <ul class="overflow-hidden">
+        {
+          links.map((link) => {
+            return (
+              <li>
+                <button
+                  class="p-4 block w-full text-start"
+                  data-navbar-link={link.link}
+                >
+                  {link.text}
+                </button>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <!-- Navigations Desktop -->
+    <nav
+      class="text-white absolute mx-auto w-fit left-0 right-0 hidden lg:block"
+    >
+      <ul class="flex items-center space-x-8">
+        {
+          links.map((link) => {
+            return (
+              <li>
+                <button data-navbar-link={link.link} class="group">
+                  <span>{link.text}</span>
+                  <div class="h-0.5 scale-x-0 bg-white origin-left transition group-hover:scale-x-100" />
+                </button>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <!-- CTA: Contact us -->
+    <button
+      class="px-6 py-2 hidden ml-auto transition bg-white rounded-full lg:block hover:text-white hover:bg-esl-c-2"
+      data-navbar-contact-us>联系我们</button
+    >
+  </section>
+</section>
+
+<script>
+  const button = document.querySelector("[data-navbar-contact-us]");
+  const links =
+    document.querySelectorAll<HTMLButtonElement>("[data-navbar-link]");
+  const menuIcon = document.querySelector("[data-navbar-menu-icon]");
+  const menuBtn = document.querySelector("[data-navbar-menu-btn]");
+  const mobileNav = document.querySelector("[data-navbar-mobile-nav]");
+
+  menuBtn?.addEventListener("click", () => {
+    menuIcon?.classList.toggle("translate-y-[150%]");
+    mobileNav?.classList.toggle("grid-rows-[0fr]");
+    mobileNav?.classList.toggle("grid-rows-[1fr]");
+  });
+
+  button?.addEventListener("click", () => {
+    const contactUsSection = document.querySelector("#contact");
+    contactUsSection?.scrollIntoView({ behavior: "smooth" });
+  });
+
+  links.forEach((link) => {
+    link.addEventListener("click", () => {
+      const value = link.dataset.navbarLink ?? "";
+      const section = document.querySelector(value);
+      section?.scrollIntoView({ behavior: "smooth" });
+
+      menuIcon?.classList.toggle("translate-y-[150%]");
+      mobileNav?.classList.toggle("grid-rows-[0fr]");
+      mobileNav?.classList.toggle("grid-rows-[1fr]");
+    });
+  });
+</script>
