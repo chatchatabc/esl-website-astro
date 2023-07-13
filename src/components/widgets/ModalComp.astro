@@ -1,0 +1,64 @@
+---
+type Props = {
+  className?: string;
+};
+
+const { className } = Astro.props as Props;
+---
+
+<modal-comp class={className}>
+  <!-- Modal Container -->
+  <div
+    data-modal-container
+    class="fixed top-0 left-0 w-full h-full z-[11] backdrop-blur-md flex transition items-center justify-center opacity-0 pointer-events-none"
+  >
+    <!-- Background -->
+    <div
+      data-modal-bg
+      class="absolute w-full h-full top-0 left-0 bg-black bg-opacity-25"
+    >
+    </div>
+
+    <!-- Modal Content -->
+    <div
+      data-modal-content
+      class="relative max-w-lg mx-4 w-full translate-y-full transition"
+    >
+      <div class="bg-white p-4 rounded-xl">
+        <slot name="content" />
+      </div>
+    </div>
+  </div>
+
+  <slot name="button" />
+</modal-comp>
+
+<script>
+  class ModalComp extends HTMLElement {
+    constructor() {
+      super();
+
+      const content = this.querySelector("[data-modal-content]");
+      const container = this.querySelector("[data-modal-container]");
+      const button = this.querySelector("button");
+      const body = document.querySelector("body");
+
+      button?.addEventListener("click", () => {
+        container?.classList.add("pointer-events-auto", "opacity-100");
+        content?.classList.remove("translate-y-full");
+        body?.classList.add("overflow-hidden");
+      });
+
+      container?.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+        if (target?.hasAttribute("data-modal-bg")) {
+          container?.classList.remove("pointer-events-auto", "opacity-100");
+          content?.classList.add("translate-y-full");
+          body?.classList.remove("overflow-hidden");
+        }
+      });
+    }
+  }
+
+  customElements.define("modal-comp", ModalComp);
+</script>
