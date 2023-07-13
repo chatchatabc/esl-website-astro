@@ -1,0 +1,8 @@
+/images/*
+  Cache-Control: max-age=604800
+
+/_astro/*
+  Cache-Control: max-age=604800
+
+/chunks/*
+  Cache-Control: max-age=604800
