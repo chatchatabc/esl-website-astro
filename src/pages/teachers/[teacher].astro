@@ -3,7 +3,8 @@ import StarIcon from "@assets/StarIcon.astro";
 import VerifiedIcon from "@assets/VerifiedIcon.astro";
 import teachersJson from "@data/teachers.json";
 import MainLayout from "@layouts/MainLayout.astro";
-import { Img } from "astro-imagetools/components";
+import ModalComp from "@components/widgets/ModalComp.astro";
+import { Img, Picture } from "astro-imagetools/components";
 
 export function getStaticPaths() {
   const teachers = teachersJson.contents;
@@ -44,7 +45,7 @@ const { teacher } = Astro.props as Props;
             </div>
           </div>
 
-          <figcaption class="flex-1 flex flex-col pl-4 lg:pl-8">
+          <figcaption class="flex-1 flex flex-col mt-4 md:mt-0 md:pl-4 lg:pl-8">
             <!-- Header -->
             <header class="flex items-center justify-center md:justify-start">
               <h3 class="text-xl">{teacher.displayName}</h3>
@@ -68,18 +69,28 @@ const { teacher } = Astro.props as Props;
 
             <!-- Footer -->
             <footer
-              class="mt-8 items-center justify-center md:flex md:mt-auto md:justify-end"
+              class="mt-4 items-center justify-center md:flex md:mt-auto md:justify-end"
             >
               <p class="text-center md:pr-2">
                 {teacher.price}
                 <span class="text-gray-500">/{teacher.time}</span>
               </p>
-              <a
-                class="bg-[#FF4438] block border-2 text-center border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition hover:text-[#ff4438] hover:bg-white"
-                href={`/teachers/${teacher.id}/`}
-              >
-                了解更多
-              </a>
+              <ModalComp className="block">
+                <button
+                  slot="button"
+                  class="bg-[#FF4438] block w-full border-2 text-center border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition hover:text-[#ff4438] hover:bg-white"
+                >
+                  了解更多
+                </button>
+                <div slot="content" class="pb-[100%] relative">
+                  <div class="absolute w-full h-full top-0">
+                    <Picture
+                      src="/images/qr-codes/wechat-black.png"
+                      alt="wechat qr code"
+                    />
+                  </div>
+                </div>
+              </ModalComp>
             </footer>
           </figcaption>
         </figure>
