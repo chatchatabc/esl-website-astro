@@ -6,4 +6,5 @@ export default defineConfig({
   format: "webp",
   layout: "fill",
   objectFit: "cover",
+  fadeInTransition: false,
 });
