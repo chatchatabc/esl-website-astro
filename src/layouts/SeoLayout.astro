@@ -41,9 +41,9 @@ const twitterTitle =
 <html lang="en" class="bg-esl-c-1 scroll-smooth">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+
     <SEO
       title={pageTitle}
       description={pageDescription}
@@ -64,13 +64,31 @@ const twitterTitle =
         title: twitterTitle,
       }}
       extend={{
-        link: [{ rel: "icon", href: "/favicon.ico" }],
         meta: [
           { name: "author", content: pageAuthor },
           { name: "keywords", content: pageKeywords },
         ],
       }}
     />
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/icons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/icons/favicon-16x16.png"
+    />
+
     <ImageSupportDetection />
   </head>
   <body>
