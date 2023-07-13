@@ -92,17 +92,35 @@ const { links } = headerJson;
   const menuBtn = document.querySelector("[data-navbar-menu-btn]");
   const mobileNav = document.querySelector("[data-navbar-mobile-nav]");
 
+  let open = false;
+
+  function handleOpen() {
+    if (open) {
+      menuIcon?.classList.remove("translate-y-[150%]");
+      mobileNav?.classList.add("grid-rows-[0fr]");
+      mobileNav?.classList.remove("grid-rows-[1fr]");
+      open = false;
+    } else {
+      menuIcon?.classList.add("translate-y-[150%]");
+      mobileNav?.classList.remove("grid-rows-[0fr]");
+      mobileNav?.classList.add("grid-rows-[1fr]");
+      open = true;
+    }
+  }
+
   menuBtn?.addEventListener("click", () => {
-    menuIcon?.classList.toggle("translate-y-[150%]");
-    mobileNav?.classList.toggle("grid-rows-[0fr]");
-    mobileNav?.classList.toggle("grid-rows-[1fr]");
+    handleOpen();
+  });
+
+  menuBtn?.addEventListener("blur", () => {
+    if (!mobileNav?.matches(":hover")) {
+      handleOpen();
+    }
   });
 
   links.forEach((link) => {
     link.addEventListener("click", () => {
-      menuIcon?.classList.toggle("translate-y-[150%]");
-      mobileNav?.classList.toggle("grid-rows-[0fr]");
-      mobileNav?.classList.toggle("grid-rows-[1fr]");
+      handleOpen();
     });
   });
 </script>
