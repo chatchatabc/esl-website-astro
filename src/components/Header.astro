@@ -12,6 +12,7 @@ const { links } = headerJson;
   >
     <!-- Mobile Menu Button -->
     <button
+      aria-label="Toggle mobile menu"
       data-navbar-menu-btn
       class="absolute left-2 p-2 border rounded-md overflow-hidden text-white lg:hidden"
     >
@@ -40,12 +41,13 @@ const { links } = headerJson;
           links.map((link) => {
             return (
               <li>
-                <button
+                <a
+                  data-navbar-link
                   class="p-4 block w-full text-start"
-                  data-navbar-link={link.link}
+                  href={link.href}
                 >
-                  {link.text}
-                </button>
+                  {link.label}
+                </a>
               </li>
             );
           })
@@ -62,10 +64,10 @@ const { links } = headerJson;
           links.map((link) => {
             return (
               <li>
-                <button data-navbar-link={link.link} class="group">
-                  <span>{link.text}</span>
+                <a class="group" href={link.href}>
+                  <span>{link.label}</span>
                   <div class="h-0.5 scale-x-0 bg-white origin-left transition group-hover:scale-x-100" />
-                </button>
+                </a>
               </li>
             );
           })
@@ -74,15 +76,16 @@ const { links } = headerJson;
     </nav>
 
     <!-- CTA: Contact us -->
-    <button
+    <a
+      href="/#contact"
       class="px-6 py-2 hidden ml-auto transition bg-white rounded-full lg:block hover:text-white hover:bg-esl-c-2"
-      data-navbar-contact-us>联系我们</button
     >
+      联系我们
+    </a>
   </section>
 </section>
 
 <script>
-  const button = document.querySelector("[data-navbar-contact-us]");
   const links =
     document.querySelectorAll<HTMLButtonElement>("[data-navbar-link]");
   const menuIcon = document.querySelector("[data-navbar-menu-icon]");
@@ -95,17 +98,8 @@ const { links } = headerJson;
     mobileNav?.classList.toggle("grid-rows-[1fr]");
   });
 
-  button?.addEventListener("click", () => {
-    const contactUsSection = document.querySelector("#contact");
-    contactUsSection?.scrollIntoView({ behavior: "smooth" });
-  });
-
   links.forEach((link) => {
     link.addEventListener("click", () => {
-      const value = link.dataset.navbarLink ?? "";
-      const section = document.querySelector(value);
-      section?.scrollIntoView({ behavior: "smooth" });
-
       menuIcon?.classList.toggle("translate-y-[150%]");
       mobileNav?.classList.toggle("grid-rows-[0fr]");
       mobileNav?.classList.toggle("grid-rows-[1fr]");
