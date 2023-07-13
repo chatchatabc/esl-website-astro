@@ -1,82 +1,33 @@
 ---
-import { Icon } from "astro-icon";
-import { Img } from "astro-imagetools/components";
-import { Picture } from "astro-imagetools/components";
-import TeacherComponent from "@components/teacher/TeacherComponent.svelte";
 import teachersJson from "@data/teachers.json";
 import MainLayout from "@layouts/MainLayout.astro";
+import TeacherListItem from "@components/landing-page/TeacherListItem.astro";
 
 const teachers = teachersJson.contents;
-
-const teacher = teachers[0];
 ---
 
 <MainLayout>
-  <TeacherComponent teacher={teacher} client:load>
-    <div
-      slot="img"
-      class="rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem] min-w-[6.25rem] min-h-[6.25rem] overflow-hidden"
-    >
-      <Img
-        src={teacher.avatar}
-        alt="Teacher"
-        objectFit={"cover"}
-        layout={"fullWidth"}
-        aspect={1}
-        h={100}
-        w={100}
-        format="png"
-      />
+  <section class="py-4">
+    <div class="container">
+      <header>
+        <h1 class="text-4xl text-center text-white font-bold">Our Teachers</h1>
+      </header>
+
+      <section class="mt-4">
+        <ul class="flex flex-wrap">
+          {
+            teachers.map((teacher) => {
+              return (
+                <li class="w-full p-2 md:w-1/2">
+                  <TeacherListItem teacher={teacher} />
+                </li>
+              );
+            })
+          }
+        </ul>
+      </section>
     </div>
-    <div slot="rating" class="inline-block">
-      <div class="text-[#FFCC3E] w-fit flex flex-1 items-center justify-center">
-        <Icon
-          name="ic:baseline-star-rate"
-          class="h-[1.25rem] w-[1.25rem] inline"
-        />
-        <span>{teacher.rating}</span>
-      </div>
-    </div>
-    <span slot="verified">
-      <Icon
-        name="mdi:verified-user"
-        class="h-[1.5rem] w-[1.5rem] inline-block text-[#64C01B]"
-      />
-    </span>
-    <div
-      slot="iconStar"
-      class="text-[#FFCC3E] flex flex-1 items-center justify-center text-esl-4"
-    >
-      <Icon
-        name="ic:baseline-star-rate"
-        class="h-[1.77rem] w-[1.77rem] inline"
-      />
-      <span>{teacher.rating}</span>
-    </div>
-    <div slot="qrCode">
-      <Picture
-        alt="WeChat"
-        src={`/images/static-qr-code-wechat-black.png`}
-        w={240}
-        h={240}
-        breakpoints={{ count: 1, minWidth: 240 }}
-      />
-    </div>
-  </TeacherComponent>
-  <style>
-    .line {
-      visibility: hidden;
-    }
-    .show .line {
-      visibility: visible;
-    }
-    .tab-text {
-      color: #b6b6b6;
-    }
-    .show .tab-text {
-      color: black;
-    }
-  </style>
+  </section>
 </MainLayout>
 
 <script>

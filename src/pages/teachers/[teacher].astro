@@ -1,12 +1,11 @@
 ---
-import { Icon } from "astro-icon";
+import StarIcon from "@assets/StarIcon.astro";
+import VerifiedIcon from "@assets/VerifiedIcon.astro";
 import teachersJson from "@data/teachers.json";
-import { Img } from "astro-imagetools/components";
-import { Picture } from "astro-imagetools/components";
-import TeacherComponent from "@components/teacher/TeacherComponent.svelte";
 import MainLayout from "@layouts/MainLayout.astro";
+import { Img } from "astro-imagetools/components";
 
-export async function getStaticPaths() {
+export function getStaticPaths() {
   const teachers = teachersJson.contents;
   return teachers.map((teacher) => {
     return {
@@ -24,107 +23,261 @@ const teachers = teachersJson.contents;
 type Props = {
   teacher: (typeof teachers)[number];
 };
+
 const { teacher } = Astro.props as Props;
 ---
 
 <MainLayout>
-  <TeacherComponent teacher={teacher} client:load>
-    <div
-      slot="img"
-      class="rounded-full border-esl-c-1 border-4 w-[6.25rem] h-[6.25rem] min-w-[6.25rem] min-h-[6.25rem] overflow-hidden"
-    >
-      <Img
-        src={teacher.avatar}
-        alt="Teacher"
-        objectFit={"cover"}
-        layout={"fullWidth"}
-        aspect={1}
-        h={100}
-        w={100}
-        format="png"
-      />
-    </div>
+  <!-- Container -->
+  <section class="container mt-2 mx-auto px-4 md:mt-0 lg:px-8">
+    <!-- Section -->
+    <section class="bg-white p-4 md:p-8">
+      <!-- Header -->
+      <header>
+        <figure class="flex flex-wrap">
+          <!-- Teacher Avatar -->
+          <div class="w-full md:w-[unset]">
+            <div
+              class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-blue-500"
+            >
+              <Img src={teacher.avatar} alt={teacher.displayName} />
+            </div>
+          </div>
 
-    <div slot="rating" class="inline-block">
-      <div class="text-[#FFCC3E] w-fit flex flex-1 items-center justify-center">
-        <Icon
-          name="ic:baseline-star-rate"
-          class="h-[1.25rem] w-[1.25rem] inline"
-        />
-        <span>{teacher.rating}</span>
-      </div>
-    </div>
+          <figcaption class="flex-1 flex flex-col pl-4 lg:pl-8">
+            <!-- Header -->
+            <header class="flex items-center justify-center md:justify-start">
+              <h3 class="text-xl">{teacher.displayName}</h3>
 
-    <span slot="verified">
-      <Icon
-        name="mdi:verified-user"
-        class="h-[1.5rem] w-[1.5rem] inline-block text-[#64C01B]"
-      />
-    </span>
+              <div class="h-6 w-6 text-green-500">
+                <VerifiedIcon />
+              </div>
+            </header>
 
-    <div
-      slot="iconStar"
-      class="text-[#FFCC3E] flex flex-1 items-center justify-center text-esl-4"
-    >
-      <Icon
-        name="ic:baseline-star-rate"
-        class="h-[1.77rem] w-[1.77rem] inline"
-      />
-      <span>{teacher.rating}</span>
-    </div>
+            <!-- More info -->
+            <section class="flex justify-center md:justify-start">
+              <p>{teacher.alias}</p>
 
-    <div slot="qrCode">
-      <Picture
-        alt="WeChat"
-        src={`/images/static-qr-code-wechat-black.png`}
-        w={240}
-        h={240}
-        breakpoints={{ count: 1, minWidth: 240 }}
-      />
-    </div>
-  </TeacherComponent>
+              <div class="flex items-center text-yellow-500">
+                <div class="h-6 w-6">
+                  <StarIcon />
+                </div>
+                <p>{teacher.rating}</p>
+              </div>
+            </section>
+
+            <!-- Footer -->
+            <footer
+              class="mt-8 items-center justify-center md:flex md:mt-auto md:justify-end"
+            >
+              <p class="text-center md:pr-2">
+                {teacher.price}
+                <span class="text-gray-500">/{teacher.time}</span>
+              </p>
+              <a
+                class="bg-[#FF4438] block border-2 text-center border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition hover:text-[#ff4438] hover:bg-white"
+                href={`/teachers/${teacher.id}/`}
+              >
+                了解更多
+              </a>
+            </footer>
+          </figcaption>
+        </figure>
+      </header>
+
+      <!-- Details -->
+      <section class="border-blue-500 mt-4 lg:py-4 lg:border-t-2 lg:px-8">
+        <!-- Navigations -->
+        <header
+          class="hidden justify-between max-w-5xl mx-auto text-xl font-medium md:flex"
+        >
+          <button data-teacher-nav="aboutMe">
+            <p>About Me</p>
+            <div
+              data-nav-indicator
+              class="w-10 rounded-full mx-auto mt-2 h-1 bg-[#FF4438]"
+            >
+            </div>
+          </button>
+          <button data-teacher-nav="meAsATeacher">
+            <p>Me as a Teacher</p>
+            <div
+              data-nav-indicator
+              class="w-10 rounded-full mx-auto mt-2 h-1 bg-[#FF4438]"
+            >
+            </div>
+          </button>
+          <button data-teacher-nav="teachingPlan">
+            <p>My lessons & Teaching plan</p>
+            <div
+              data-nav-indicator
+              class="w-10 rounded-full mx-auto mt-2 h-1 bg-[#FF4438]"
+            >
+            </div>
+          </button>
+        </header>
+
+        <!-- About Me Content -->
+        <section data-teacher-content class="lg:hidden">
+          <header>
+            <h3 class="text-2xl font-bold mt-8">About Me</h3>
+          </header>
+
+          <!-- Details -->
+          <section class="mt-2 space-y-2">
+            <p class="whitespace-pre-wrap">{teacher.aboutMe}</p>
+
+            <section class="py-4 max-w-4xl mx-auto">
+              <video
+                class="max-h-[24rem] w-full h-full p-1"
+                controls
+                src={teacher.introductionVideo}></video>
+              <ul class="flex">
+                {
+                  [...Array(5)].map((_, index) => {
+                    return (
+                      <li class="p-1 w-1/5">
+                        <div
+                          class={`pb-[50%] bg-black ${
+                            index === 0 ? "border-blue-500" : "border-black"
+                          } border-4`}
+                        />
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+            </section>
+
+            <p class="">{teacher.videoSubtitle}</p>
+          </section>
+        </section>
+
+        <!-- Me as a Teacher Content -->
+        <section data-teacher-content class="lg:hidden">
+          <header>
+            <h3 class="text-2xl font-bold mt-8">Me as a Teacher</h3>
+          </header>
+
+          <!-- Details -->
+          <section class="mt-2">
+            <p class="whitespace-pre-wrap">{teacher.meAsATeacher}</p>
+          </section>
+        </section>
+
+        <!-- My lessons & Teaching plan Content -->
+        <section data-teacher-content class="lg:hidden">
+          <header>
+            <h3 class="text-2xl font-bold mt-8">My lessons & Teaching plan</h3>
+          </header>
+
+          <!-- Details -->
+          <section class="mt-2">
+            <p class="whitespace-pre-wrap">{teacher.teachingPlan}</p>
+          </section>
+        </section>
+      </section>
+    </section>
+
+    <!-- Section -->
+    <section class="bg-white p-4 mt-4">
+      <ul class="flex flex-wrap justify-evenly text-center">
+        <li class="p-2 w-1/2 md:w-1/5">
+          <div
+            class="flex justify-center items-center text-2xl text-yellow-500"
+          >
+            <div class="w-8 h-8">
+              <StarIcon />
+            </div>
+            <p>{teacher.rating}</p>
+          </div>
+          <p class="text-gray-500">Rating</p>
+        </li>
+
+        <li class="p-2 w-1/2 md:w-1/5">
+          <p class="text-2xl">2</p>
+          <p class="text-gray-500">Students</p>
+        </li>
+
+        <li class="p-2 w-1/2 md:w-1/5">
+          <p class="text-2xl">10</p>
+          <p class="text-gray-500">Lessons</p>
+        </li>
+
+        <li class="p-2 w-1/2 md:w-1/5">
+          <p class="text-2xl">100%</p>
+          <p class="text-gray-500">Attendance</p>
+        </li>
+
+        <li class="p-2 w-1/2 md:w-1/5">
+          <p class="text-2xl">100%</p>
+          <p class="text-gray-500">Response</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- English Lesson Section -->
+    <section class="mt-8">
+      <header class="px-2 lg:px-8">
+        <h2 class="text-3xl text-white font-bold">English Lessons</h2>
+      </header>
+
+      <section class="mt-4 p-4 bg-white md:px-8">
+        <ul class="flex flex-wrap">
+          {
+            [...Array(5)].map((_, index) => {
+              return (
+                <li class="p-2 w-full md:w-1/2 lg:w-1/3">
+                  <div class="p-4 bg-white shadow-lg border rounded-lg flex justify-between">
+                    <p>Lesson {index + 1}</p>
+                    <button>View</button>
+                  </div>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </section>
+    </section>
+  </section>
 </MainLayout>
 
-<style>
-  .line {
-    visibility: hidden;
-  }
-  .show .line {
-    visibility: visible;
-  }
-  .tab-text {
-    color: #b6b6b6;
-  }
-  .show .tab-text {
-    color: black;
-  }
-</style>
-
 <script>
-  const tabMenus = document.querySelectorAll(
-    ".tab-menu>button"
-  ) as NodeListOf<HTMLButtonElement>;
-  const tabContents = document.querySelectorAll(
-    ".tab-content"
-  ) as NodeListOf<Element>;
-  let tabIndex = 0;
-  tabMenus.forEach((tabMenu, index) => {
-    tabMenu.addEventListener("click", () => {
-      showTabContent(index);
+  let activeNav = 0;
+  const navButtons = document.querySelectorAll("[data-teacher-nav]");
+  const navIndicators = document.querySelectorAll("[data-nav-indicator]");
+  const contents = document.querySelectorAll("[data-teacher-content]");
+
+  navButtons.forEach((btn, index) => {
+    btn.addEventListener("click", (e) => {
+      if (activeNav === index) return;
+      setActiveNav(index);
     });
   });
 
-  function showTabContent(index: number) {
-    //get current and toggle hide to on
-    tabContents[tabIndex].classList.toggle("md:hidden");
-    tabContents[tabIndex].classList.toggle("md:block");
-    tabMenus[tabIndex].classList.toggle("show");
-    //get change current to index
-    tabIndex = index;
+  function setActiveNav(index: number) {
+    activeNav = index;
+    // Hide all indicators
+    navIndicators.forEach((div) => {
+      div.classList.add("opacity-0");
+    });
+    // Show active indicator
+    const indicator = navIndicators[index] as HTMLElement;
+    indicator.classList.remove("opacity-0");
 
-    //get current and toggle display
-    tabContents[tabIndex].classList.toggle("md:hidden");
-    tabContents[tabIndex].classList.toggle("md:block");
-    tabMenus[tabIndex].classList.toggle("show");
+    // Hide all contents
+    contents.forEach((div) => {
+      div.classList.add("lg:hidden");
+    });
+    // Show active content
+    const content = contents[index] as HTMLElement;
+    content.classList.remove("lg:hidden");
+
+    navButtons.forEach((btn) => {
+      btn.classList.add("text-gray-400");
+    });
+    navButtons[index].classList.remove("text-gray-400");
   }
+
+  setActiveNav(0);
 </script>
