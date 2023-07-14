@@ -93,35 +93,45 @@ const { links } = headerJson;
   const menuBtn = document.querySelector("[data-navbar-menu-btn]");
   const mobileNav = document.querySelector("[data-navbar-mobile-nav]");
 
-  let open = false;
+  if (links && menuIcon && menuBtn && mobileNav) {
+    let open = false;
 
-  function handleOpen() {
-    if (open) {
-      menuIcon?.classList.remove("translate-y-[150%]");
-      mobileNav?.classList.add("grid-rows-[0fr]");
-      mobileNav?.classList.remove("grid-rows-[1fr]");
-      open = false;
-    } else {
-      menuIcon?.classList.add("translate-y-[150%]");
-      mobileNav?.classList.remove("grid-rows-[0fr]");
-      mobileNav?.classList.add("grid-rows-[1fr]");
-      open = true;
-    }
-  }
+    const handleOpen = () => {
+      if (open) {
+        menuIcon.classList.remove("translate-y-[150%]");
+        mobileNav.classList.add("grid-rows-[0fr]");
+        mobileNav.classList.remove("grid-rows-[1fr]");
+        open = false;
+      } else {
+        menuIcon.classList.add("translate-y-[150%]");
+        mobileNav.classList.remove("grid-rows-[0fr]");
+        mobileNav.classList.add("grid-rows-[1fr]");
+        open = true;
+      }
+    };
 
-  menuBtn?.addEventListener("click", () => {
-    handleOpen();
-  });
-
-  menuBtn?.addEventListener("blur", () => {
-    if (!mobileNav?.matches(":hover")) {
-      handleOpen();
-    }
-  });
-
-  links.forEach((link) => {
-    link.addEventListener("click", () => {
+    menuBtn.addEventListener("click", () => {
       handleOpen();
     });
-  });
+
+    menuBtn.addEventListener("blur", () => {
+      if (!mobileNav?.matches(":hover") && open) {
+        handleOpen();
+      }
+    });
+
+    links.forEach((link) => {
+      link.addEventListener("click", () => {
+        handleOpen();
+      });
+    });
+  } else if (!links) {
+    alert("Navbar: links not found");
+  } else if (!menuIcon) {
+    alert("Navbar: menuIcon not found");
+  } else if (!menuBtn) {
+    alert("Navbar: menuBtn not found");
+  } else if (!mobileNav) {
+    alert("Navbar: mobileNav not found");
+  }
 </script>
