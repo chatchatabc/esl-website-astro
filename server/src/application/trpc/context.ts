@@ -9,7 +9,12 @@ type Props = {
 };
 
 export function trpcContext({ resHeaders, req, ...props }: Props) {
-  resHeaders.append("Access-Control-Allow-Origin", "*");
+  const allowedOrigins = ["http://localhost:3000", "https://esl-cca.pages.dev"];
+  const origin = req.headers.get("Origin") ?? "";
+
+  if (allowedOrigins.includes(origin)) {
+    resHeaders.append("Access-Control-Allow-Origin", origin);
+  }
   resHeaders.append("Access-Control-Allow-Methods", "*");
   resHeaders.append(
     "Access-Control-Allow-Headers",

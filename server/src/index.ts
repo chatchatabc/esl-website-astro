@@ -12,6 +12,16 @@ export default {
     env: Bindings,
     ctx: ExecutionContext
   ): Promise<Response> {
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
+      });
+    }
+
     const { pathname } = new URL(request.url);
     if (pathname.startsWith("/trpc")) {
       return fetchRequestHandler({
