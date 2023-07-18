@@ -1,7 +1,8 @@
 import { initTRPC } from "@trpc/server";
 import { TrpcContext } from "./context";
-import { UserLogin } from "../../domain/models/UserModel";
-import { authLogin } from "../../domain/services/authService";
+import type { UserLogin, UserRegister } from "../../domain/models/UserModel";
+import { authLogin, authRegister } from "../../domain/services/authService";
+import { utilFailedResponse } from "../../domain/services/utilService";
 
 export const trpc = initTRPC.context<TrpcContext>().create();
 
@@ -20,6 +21,19 @@ const authRouter = trpc.router({
     })
     .query(async (opts) => {
       return await authLogin(opts.input, opts.ctx);
+    }),
+  register: trpc.procedure
+    .input((input) => {
+      const data = input as UserRegister;
+      if (!data.username || !data.password || !data.confirmPassword) {
+        throw utilFailedResponse("Missing input fields", 400);
+      } else if (data.password !== data.confirmPassword) {
+        throw utilFailedResponse("Passwords do not match", 400);
+      }
+      return data;
+    })
+    .mutation(async (opts) => {
+      return await authRegister(opts.input, opts.ctx);
     }),
 });
 

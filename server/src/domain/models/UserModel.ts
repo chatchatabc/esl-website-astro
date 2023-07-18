@@ -22,6 +22,9 @@ export type UserRole = {
 export type UserRegister = {
   username: string;
   password: string;
+  confirmPassword: string;
+
+  role: number;
 };
 
 export type UserLogin = {
