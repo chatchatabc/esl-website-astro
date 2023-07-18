@@ -9,7 +9,7 @@ export default createTRPCProxyClient<TrpcRouter>({
   links: [
     httpBatchLink({
       // url: "http://localhost:8787/trpc",
-      url: "https://esl-trpc.bonjomontes.workers.dev",
+      url: "https://esl-trpc.bonjomontes.workers.dev/trpc",
       async headers() {
         return {};
       },
