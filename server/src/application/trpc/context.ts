@@ -9,7 +9,11 @@ type Props = {
 };
 
 export function trpcContext({ resHeaders, req, ...props }: Props) {
-  const allowedOrigins = ["http://localhost:3000", "https://esl-cca.pages.dev"];
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "https://esl-cca.pages.dev",
+    "https://trpc.esl-cca.pages.dev",
+  ];
   const origin = req.headers.get("Origin") ?? "";
 
   if (allowedOrigins.includes(origin)) {

@@ -19,6 +19,7 @@ export default {
           "Access-Control-Allow-Methods": "OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type, Authorization",
         },
+        status: 204,
       });
     }
 
