@@ -31,6 +31,11 @@ export async function authLogin(data: UserLogin) {
   return response.data;
 }
 
+export function authLogout() {
+  document.cookie = `token=; path=/; max-age=0`;
+  return true;
+}
+
 export async function authRegister(data: UserRegister) {
   try {
     const response = await trpcClient.auth.register.mutate(data);

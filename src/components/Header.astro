@@ -3,6 +3,7 @@ import UserIcon from "@assets/UserIcon.astro";
 import headerJson from "@data/header.json";
 import { Icon } from "astro-icon";
 import { Picture } from "astro-imagetools/components";
+import DropDown from "./widgets/DropDown.astro";
 
 const { links } = headerJson;
 ---
@@ -93,26 +94,49 @@ const { links } = headerJson;
       </div>
     </a>
 
-    <!-- Profile -->
-    <a
-      data-navbar-user
-      href="/profile"
-      class="space-x-2 hidden absolute right-2 ml-auto items-center group lg:relative"
-    >
-      <p class="hidden text-white md:block">Welcome!</p>
+    <div data-navbar-user class="hidden absolute right-2 ml-auto lg:relative">
+      <DropDown className="w-56 right-0 mt-2">
+        <!-- Button -->
+        <button slot="button" class="space-x-2 flex items-center group">
+          <p class="hidden text-white md:block">Welcome!</p>
 
-      <!-- Icon -->
-      <div
-        class="w-10 h-10 rounded-full bg-white p-1 transition group-hover:text-white group-hover:bg-esl-c-2"
-      >
-        <UserIcon />
-      </div>
-    </a>
+          <!-- Icon -->
+          <div
+            class="w-10 h-10 rounded-full bg-white p-1 transition group-hover:text-white group-hover:bg-esl-c-2"
+          >
+            <UserIcon />
+          </div>
+        </button>
+
+        <!-- Content -->
+        <div
+          slot="content"
+          class="bg-white rounded-md border-2 overflow-hidden border-blue-500"
+        >
+          <ul>
+            <li>
+              <a href="/profile" class="block p-2 hover:bg-blue-100">Profile</a>
+            </li>
+            <li>
+              <button
+                data-navbar-logout
+                class="block w-full text-start p-2 text-red-500 hover:bg-red-100"
+              >
+                Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+      </DropDown>
+    </div>
   </section>
 </section>
 
 <script>
-  import { authGetToken } from "src/domain/services/client/authService";
+  import {
+    authGetToken,
+    authLogout,
+  } from "src/domain/services/client/authService";
 
   const links =
     document.querySelectorAll<HTMLButtonElement>("[data-navbar-link]");
@@ -121,6 +145,7 @@ const { links } = headerJson;
   const mobileNav = document.querySelector("[data-navbar-mobile-nav]");
   const loginBtn = document.querySelector("[data-navbar-login]");
   const userBtn = document.querySelector("[data-navbar-user]");
+  const logoutBtn = document.querySelector("[data-navbar-logout]");
 
   const token = authGetToken();
   if (token) {
@@ -129,6 +154,11 @@ const { links } = headerJson;
     userBtn?.classList.remove("hidden");
     userBtn?.classList.add("flex");
   }
+
+  logoutBtn?.addEventListener("click", () => {
+    authLogout();
+    window.location.reload();
+  });
 
   if (links && menuIcon && menuBtn && mobileNav) {
     let open = false;

@@ -1,0 +1,36 @@
+---
+type Props = {
+  className?: string;
+};
+
+const { className } = Astro.props as Props;
+---
+
+<drop-down class={"relative block"}>
+  <slot name="button" />
+  <div
+    data-dropdown-content
+    class={`absolute min-w-full w-full grid grid-rows-[0fr] transition-all ${className}`}
+  >
+    <div class={`overflow-hidden`}>
+      <slot name="content" />
+    </div>
+  </div>
+</drop-down>
+
+<script>
+  class DropDown extends HTMLElement {
+    constructor() {
+      super();
+      const content = this.querySelector("[data-dropdown-content]")!;
+      const button = this.querySelector("button")!;
+
+      button.addEventListener("click", () => {
+        content.classList.toggle("grid-rows-[0fr]");
+        content.classList.toggle("grid-rows-[1fr]");
+      });
+    }
+  }
+
+  customElements.define("drop-down", DropDown);
+</script>

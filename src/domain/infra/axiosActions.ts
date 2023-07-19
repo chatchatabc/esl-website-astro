@@ -1,7 +1,11 @@
 import axios, { AxiosRequestConfig } from "axios";
-import type { AxiosResponse, AxiosResponseErrorItem } from "../models/AxiosModel";
+import type {
+  AxiosResponse,
+  AxiosResponseErrorItem,
+} from "../models/AxiosModel";
 
-const baseUrl = import.meta.env.VITE_WORKER_URL;
+// const baseUrl = "http://localhost:8787";
+const baseUrl = "https://esl-trpc.bonjomontes.workers.dev";
 
 function axiosHandleError(e: any): AxiosResponse {
   if (!e.response) {
