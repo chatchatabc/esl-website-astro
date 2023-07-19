@@ -14,7 +14,7 @@ export function trpcContext({ resHeaders, req, ...props }: Props) {
     "https://esl-cca.pages.dev",
     "https://trpc.esl-cca.pages.dev",
   ];
-  const origin = req.headers.get("Origin") ?? "";
+  const origin = req.headers.get("Origin") ?? "https://esl-cca.pages.dev";
 
   if (allowedOrigins.includes(origin)) {
     resHeaders.append("Access-Control-Allow-Origin", origin);
@@ -24,7 +24,7 @@ export function trpcContext({ resHeaders, req, ...props }: Props) {
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization"
   );
-  resHeaders.append("Access-Control-Expose-Headers", "x-access-token");
+  resHeaders.append("Access-Control-Allow-Credentials", "true");
 
   return { ...props, resHeaders, req };
 }
