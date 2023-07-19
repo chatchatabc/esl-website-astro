@@ -2,7 +2,10 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { trpcRouter } from "./application/trpc";
 import rest from "./application/rest";
 import { trpcContext } from "./domain/infra/trpcServerActions";
-import { utilValidOrigin } from "./domain/services/server/utilService";
+import {
+  utilSuccessApiResponse,
+  utilValidOrigin,
+} from "./domain/services/server/utilService";
 
 export type Bindings = {
   DB: D1Database;
@@ -22,15 +25,7 @@ export default {
 
     // Handle CORS preflight requests
     if (request.method === "OPTIONS") {
-      return new Response(null, {
-        headers: {
-          "Access-Control-Allow-Origin": origin,
-          "Access-Control-Allow-Methods": "OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Credentials": "true",
-        },
-        status: 204,
-      });
+      return utilSuccessApiResponse({}, 204);
     }
 
     const { pathname } = new URL(request.url);

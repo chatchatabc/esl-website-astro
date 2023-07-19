@@ -5,10 +5,9 @@ export function utilSuccessApiResponse(data: any, status: number = 200) {
   return new Response(JSON.stringify(data), {
     headers: {
       "Content-Type": "application/json",
-      "Allow-Access-Control-Origin": "*",
-      "Allow-Access-Control-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Allow-Access-Control-Headers": "Content-Type",
-      "Access-Control-Expose-Headers": "x-access-token",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
     },
     status,
   });
@@ -42,6 +41,9 @@ export function utilFailedApiResponse(message: string, status: number = 500) {
     }),
     {
       headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Allow-Headers": "*",
         "Content-Type": "application/json",
       },
       status,

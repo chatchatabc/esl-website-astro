@@ -34,8 +34,9 @@ export default async (
 
     const token = authCreateToken({ id: user.id });
     delete user.password;
-    const response = utilSuccessApiResponse(user, 200);
-    response.headers.set("x-access-token", token);
+    const response = utilSuccessApiResponse({ data: user }, 200);
+    response.headers.append("x-access-token", token);
+    response.headers.append("Access-Control-Expose-Headers", "x-access-token");
     return response;
   }
 

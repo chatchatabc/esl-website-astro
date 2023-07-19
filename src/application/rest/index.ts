@@ -10,7 +10,7 @@ export default async (
   pathname = pathname.slice("/api".length);
 
   if (pathname.startsWith("/auth")) {
-    return authController(request, env, ctx);
+    return await authController(request, env, ctx);
   }
 
   return new Response("Not found", { status: 404 });
