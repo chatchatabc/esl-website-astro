@@ -1,6 +1,7 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { trpcContext } from "./application/trpc/context";
 import { trpcRouter } from "./application/trpc";
+import { utilValidOrigin } from "./services/utilService";
 
 export type Bindings = {
   DB: D1Database;
@@ -13,15 +14,18 @@ export default {
     ctx: ExecutionContext
   ): Promise<Response> {
     if (request.method === "OPTIONS") {
-      return new Response(null, {
-        headers: {
-          "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Access-Control-Allow-Methods": "OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Credentials": "true",
-        },
-        status: 204,
-      });
+      const origin = request.headers.get("Origin") ?? "";
+      if (utilValidOrigin(origin)) {
+        return new Response(null, {
+          headers: {
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Methods": "OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          status: 204,
+        });
+      }
     }
 
     const { pathname } = new URL(request.url);
