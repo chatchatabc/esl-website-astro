@@ -10,7 +10,7 @@ const { className } = Astro.props as Props;
   <slot name="button" />
   <div
     data-dropdown-content
-    class={`absolute min-w-full w-full grid grid-rows-[0fr] transition-all ${className}`}
+    class={`absolute grid grid-rows-[0fr] transition-all ${className}`}
   >
     <div class={`overflow-hidden`}>
       <slot name="content" />
