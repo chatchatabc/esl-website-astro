@@ -2,6 +2,7 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { trpcContext } from "./application/trpc/context";
 import { trpcRouter } from "./application/trpc";
 import { utilValidOrigin } from "./services/utilService";
+import rest from "./application/rest";
 
 export type Bindings = {
   DB: D1Database;
@@ -13,19 +14,23 @@ export default {
     env: Bindings,
     ctx: ExecutionContext
   ): Promise<Response> {
+    // Validate origin
+    const origin = request.headers.get("Origin") ?? "";
+    if (!utilValidOrigin(origin)) {
+      return new Response("Invalid origin", { status: 403 });
+    }
+
+    // Handle CORS preflight requests
     if (request.method === "OPTIONS") {
-      const origin = request.headers.get("Origin") ?? "";
-      if (utilValidOrigin(origin)) {
-        return new Response(null, {
-          headers: {
-            "Access-Control-Allow-Origin": origin,
-            "Access-Control-Allow-Methods": "OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
-            "Access-Control-Allow-Credentials": "true",
-          },
-          status: 204,
-        });
-      }
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": origin,
+          "Access-Control-Allow-Methods": "OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        status: 204,
+      });
     }
 
     const { pathname } = new URL(request.url);
@@ -36,6 +41,8 @@ export default {
         router: trpcRouter,
         createContext: (e) => trpcContext({ ...e, env, ctx }),
       });
+    } else if (pathname.startsWith("/api")) {
+      return rest(request, env, ctx);
     }
 
     return new Response("Not found", { status: 404 });
