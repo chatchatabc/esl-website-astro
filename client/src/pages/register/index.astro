@@ -70,7 +70,7 @@ import MainLayout from "@layouts/MainLayout.astro";
 
 <script>
   import { authRegister } from "src/services/authService";
-  import type { UserRegister } from "../../../server/src/domain/models/UserModel";
+  import type { UserRegister } from "../../../../server/src/domain/models/UserModel";
 
   const form = document.querySelector<HTMLFormElement>("[data-register-form]")!;
 
@@ -91,7 +91,7 @@ import MainLayout from "@layouts/MainLayout.astro";
       alert(response.errors[0].message);
     } else {
       // alert("Account created successfully")
-      window.location.href = "/login";
+      window.location.href = "/register/more-details";
     }
   });
 </script>
