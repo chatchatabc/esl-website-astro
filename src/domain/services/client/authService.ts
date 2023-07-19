@@ -1,15 +1,34 @@
-import type { UserLogin, UserRegister } from "src/domain/models/UserModel";
-import axios from "axios";
+import type {
+  User,
+  UserLogin,
+  UserRegister,
+} from "src/domain/models/UserModel";
 import { trpcClient } from "src/domain/infra/trpcClientActions";
 import { utilHandleTrpcError } from "./utilService";
+import type { AxiosResponse } from "src/domain/models/AxiosModel";
+import { restPost } from "src/domain/infra/restActions";
 
 export async function authLogin(data: UserLogin) {
-  try {
-    const response = await axios.post("/api/auth/login", data);
-    return response;
-  } catch (e) {
-    return utilHandleTrpcError(e);
+  const response: AxiosResponse<User> = await restPost("/auth/login", data);
+
+  if (response.data.errors) {
+    return response.data;
   }
+
+  const token = response.headers["x-access-token"];
+  if (!token) {
+    return {
+      errors: [
+        {
+          title: "Missing token",
+          message: "Missing token",
+        },
+      ],
+    };
+  }
+  document.cookie = `token=${token}; path=/; max-age=86400`;
+
+  return response.data;
 }
 
 export async function authRegister(data: UserRegister) {
@@ -21,7 +40,7 @@ export async function authRegister(data: UserRegister) {
   }
 }
 
-export async function authGetToken() {
+export function authGetToken() {
   const token = document.cookie
     .split(";")
     .find((c) => c.trim().startsWith("token="));
