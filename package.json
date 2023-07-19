@@ -1,0 +1,45 @@
+{
+  "name": "esltask",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "concurrently \"astro dev\" \"wrangler dev\"",
+    "client:dev": "astro dev",
+    "server:dev": "wrangler dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "client:deploy": "wrangler pages publish dist",
+    "server:deploy": "wrangler deploy",
+    "lh": "unlighthouse",
+    "d1:local": "wrangler d1 execute DB --local --file=./schema.sql",
+    "d1:remote": "wrangler d1 execute DB --file=./schema.sql"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^1.4.0",
+    "@astrojs/svelte": "^3.1.0",
+    "@astrojs/tailwind": "^4.0.0",
+    "@trpc/client": "^10.34.0",
+    "@trpc/server": "^10.34.0",
+    "astro": "^2.8.3",
+    "astro-i18next": "^1.0.0-beta.21",
+    "astro-imagetools": "^0.8.1",
+    "astro-robots-txt": "^0.5.0",
+    "astro-seo": "^0.7.5",
+    "axios": "^1.4.0",
+    "crypto-js": "^4.1.1",
+    "jsdom": "^22.1.0",
+    "node-html-parser": "^6.1.5",
+    "svelte": "^4.0.5",
+    "tailwindcss": "^3.3.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230710.1",
+    "@types/crypto-js": "^4.1.1",
+    "astro-icon": "^0.8.1",
+    "concurrently": "^8.2.0",
+    "typescript": "^5.1.6",
+    "unlighthouse": "^0.9.0",
+    "vitest": "^0.33.0",
+    "wrangler": "3.2.0"
+  }
+}

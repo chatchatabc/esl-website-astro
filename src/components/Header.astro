@@ -1,0 +1,204 @@
+---
+import UserIcon from "@assets/UserIcon.astro";
+import headerJson from "@data/header.json";
+import { Icon } from "astro-icon";
+import { Picture } from "astro-imagetools/components";
+import DropDown from "./widgets/DropDown.astro";
+
+const { links } = headerJson;
+---
+
+<section class="bg-esl-c-1">
+  <section
+    class="flex justify-center items-center container relative py-2 md:py-4 lg:py-8"
+  >
+    <!-- Mobile Menu Button -->
+    <button
+      aria-label="Toggle mobile menu"
+      data-navbar-menu-btn
+      class="absolute left-2 p-2 border rounded-md overflow-hidden text-white lg:hidden"
+    >
+      <div data-navbar-menu-icon class="bg-esl-c-1 absolute transition">
+        <Icon name="charm:menu-hamburger" class="h-[1.5rem] w-[1.5rem]" />
+      </div>
+      <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem]" />
+    </button>
+
+    <!-- Logo -->
+    <a class="block w-40 invert brightness-0" href="/">
+      <Picture
+        breakpoints={[360]}
+        objectFit="contain"
+        src="/images/logo/logo-horizontal.png"
+        alt="logo"
+      />
+    </a>
+
+    <!-- Navigations Mobile -->
+    <nav
+      data-navbar-mobile-nav
+      class="bg-white absolute top-full w-full grid grid-rows-[0fr] transition-all lg:hidden"
+    >
+      <ul class="overflow-hidden">
+        {
+          links.map((link) => {
+            return (
+              <li>
+                <a
+                  data-navbar-link
+                  class="p-4 block w-full text-start"
+                  href={link.href}
+                >
+                  {link.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <!-- Navigations Desktop -->
+    <nav
+      class="text-white absolute mx-auto w-fit left-0 right-0 hidden lg:block"
+    >
+      <ul class="flex items-center space-x-8">
+        {
+          links.map((link) => {
+            return (
+              <li>
+                <a class="group" href={link.href}>
+                  <span>{link.label}</span>
+                  <div class="h-0.5 scale-x-0 bg-white origin-left transition group-hover:scale-x-100" />
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <!-- Login -->
+    <a
+      data-navbar-login
+      href="/login"
+      class="space-x-2 flex absolute right-2 ml-auto items-center group lg:relative"
+    >
+      <p class="hidden text-white md:block">登入</p>
+
+      <!-- Icon -->
+      <div
+        class="w-10 h-10 rounded-full bg-white p-1 transition group-hover:text-white group-hover:bg-esl-c-2"
+      >
+        <UserIcon />
+      </div>
+    </a>
+
+    <div data-navbar-user class="hidden absolute right-2 ml-auto lg:relative">
+      <DropDown className="w-56 right-0 mt-2">
+        <!-- Button -->
+        <button slot="button" class="space-x-2 flex items-center group">
+          <p class="hidden text-white md:block">Welcome!</p>
+
+          <!-- Icon -->
+          <div
+            class="w-10 h-10 rounded-full bg-white p-1 transition group-hover:text-white group-hover:bg-esl-c-2"
+          >
+            <UserIcon />
+          </div>
+        </button>
+
+        <!-- Content -->
+        <div
+          slot="content"
+          class="bg-white rounded-md border-2 overflow-hidden border-blue-500"
+        >
+          <ul>
+            <li>
+              <a href="/profile" class="block p-2 hover:bg-blue-100">Profile</a>
+            </li>
+            <li>
+              <button
+                data-navbar-logout
+                class="block w-full text-start p-2 text-red-500 hover:bg-red-100"
+              >
+                Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+      </DropDown>
+    </div>
+  </section>
+</section>
+
+<script>
+  import {
+    authGetToken,
+    authLogout,
+  } from "src/domain/services/client/authService";
+
+  const links =
+    document.querySelectorAll<HTMLButtonElement>("[data-navbar-link]");
+  const menuIcon = document.querySelector("[data-navbar-menu-icon]");
+  const menuBtn = document.querySelector("[data-navbar-menu-btn]");
+  const mobileNav = document.querySelector("[data-navbar-mobile-nav]");
+  const loginBtn = document.querySelector("[data-navbar-login]");
+  const userBtn = document.querySelector("[data-navbar-user]");
+  const logoutBtn = document.querySelector("[data-navbar-logout]");
+
+  const token = authGetToken();
+  if (token) {
+    loginBtn?.classList.remove("flex");
+    loginBtn?.classList.add("hidden");
+    userBtn?.classList.remove("hidden");
+    userBtn?.classList.add("flex");
+  }
+
+  logoutBtn?.addEventListener("click", () => {
+    authLogout();
+    window.location.reload();
+  });
+
+  if (links && menuIcon && menuBtn && mobileNav) {
+    let open = false;
+
+    const handleOpen = () => {
+      if (open) {
+        menuIcon.classList.remove("translate-y-[150%]");
+        mobileNav.classList.add("grid-rows-[0fr]");
+        mobileNav.classList.remove("grid-rows-[1fr]");
+        open = false;
+      } else {
+        menuIcon.classList.add("translate-y-[150%]");
+        mobileNav.classList.remove("grid-rows-[0fr]");
+        mobileNav.classList.add("grid-rows-[1fr]");
+        open = true;
+      }
+    };
+
+    menuBtn.addEventListener("click", () => {
+      handleOpen();
+    });
+
+    menuBtn.addEventListener("blur", () => {
+      if (!mobileNav?.matches(":hover") && open) {
+        handleOpen();
+      }
+    });
+
+    links.forEach((link) => {
+      link.addEventListener("click", () => {
+        handleOpen();
+      });
+    });
+  } else if (!links) {
+    alert("Navbar: links not found");
+  } else if (!menuIcon) {
+    alert("Navbar: menuIcon not found");
+  } else if (!menuBtn) {
+    alert("Navbar: menuBtn not found");
+  } else if (!mobileNav) {
+    alert("Navbar: mobileNav not found");
+  }
+</script>

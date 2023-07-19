@@ -1,0 +1,35 @@
+---
+import MainLayout from "@layouts/MainLayout.astro";
+import StudentProfile from "@components/profiles/StudentProfile.astro";
+import TeacherProfile from "@components/profiles/TeacherProfile.astro";
+---
+
+<MainLayout>
+  <section class="container">
+    <header class="sr-only">
+      <h1>Profile Page</h1>
+    </header>
+
+    <section class="bg-white rounded-xl p-4">
+      <div data-profile-student>
+        <StudentProfile />
+      </div>
+      <div data-profile-teacher>
+        <TeacherProfile />
+      </div>
+    </section>
+  </section>
+</MainLayout>
+
+<script>
+  const studentProfile = document.querySelector("[data-profile-student]");
+  const teacherProfile = document.querySelector("[data-profile-teacher]");
+
+  if (studentProfile) {
+    studentProfile.classList.remove("hidden");
+  }
+
+  if (teacherProfile) {
+    teacherProfile.classList.remove("hidden");
+  }
+</script>

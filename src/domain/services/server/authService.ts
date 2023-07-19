@@ -1,0 +1,61 @@
+import { userDbGetByUsername, userDbInsert } from "../../repositories/userRepo";
+import CryptoJS, { SHA256 } from "crypto-js";
+import { utilFailedResponse } from "../server/utilService";
+import type { User, UserRegister } from "../../models/UserModel";
+import type { TrpcResponse } from "../../models/TrpcModel";
+import type { TrpcContext } from "../../infra/trpcServerActions";
+
+const secret = "secret";
+
+export function authCreateHash(password: string) {
+  return SHA256(password + secret).toString();
+}
+
+export function authCreateToken(payload: Record<string, any>) {
+  const iat = Math.floor(Date.now() / 1000);
+  const exp = iat + 60 * 60 * 24 * 7; // 7 days
+
+  const data = {
+    iat,
+    exp,
+    payload,
+  };
+
+  return CryptoJS.AES.encrypt(JSON.stringify(data), secret).toString();
+}
+
+export function authDecodeToken(token: string) {
+  if (token.startsWith("Bearer ")) {
+    token = token.slice(7, token.length);
+  }
+
+  const bytes = CryptoJS.AES.decrypt(token, secret);
+  const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)) as {
+    iat: number;
+    exp: number;
+    payload: Record<string, any>;
+  };
+
+  if (data.exp < Math.floor(Date.now() / 1000)) {
+    throw utilFailedResponse("Token expired", 401);
+  }
+
+  return data.payload;
+}
+
+export async function authRegister(input: UserRegister, ctx: TrpcContext) {
+  let user = await userDbGetByUsername(input.username, ctx.env);
+  if (user) {
+    throw utilFailedResponse("User already exists", 400);
+  }
+
+  user = await userDbInsert(input, ctx.env);
+  if (!user) {
+    throw utilFailedResponse("Failed to create user", 500);
+  }
+
+  delete user.password;
+  return {
+    data: user,
+  } as TrpcResponse<User>;
+}
