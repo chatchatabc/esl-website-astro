@@ -1,4 +1,4 @@
-import type { inferAsyncReturnType } from "@trpc/server";
+import { inferAsyncReturnType, initTRPC } from "@trpc/server";
 import type { Bindings } from "src/server";
 import { utilValidOrigin } from "src/services/utilService";
 
@@ -26,3 +26,7 @@ export function trpcContext({ resHeaders, req, ...props }: Props) {
 }
 
 export type TrpcContext = inferAsyncReturnType<typeof trpcContext>;
+
+export const trpc = initTRPC.context<TrpcContext>().create();
+export const trpcRouterCreate = trpc.router;
+export const trpcProcedure = trpc.procedure;
