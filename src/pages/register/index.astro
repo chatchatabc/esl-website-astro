@@ -69,8 +69,8 @@ import MainLayout from "@layouts/MainLayout.astro";
 </MainLayout>
 
 <script>
-  import { authRegister } from "src/services/authService";
-  import type { UserRegister } from "../../../../server/src/domain/models/UserModel";
+  import type { UserRegister } from "src/domain/models/UserModel";
+  import { authRegister } from "src/domain/services/client/authService";
 
   const form = document.querySelector<HTMLFormElement>("[data-register-form]")!;
 
@@ -78,7 +78,7 @@ import MainLayout from "@layouts/MainLayout.astro";
     e.preventDefault();
     const formData = new FormData(form);
     const data: UserRegister = Object.fromEntries(formData.entries()) as any;
-  
+
     if (data.password !== data.confirmPassword) {
       alert("Passwords do not match");
       return;
