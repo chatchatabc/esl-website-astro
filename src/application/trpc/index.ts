@@ -1,6 +1,6 @@
-import type { UserLogin, UserRegister } from "../../domain/models/UserModel";
-import { authLogin, authRegister } from "../../domain/services/authService";
-import { utilFailedResponse } from "../../domain/services/utilService";
+import { authRegister } from "src/domain/services/server/authService";
+import type { UserRegister } from "../../domain/models/UserModel";
+import { utilFailedResponse } from "../../domain/services/server/utilService";
 import {
   trpcProcedure,
   trpcRouterCreate,

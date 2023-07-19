@@ -1,9 +1,9 @@
-import { userDbGetByUsername, userDbInsert } from "../repositories/userRepo";
+import { userDbGetByUsername, userDbInsert } from "../../repositories/userRepo";
 import CryptoJS, { SHA256 } from "crypto-js";
-import { utilFailedResponse } from "./utilService";
-import type { User, UserLogin, UserRegister } from "../models/UserModel";
-import type { TrpcContext } from "src/application/trpc/context";
-import type { TrpcResponse } from "../models/TrpcModel";
+import { utilFailedResponse } from "../server/utilService";
+import type { User, UserRegister } from "../../models/UserModel";
+import type { TrpcResponse } from "../../models/TrpcModel";
+import type { TrpcContext } from "../../infra/trpcServerActions";
 
 const secret = "secret";
 
@@ -53,36 +53,6 @@ export async function authRegister(input: UserRegister, ctx: TrpcContext) {
   if (!user) {
     throw utilFailedResponse("Failed to create user", 500);
   }
-
-  delete user.password;
-  return {
-    data: user,
-  } as TrpcResponse<User>;
-}
-
-export async function authLogin(input: UserLogin, ctx: TrpcContext) {
-  const user = await userDbGetByUsername(input.username, ctx.env);
-
-  if (!user) {
-    throw utilFailedResponse("User not found", 404);
-  } else if (user.password !== authCreateHash(input.password)) {
-    throw utilFailedResponse("Wrong password", 401);
-  }
-
-  // create token
-  const token = authCreateToken({
-    id: user.id,
-  });
-
-  ctx.resHeaders.append(
-    "Set-Cookie",
-    `token=${token}; Path=/; secure; HttpOnly`
-  );
-  ctx.resHeaders.append(
-    "Set-Cookie",
-    `role=${user.role}; Path=/; secure; HttpOnly`
-  );
-  ctx.resHeaders.append("Set-Cookie", `id=${user.id}; Path=/; secure`);
 
   delete user.password;
   return {

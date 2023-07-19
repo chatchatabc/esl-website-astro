@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import type { TrpcError } from "../models/TrpcModel";
+import type { TrpcError } from "../../models/TrpcModel";
 
 export function utilSuccessApiResponse(data: any, status: number = 200) {
   return new Response(JSON.stringify(data), {
@@ -70,4 +70,19 @@ export function utilFailedResponse(message: string, status: number = 500) {
     code,
     message,
   });
+}
+
+export function utilValidOrigin(origin: string) {
+  const allowedOrigin = [
+    "http://localhost:3000",
+    "https://esl-cca.pages.dev",
+    "https://trpc.esl-cca.pages.dev",
+    "https://dev.esl-cca.pages.dev",
+  ];
+
+  if (allowedOrigin.includes(origin)) {
+    return true;
+  }
+
+  return false;
 }

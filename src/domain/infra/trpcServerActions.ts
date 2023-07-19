@@ -1,6 +1,6 @@
 import { inferAsyncReturnType, initTRPC } from "@trpc/server";
 import type { Bindings } from "src/server";
-import { utilValidOrigin } from "src/services/utilService";
+import { utilValidOrigin } from "../services/server/utilService";
 
 type Props = {
   req: Request;

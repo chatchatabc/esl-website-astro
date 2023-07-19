@@ -1,10 +1,11 @@
 import type { UserLogin, UserRegister } from "src/domain/models/UserModel";
+import axios from "axios";
+import { trpcClient } from "src/domain/infra/trpcClientActions";
 import { utilHandleTrpcError } from "./utilService";
-import { trpcClient } from "src/application/trpc/client";
 
 export async function authLogin(data: UserLogin) {
   try {
-    const response = await trpcClient.auth.login.mutate(data);
+    const response = await axios.post("/api/auth/login", data);
     return response;
   } catch (e) {
     return utilHandleTrpcError(e);
@@ -18,6 +19,18 @@ export async function authRegister(data: UserRegister) {
   } catch (e) {
     return utilHandleTrpcError(e);
   }
+}
+
+export async function authGetToken() {
+  const token = document.cookie
+    .split(";")
+    .find((c) => c.trim().startsWith("token="));
+
+  if (!token) {
+    return null;
+  }
+
+  return token.split("=")[1];
 }
 
 export function authGetUserId() {

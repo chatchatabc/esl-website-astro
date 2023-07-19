@@ -21,18 +21,3 @@ export function utilHandleTrpcError(error: any) {
     ],
   };
 }
-
-export function utilValidOrigin(origin: string) {
-  const allowedOrigin = [
-    "http://localhost:3000",
-    "https://esl-cca.pages.dev",
-    "https://trpc.esl-cca.pages.dev",
-    "https://dev.esl-cca.pages.dev",
-  ];
-
-  if (allowedOrigin.includes(origin)) {
-    return true;
-  }
-
-  return false;
-}

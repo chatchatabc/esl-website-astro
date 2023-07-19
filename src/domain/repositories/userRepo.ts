@@ -1,5 +1,5 @@
 import type { Bindings } from "src/server";
-import { authCreateHash } from "../services/authService";
+import { authCreateHash } from "../services/server/authService";
 import type { User, UserRegister } from "../models/UserModel";
 
 export async function userDbGetByUsername(value: string, bindings: Bindings) {

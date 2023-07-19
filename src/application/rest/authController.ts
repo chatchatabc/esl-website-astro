@@ -3,11 +3,11 @@ import { userDbGetByUsername } from "src/domain/repositories/userRepo";
 import {
   authCreateHash,
   authCreateToken,
-} from "src/domain/services/authService";
+} from "src/domain/services/server/authService";
 import {
   utilFailedApiResponse,
   utilSuccessApiResponse,
-} from "src/domain/services/utilService";
+} from "src/domain/services/server/utilService";
 import type { Bindings } from "src/server";
 
 export default async (

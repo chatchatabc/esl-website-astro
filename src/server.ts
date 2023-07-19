@@ -1,8 +1,8 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { trpcRouter } from "./application/trpc";
-import { utilValidOrigin } from "./services/utilService";
 import rest from "./application/rest";
 import { trpcContext } from "./domain/infra/trpcServerActions";
+import { utilValidOrigin } from "./domain/services/server/utilService";
 
 export type Bindings = {
   DB: D1Database;
