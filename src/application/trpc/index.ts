@@ -19,7 +19,7 @@ const authRouter = trpc.router({
       }
       return data;
     })
-    .query(async (opts) => {
+    .mutation(async (opts) => {
       return await authLogin(opts.input, opts.ctx);
     }),
   register: trpc.procedure

@@ -57,7 +57,7 @@ export async function authRegister(input: UserRegister, ctx: TrpcContext) {
   delete user.password;
   return {
     data: user,
-  };
+  } as TrpcResponse<User>;
 }
 
 export async function authLogin(input: UserLogin, ctx: TrpcContext) {
@@ -74,9 +74,15 @@ export async function authLogin(input: UserLogin, ctx: TrpcContext) {
     id: user.id,
   });
 
-  ctx.resHeaders.append("Set-Cookie", `token=${token}; Path=/; HttpOnly`);
-  ctx.resHeaders.append("Set-Cookie", `role=${user.role}; Path=/; HttpOnly`);
-  ctx.resHeaders.append("Set-Cookie", `id=${user.id}; Path=/`);
+  ctx.resHeaders.append(
+    "Set-Cookie",
+    `token=${token}; Path=/; secure; HttpOnly`
+  );
+  ctx.resHeaders.append(
+    "Set-Cookie",
+    `role=${user.role}; Path=/; secure; HttpOnly`
+  );
+  ctx.resHeaders.append("Set-Cookie", `id=${user.id}; Path=/; secure`);
 
   delete user.password;
   return {

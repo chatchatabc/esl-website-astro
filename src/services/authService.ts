@@ -4,7 +4,7 @@ import { trpcClient } from "src/application/trpc/client";
 
 export async function authLogin(data: UserLogin) {
   try {
-    const response = await trpcClient.auth.login.query(data);
+    const response = await trpcClient.auth.login.mutate(data);
     return response;
   } catch (e) {
     return utilHandleTrpcError(e);
@@ -21,7 +21,7 @@ export async function authRegister(data: UserRegister) {
 }
 
 export function authGetUserId() {
-  // console.log(document.cookie);
+  console.log(document.cookie);
   const userId = document.cookie
     .split(";")
     .find((c) => c.trim().startsWith("id="));
