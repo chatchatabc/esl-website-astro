@@ -29,6 +29,16 @@ const { className } = Astro.props as Props;
         content.classList.toggle("grid-rows-[0fr]");
         content.classList.toggle("grid-rows-[1fr]");
       });
+
+      button.addEventListener("blur", () => {
+        if (
+          content.classList.contains("grid-rows-[1fr]") &&
+          !content.querySelector(":hover")
+        ) {
+          content.classList.remove("grid-rows-[1fr]");
+          content.classList.add("grid-rows-[0fr]");
+        }
+      });
     }
   }
 
