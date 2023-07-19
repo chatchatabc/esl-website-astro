@@ -1,5 +1,5 @@
-import { inferAsyncReturnType } from "@trpc/server";
-import { Bindings } from "../..";
+import type { inferAsyncReturnType } from "@trpc/server";
+import type { Bindings } from "src/server";
 
 type Props = {
   req: Request;

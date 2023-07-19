@@ -2,9 +2,9 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { trpcContext } from "./application/trpc/context";
 import { trpcRouter } from "./application/trpc";
 
-export interface Bindings {
+export type Bindings = {
   DB: D1Database;
-}
+};
 
 export default {
   async fetch(

@@ -2,6 +2,8 @@
 dist/
 # generated types
 .astro/
+# Wrangler
+.wrangler/
 
 # dependencies
 node_modules/
@@ -20,4 +22,5 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Unlighthouse
 .unlighthouse/
