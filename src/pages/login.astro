@@ -70,21 +70,22 @@ import MainLayout from "@layouts/MainLayout.astro";
 </MainLayout>
 
 <script>
-import { authLogin } from "src/services/authService";
-import type { UserLogin } from "../../../server/src/domain/models/UserModel";
+  import type { UserLogin } from "src/domain/models/UserModel";
+  import { authLogin } from "src/services/authService";
 
   const form = document.querySelector<HTMLFormElement>("[data-login-form]");
 
-  form?.addEventListener("submit",async (e) => {
+  form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries()) as UserLogin;
-    
+
     const response = await authLogin(data);
 
     if (response.errors) {
-      alert(response.errors[0].message)
+      alert(response.errors[0].message);
     } else {
+      // alert("Login successful!");
       window.location.href = "/profile";
     }
   });

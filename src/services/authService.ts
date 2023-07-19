@@ -1,18 +1,34 @@
-import trpc, { trpcAction } from "src/infra/trpc";
-import type {
-  User,
-  UserLogin,
-  UserRegister,
-} from "../../../server/src/domain/models/UserModel";
+import type { UserLogin, UserRegister } from "src/domain/models/UserModel";
+import { utilHandleTrpcError } from "./utilService";
+import { trpcClient } from "src/application/trpc/client";
 
 export async function authLogin(data: UserLogin) {
-  const response = await trpcAction<User>(trpc.auth.login.query, data);
-
-  return response;
+  try {
+    const response = await trpcClient.auth.login.query(data);
+    return response;
+  } catch (e) {
+    return utilHandleTrpcError(e);
+  }
 }
 
 export async function authRegister(data: UserRegister) {
-  const response = await trpcAction<User>(trpc.auth.register.mutate, data);
+  try {
+    const response = await trpcClient.auth.register.mutate(data);
+    return response;
+  } catch (e) {
+    return utilHandleTrpcError(e);
+  }
+}
 
-  return response;
+export function authGetUserId() {
+  // console.log(document.cookie);
+  const userId = document.cookie
+    .split(";")
+    .find((c) => c.trim().startsWith("id="));
+
+  if (!userId) {
+    return null;
+  }
+
+  return userId.split("=")[1];
 }

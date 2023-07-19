@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { TrpcError } from "../models/TrpcModel";
+import type { TrpcError } from "../models/TrpcModel";
 
 export function utilFailedResponse(message: string, status: number = 500) {
   let code: TrpcError = "INTERNAL_SERVER_ERROR";

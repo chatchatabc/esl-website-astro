@@ -1,8 +1,8 @@
 import { initTRPC } from "@trpc/server";
-import { TrpcContext } from "./context";
 import type { UserLogin, UserRegister } from "../../domain/models/UserModel";
 import { authLogin, authRegister } from "../../domain/services/authService";
 import { utilFailedResponse } from "../../domain/services/utilService";
+import type { TrpcContext } from "./context";
 
 export const trpc = initTRPC.context<TrpcContext>().create();
 

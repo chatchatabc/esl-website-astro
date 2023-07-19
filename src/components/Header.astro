@@ -1,4 +1,5 @@
 ---
+import UserIcon from "@assets/UserIcon.astro";
 import headerJson from "@data/header.json";
 import { Icon } from "astro-icon";
 import { Picture } from "astro-imagetools/components";
@@ -76,22 +77,50 @@ const { links } = headerJson;
       </ul>
     </nav>
 
-    <!-- CTA: Contact us -->
+    <!-- Login -->
     <a
+      data-navbar-login
       href="/login"
       class="px-6 text-sm py-2 hidden ml-auto transition bg-white rounded-full lg:block hover:text-white hover:bg-esl-c-2"
     >
-    登入
+      登入
+    </a>
+
+    <!-- Profile -->
+    <a
+      data-navbar-user
+      href="/profile"
+      class="space-x-2 hidden absolute right-2 ml-auto items-center group lg:relative"
+    >
+      <p class="hidden text-white md:block">Welcome!</p>
+
+      <!-- Icon -->
+      <div
+        class="w-10 h-10 rounded-full bg-white p-1 transition group-hover:text-white group-hover:bg-esl-c-2"
+      >
+        <UserIcon />
+      </div>
     </a>
   </section>
 </section>
 
 <script>
+  import { authGetUserId } from "src/services/authService";
+
   const links =
     document.querySelectorAll<HTMLButtonElement>("[data-navbar-link]");
   const menuIcon = document.querySelector("[data-navbar-menu-icon]");
   const menuBtn = document.querySelector("[data-navbar-menu-btn]");
   const mobileNav = document.querySelector("[data-navbar-mobile-nav]");
+  const loginBtn = document.querySelector("[data-navbar-login]");
+  const userBtn = document.querySelector("[data-navbar-user]");
+
+  const token = authGetUserId();
+  if (token) {
+    loginBtn?.classList.remove("lg:block");
+    userBtn?.classList.remove("hidden");
+    userBtn?.classList.add("flex");
+  }
 
   if (links && menuIcon && menuBtn && mobileNav) {
     let open = false;
