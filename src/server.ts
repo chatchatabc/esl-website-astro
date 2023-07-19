@@ -25,7 +25,7 @@ export default {
 
     // Handle CORS preflight requests
     if (request.method === "OPTIONS") {
-      return utilSuccessApiResponse(null, 204);
+      return utilSuccessApiResponse({}, 200);
     }
 
     const { pathname } = new URL(request.url);
