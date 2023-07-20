@@ -1,9 +1,10 @@
 ---
 import UserIcon from "@assets/UserIcon.astro";
 import headerJson from "@data/header.json";
-import { Icon } from "astro-icon";
 import { Picture } from "astro-imagetools/components";
 import DropDown from "./widgets/DropDown.astro";
+import MenuIcon from "@assets/MenuIcon.astro";
+import MenuCloseIcon from "@assets/MenuCloseIcon.astro";
 
 const { links } = headerJson;
 ---
@@ -19,9 +20,13 @@ const { links } = headerJson;
       class="absolute left-2 p-2 border rounded-md overflow-hidden text-white lg:hidden"
     >
       <div data-navbar-menu-icon class="bg-esl-c-1 absolute transition">
-        <Icon name="charm:menu-hamburger" class="h-[1.5rem] w-[1.5rem]" />
+        <div class="h-[1.5rem] w-[1.5rem]">
+          <MenuIcon />
+        </div>
       </div>
-      <Icon name="ic:baseline-close" class="h-[1.5rem] w-[1.5rem]" />
+      <div class="h-[1.5rem] w-[1.5rem]">
+        <MenuCloseIcon />
+      </div>
     </button>
 
     <!-- Logo -->
