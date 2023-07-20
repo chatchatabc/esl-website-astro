@@ -1,6 +1,7 @@
 import { inferAsyncReturnType, initTRPC } from "@trpc/server";
 import type { Bindings } from "src/server";
 import { utilValidOrigin } from "../services/server/utilService";
+import { authGetTokenPayload } from "../services/server/authService";
 
 type Props = {
   req: Request;
@@ -11,6 +12,8 @@ type Props = {
 
 export function trpcContext({ resHeaders, req, ...props }: Props) {
   const origin = req.headers.get("Origin") ?? "";
+  const token = req.headers.get("Authorization") ?? "";
+  const userId = authGetTokenPayload(token);
 
   if (utilValidOrigin(origin)) {
     resHeaders.append("Access-Control-Allow-Origin", origin);
@@ -19,10 +22,9 @@ export function trpcContext({ resHeaders, req, ...props }: Props) {
       "Access-Control-Allow-Headers",
       "Content-Type, Authorization"
     );
-    resHeaders.append("Access-Control-Allow-Credentials", "true");
   }
 
-  return { ...props, resHeaders, req };
+  return { ...props, resHeaders, req, userId };
 }
 
 export type TrpcContext = inferAsyncReturnType<typeof trpcContext>;

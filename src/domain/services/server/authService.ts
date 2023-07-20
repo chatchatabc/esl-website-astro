@@ -1,9 +1,11 @@
 import { userDbGetByUsername, userDbInsert } from "../../repositories/userRepo";
 import CryptoJS from "crypto-js";
-import { utilFailedResponse } from "../server/utilService";
-import type { User, UserRegister } from "../../models/UserModel";
-import type { TrpcResponse } from "../../models/TrpcModel";
-import type { TrpcContext } from "../../infra/trpcServerActions";
+import {
+  utilFailedResponse,
+  utilSuccessApiResponse,
+} from "../server/utilService";
+import type { UserRegister } from "../../models/UserModel";
+import type { Bindings } from "src/server";
 
 const secret = "I)0Don't!1Care@2";
 const jwtHeader = JSON.stringify({ alg: "HS256", typ: "JWT" });
@@ -58,19 +60,17 @@ export function authGetTokenPayload(token: string) {
   return obj.id;
 }
 
-export async function authRegister(input: UserRegister, ctx: TrpcContext) {
-  let user = await userDbGetByUsername(input.username, ctx.env);
+export async function authRegister(input: UserRegister, env: Bindings) {
+  let user = await userDbGetByUsername(input.username, env);
   if (user) {
     throw utilFailedResponse("User already exists", 400);
   }
 
-  user = await userDbInsert(input, ctx.env);
+  user = await userDbInsert(input, env);
   if (!user) {
     throw utilFailedResponse("Failed to create user", 500);
   }
 
   delete user.password;
-  return {
-    data: user,
-  } as TrpcResponse<User>;
+  return utilSuccessApiResponse({ data: user }, 200);
 }
