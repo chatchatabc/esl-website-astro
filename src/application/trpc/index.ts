@@ -1,7 +1,4 @@
-import type {
-  CommonContent,
-  CommonParams,
-} from "src/domain/models/CommonModel";
+import type { CommonParams } from "src/domain/models/CommonModel";
 import {
   utilFailedResponse,
   utilValidateCommonParams,
@@ -10,14 +7,8 @@ import {
   trpcProcedure,
   trpcRouterCreate,
 } from "src/domain/infra/trpcServerActions";
-import type { Schedule } from "src/domain/models/ScheduleModel";
 import { userGet } from "src/domain/services/server/userService";
-import { userDbGet } from "src/domain/repositories/userRepo";
-
-/**
- * Due to some bugs, we cannot import
- * this router from another file
- */
+import { scheduleGet } from "src/domain/services/server/scheduleService";
 
 export const trpcRouter = trpcRouterCreate({
   users: trpcProcedure
@@ -34,19 +25,15 @@ export const trpcRouter = trpcRouterCreate({
     }),
   schedules: trpcProcedure
     .input((values) => {
-      return values;
+      return values as CommonParams;
     })
     .query((opts) => {
       if (!opts.ctx.userId) {
         throw utilFailedResponse("Invalid Token", 403);
       }
-      const data: CommonContent<Schedule> = {
-        content: [],
-        total: 0,
-        page: 0,
-        size: 10,
-      };
-      return { data };
+      const params = utilValidateCommonParams(opts.input);
+
+      return scheduleGet(params, opts.ctx.env);
     }),
 });
 
