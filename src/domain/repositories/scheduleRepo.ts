@@ -1,6 +1,6 @@
 import type { Bindings } from "src/server";
 import type { CommonParams } from "../models/CommonModel";
-import type { Schedule } from "../models/ScheduleModel";
+import type { Schedule, ScheduleCreate } from "../models/ScheduleModel";
 
 export async function scheduleDbGet(params: CommonParams, bindings: Bindings) {
   const { size } = params;
@@ -25,5 +25,30 @@ export async function scheduleDbGetTotal(bindings: Bindings) {
   } catch (e) {
     console.log(e);
     return null;
+  }
+}
+
+export async function scheduleDbInsert(
+  values: ScheduleCreate,
+  bindings: Bindings
+) {
+  try {
+    const date = Date.now();
+
+    const stmt = bindings.DB.prepare(
+      "INSERT INTO schedules (teacherId, status, startDate, endDate, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
+    ).bind(
+      values.teacherId,
+      values.status,
+      values.startDate,
+      values.endDate,
+      date,
+      date
+    );
+    await stmt.run();
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
   }
 }

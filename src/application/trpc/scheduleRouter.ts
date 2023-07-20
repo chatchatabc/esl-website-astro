@@ -4,7 +4,10 @@ import {
 } from "src/domain/infra/trpcServerActions";
 import type { CommonParams } from "src/domain/models/CommonModel";
 import type { ScheduleCreate } from "src/domain/models/ScheduleModel";
-import { scheduleGet } from "src/domain/services/server/scheduleService";
+import {
+  scheduleCreate,
+  scheduleGet,
+} from "src/domain/services/server/scheduleService";
 import {
   utilFailedResponse,
   utilValidateCommonParams,
@@ -20,10 +23,6 @@ export const scheduleRouter = trpcRouterCreate({
       return utilValidateCommonParams(values as CommonParams);
     })
     .query((opts) => {
-      if (!opts.ctx.userId) {
-        throw utilFailedResponse("Invalid Token", 403);
-      }
-
       return scheduleGet(opts.input, opts.ctx.env);
     }),
 
@@ -33,14 +32,24 @@ export const scheduleRouter = trpcRouterCreate({
 
       if (!data) {
         throw utilFailedResponse("Bad Request", 400);
-      }
-      if (!data.status || !data.teacherId || !data.endDate || !data.startDate) {
+      } else if (
+        !data.status ||
+        !data.teacherId ||
+        !data.endDate ||
+        !data.startDate
+      ) {
         throw utilFailedResponse("Missing fields", 400);
+      } else if (data.startDate > data.endDate) {
+        throw utilFailedResponse("Incorrect start and end date", 400);
+      } else if (data.startDate % 1800 !== 0) {
+        throw utilFailedResponse("Incorrect start date", 400);
+      } else if (data.endDate % 1800 !== 0) {
+        throw utilFailedResponse("Incorrect end date", 400);
       }
 
       return data;
     })
-    .mutation(() => {
-      return "Schedule Mutate";
+    .mutation((opts) => {
+      return scheduleCreate(opts.input, opts.ctx.env);
     }),
 });
