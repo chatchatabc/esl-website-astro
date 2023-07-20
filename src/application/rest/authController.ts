@@ -1,8 +1,9 @@
-import type { UserLogin } from "src/domain/models/UserModel";
+import type { UserLogin, UserRegister } from "src/domain/models/UserModel";
 import { userDbGetByUsername } from "src/domain/repositories/userRepo";
 import {
   authCreateHash,
   authCreateToken,
+  authRegister,
 } from "src/domain/services/server/authService";
 import {
   utilFailedApiResponse,
@@ -32,7 +33,7 @@ export default async (
       return utilFailedApiResponse("Invalid username or password", 401);
     }
 
-    const token = authCreateToken({ id: user.id });
+    const token = authCreateToken(user.id);
     delete user.password;
     const response = utilSuccessApiResponse({ data: user }, 200);
     response.headers.append("x-access-token", token);
@@ -42,6 +43,23 @@ export default async (
 
   // PATH: /api/auth/register
   else if (pathname.startsWith("/register")) {
+    const body = (await request.json()) as UserRegister;
+
+    if (
+      !body.username ||
+      !body.password ||
+      !body.confirmPassword ||
+      !body.role
+    ) {
+      return utilFailedApiResponse("Missing username or password", 400);
+    } else if (body.password !== body.confirmPassword) {
+      return utilFailedApiResponse(
+        "Password and Confirm password are not the same",
+        400
+      );
+    }
+
+    return authRegister(body, env);
   }
 
   return new Response("Not found", { status: 404 });
