@@ -1,6 +1,33 @@
 import type { Bindings } from "src/server";
 import { authCreateHash } from "../services/server/authService";
 import type { User, UserRegister } from "../models/UserModel";
+import type { CommonParams } from "../models/CommonModel";
+
+export async function userDbGet(params: CommonParams, bindings: Bindings) {
+  const { size } = params;
+
+  try {
+    const results = await bindings.DB.prepare("SELECT * FROM users LIMIT ?")
+      .bind(size)
+      .all<User>();
+
+    return results;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function userDbGetTotal(bindings: Bindings) {
+  try {
+    const stmt = bindings.DB.prepare("SELECT COUNT(*) AS total FROM users");
+    const total = await stmt.first("total");
+    return total;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
 
 export async function userDbGetByUsername(value: string, bindings: Bindings) {
   const results = (await bindings.DB.prepare(

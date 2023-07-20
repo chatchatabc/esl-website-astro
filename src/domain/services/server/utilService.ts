@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import type { TrpcError } from "../../models/TrpcModel";
+import type { CommonParams } from "src/domain/models/CommonModel";
 
 export function utilSuccessApiResponse(data: any, status: number = 200) {
   return new Response(JSON.stringify(data), {
@@ -87,4 +88,19 @@ export function utilValidOrigin(origin: string) {
   }
 
   return false;
+}
+
+export function utilValidateCommonParams(params?: CommonParams) {
+  if (!params) {
+    params = {};
+  }
+
+  if (!params.page) {
+    params.page = 0;
+  } else if (typeof params.page === "string") {
+    params.page = Number(params.page);
+  }
+
+  params.size = params.size ?? 10;
+  return params;
 }
