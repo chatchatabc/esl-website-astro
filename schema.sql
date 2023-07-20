@@ -9,5 +9,5 @@ INSERT INTO roles (name, createdAt, updatedAt) VALUES ('student', '2019-01-01 00
 
 -- Columns: id, teacherId, userId, startDate, endDate, status, createdAt, updatedAt
 DROP TABLE IF EXISTS schedules;
-CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY, teacherId INTEGER NOT NULL, startDate TEXT NOT NULL, endDate TEXT NOT NULL, userId INTEGER, status INTEGER NOT NULL, createdAt TEXT NOT NULL, updatedAt TEXT NOT NULL);
-INSERT INTO schedules (teacherId, userId, status, createdAt, updatedAt, startDate, endDate) VALUES (2, 1, 0, '2019-01-01 00:00:00', '2019-01-01 00:00:00', '2019-01-01 00:00:00', '2019-01-01 00:00:00');
+CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY, teacherId INTEGER NOT NULL, startDate TEXT NOT NULL, endDate TEXT NOT NULL, studentId INTEGER, status INTEGER NOT NULL, createdAt TEXT NOT NULL, updatedAt TEXT NOT NULL);
+INSERT INTO schedules (teacherId, studentId, status, createdAt, updatedAt, startDate, endDate) VALUES (2, 1, 0, '2019-01-01 00:00:00', '2019-01-01 00:00:00', '2019-01-01 00:00:00', '2019-01-01 00:00:00');
