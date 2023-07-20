@@ -28,9 +28,9 @@ export async function scheduleDbGetAllByUser(
 
   try {
     const results = await bindings.DB.prepare(
-      "SELECT * FROM schedules WHERE teacherId = ? LIMIT ?"
+      "SELECT * FROM schedules WHERE teacherId = ? OR studentId = ? LIMIT ?"
     )
-      .bind(id, size)
+      .bind(id, id, size)
       .all<Schedule>();
     return results;
   } catch (e) {
