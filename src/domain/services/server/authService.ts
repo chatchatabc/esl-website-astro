@@ -1,10 +1,10 @@
 import { userDbGetByUsername, userDbInsert } from "../../repositories/userRepo";
 import CryptoJS from "crypto-js";
 import {
-  utilFailedResponse,
+  utilFailedApiResponse,
   utilSuccessApiResponse,
 } from "../server/utilService";
-import type { UserRegister } from "../../models/UserModel";
+import type { UserLogin, UserRegister } from "../../models/UserModel";
 import type { Bindings } from "src/server";
 
 const secret = "I)0Don't!1Care@2";
@@ -63,14 +63,34 @@ export function authGetTokenPayload(token: string) {
 export async function authRegister(input: UserRegister, env: Bindings) {
   let user = await userDbGetByUsername(input.username, env);
   if (user) {
-    throw utilFailedResponse("User already exists", 400);
+    return utilFailedApiResponse("User already exists", 400);
   }
 
   user = await userDbInsert(input, env);
   if (!user) {
-    throw utilFailedResponse("Failed to create user", 500);
+    return utilFailedApiResponse("Failed to create user", 500);
   }
 
+  const token = authCreateToken(user.id);
   delete user.password;
-  return utilSuccessApiResponse({ data: user }, 200);
+  const response = utilSuccessApiResponse({ data: user }, 200);
+  response.headers.append("x-access-token", token);
+  response.headers.append("Access-Control-Expose-Headers", "x-access-token");
+  return response;
+}
+
+export async function authLogin(body: UserLogin, env: Bindings) {
+  let user = await userDbGetByUsername(body.username, env);
+  if (!user) {
+    return utilFailedApiResponse("Invalid username or password", 401);
+  } else if (user.password !== authCreateHash(body.password)) {
+    return utilFailedApiResponse("Invalid username or password", 401);
+  }
+
+  const token = authCreateToken(user.id);
+  delete user.password;
+  const response = utilSuccessApiResponse({ data: user }, 200);
+  response.headers.append("x-access-token", token);
+  response.headers.append("Access-Control-Expose-Headers", "x-access-token");
+  return response;
 }

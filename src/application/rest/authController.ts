@@ -1,14 +1,9 @@
 import type { UserLogin, UserRegister } from "src/domain/models/UserModel";
-import { userDbGetByUsername } from "src/domain/repositories/userRepo";
 import {
-  authCreateHash,
-  authCreateToken,
+  authLogin,
   authRegister,
 } from "src/domain/services/server/authService";
-import {
-  utilFailedApiResponse,
-  utilSuccessApiResponse,
-} from "src/domain/services/server/utilService";
+import { utilFailedApiResponse } from "src/domain/services/server/utilService";
 import type { Bindings } from "src/server";
 
 export default async (
@@ -26,19 +21,7 @@ export default async (
       return utilFailedApiResponse("Missing username or password", 400);
     }
 
-    let user = await userDbGetByUsername(body.username, env);
-    if (!user) {
-      return utilFailedApiResponse("Invalid username or password", 401);
-    } else if (user.password !== authCreateHash(body.password)) {
-      return utilFailedApiResponse("Invalid username or password", 401);
-    }
-
-    const token = authCreateToken(user.id);
-    delete user.password;
-    const response = utilSuccessApiResponse({ data: user }, 200);
-    response.headers.append("x-access-token", token);
-    response.headers.append("Access-Control-Expose-Headers", "x-access-token");
-    return response;
+    return authLogin(body, env);
   }
 
   // PATH: /api/auth/register
