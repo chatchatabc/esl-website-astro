@@ -9,7 +9,7 @@ import type { Bindings } from "src/server";
 
 const secret = "I)0Don't!1Care@2";
 const jwtHeader = JSON.stringify({ alg: "HS256", typ: "JWT" });
-const base64Header = Buffer.from(jwtHeader).toString("base64");
+const base64Header = CryptoJS.enc.Base64url.parse(jwtHeader);
 
 export function authCreateHash(value: string) {
   return CryptoJS.HmacSHA256(value, secret).toString();
@@ -20,7 +20,7 @@ export function authCreateToken(id: number) {
   const exp = iat + 60 * 60 * 24 * 7; // 7 days
 
   const jwtPayload = JSON.stringify({ exp, id });
-  const base64Payload = Buffer.from(jwtPayload).toString("base64");
+  const base64Payload = CryptoJS.enc.Base64url.parse(jwtPayload);
   const signature = authCreateHash(`${base64Header}.${base64Payload}`);
 
   return `${base64Header}.${base64Payload}.${signature}`;
@@ -49,8 +49,8 @@ export function authGetTokenPayload(token: string) {
     return null;
   }
 
-  const payload = token.split(".")[1];
-  const data = Buffer.from(payload, "base64").toString();
+  const payload = token.split(".")[1] as any;
+  const data = CryptoJS.enc.Base64url.stringify(payload);
   const obj = JSON.parse(data) as { id: number; exp: number };
 
   if (obj.exp < Date.now()) {
