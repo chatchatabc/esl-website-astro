@@ -15,14 +15,12 @@ export default trpcRouterCreate({
   }),
   getAll: trpcProcedure
     .input((values) => {
-      return values as CommonParams;
+      return utilValidateCommonParams(values as CommonParams);
     })
     .query(async (opts) => {
       if (!opts.ctx.userId) {
         throw utilFailedResponse("Invalid Token", 403);
       }
-      const params = utilValidateCommonParams(opts.input);
-
-      return userGet(params, opts.ctx.env);
+      return userGet(opts.input, opts.ctx.env);
     }),
 });

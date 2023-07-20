@@ -3,8 +3,8 @@ import { scheduleRouter } from "./scheduleRouter";
 import userRouter from "./userRouter";
 
 export const trpcRouter = trpcRouterCreate({
-  users: userRouter,
-  schedules: scheduleRouter,
+  user: userRouter,
+  schedule: scheduleRouter,
 });
 
 export type TrpcRouter = typeof trpcRouter;
