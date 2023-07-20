@@ -3,8 +3,6 @@ import type {
   UserLogin,
   UserRegister,
 } from "src/domain/models/UserModel";
-import { trpcClient } from "src/domain/infra/trpcClientActions";
-import { utilHandleTrpcError } from "./utilService";
 import type { AxiosResponse } from "src/domain/models/AxiosModel";
 import { restPost } from "src/domain/infra/restActions";
 
@@ -37,12 +35,9 @@ export function authLogout() {
 }
 
 export async function authRegister(data: UserRegister) {
-  try {
-    const response = await trpcClient.auth.register.mutate(data);
-    return response;
-  } catch (e) {
-    return utilHandleTrpcError(e);
-  }
+  const response: AxiosResponse<User> = await restPost("/auth/register", data);
+
+  return response.data;
 }
 
 export function authGetToken() {
