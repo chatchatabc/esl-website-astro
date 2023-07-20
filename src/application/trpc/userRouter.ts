@@ -18,9 +18,6 @@ export default trpcRouterCreate({
       return utilValidateCommonParams(values as CommonParams);
     })
     .query(async (opts) => {
-      if (!opts.ctx.userId) {
-        throw utilFailedResponse("Invalid Token", 403);
-      }
       return userGet(opts.input, opts.ctx.env);
     }),
 });

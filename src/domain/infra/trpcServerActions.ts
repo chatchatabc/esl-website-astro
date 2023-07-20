@@ -1,6 +1,9 @@
 import { inferAsyncReturnType, initTRPC } from "@trpc/server";
 import type { Bindings } from "src/server";
-import { utilValidOrigin } from "../services/server/utilService";
+import {
+  utilFailedResponse,
+  utilValidOrigin,
+} from "../services/server/utilService";
 import { authGetTokenPayload } from "../services/server/authService";
 
 type Props = {
@@ -31,4 +34,11 @@ export type TrpcContext = inferAsyncReturnType<typeof trpcContext>;
 
 export const trpc = initTRPC.context<TrpcContext>().create();
 export const trpcRouterCreate = trpc.router;
-export const trpcProcedure = trpc.procedure;
+export const trpcProcedure = trpc.procedure.use(
+  trpc.middleware((opts) => {
+    if (!opts.ctx.userId) {
+      throw utilFailedResponse("Invalid Token", 403);
+    }
+    return opts.next(opts);
+  })
+);
