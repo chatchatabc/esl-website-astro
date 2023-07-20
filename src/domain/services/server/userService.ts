@@ -7,9 +7,12 @@ import type { User } from "src/domain/models/UserModel";
 export async function userGet(params: CommonParams, bindings: Bindings) {
   const { page, size } = params;
   const query = await userDbGet(params, bindings);
-  const total = await userDbGetTotal(bindings);
+  if (!query) {
+    throw utilFailedResponse("Error", 404);
+  }
 
-  if (!query || !total) {
+  const total = await userDbGetTotal(bindings);
+  if (total === null) {
     throw utilFailedResponse("Error", 404);
   }
 

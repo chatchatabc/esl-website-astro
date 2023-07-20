@@ -90,7 +90,7 @@ export function utilValidOrigin(origin: string) {
   return false;
 }
 
-export function utilValidateCommonParams(params?: CommonParams) {
+export function utilValidateCommonParams(params?: any) {
   if (!params) {
     params = {};
   }

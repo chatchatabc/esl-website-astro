@@ -22,7 +22,7 @@ export async function userDbGetTotal(bindings: Bindings) {
   try {
     const stmt = bindings.DB.prepare("SELECT COUNT(*) AS total FROM users");
     const total = await stmt.first("total");
-    return total;
+    return total as number;
   } catch (e) {
     console.log(e);
     return null;

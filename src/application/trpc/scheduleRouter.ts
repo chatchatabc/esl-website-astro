@@ -6,7 +6,8 @@ import type { CommonParams } from "src/domain/models/CommonModel";
 import type { ScheduleCreate } from "src/domain/models/ScheduleModel";
 import {
   scheduleCreate,
-  scheduleGet,
+  scheduleGetAll,
+  scheduleGetAllByUser,
 } from "src/domain/services/server/scheduleService";
 import {
   utilFailedResponse,
@@ -18,12 +19,28 @@ export const scheduleRouter = trpcRouterCreate({
     return "Get Schedule";
   }),
 
-  getAll: trpcProcedure
+  getAllByUser: trpcProcedure
     .input((values) => {
-      return utilValidateCommonParams(values as CommonParams);
+      const data = utilValidateCommonParams(values) as CommonParams & {
+        id: number;
+      };
+
+      if (!data.id) {
+        throw utilFailedResponse("Missing values", 400);
+      }
+
+      return data;
     })
     .query((opts) => {
-      return scheduleGet(opts.input, opts.ctx.env);
+      return scheduleGetAllByUser(opts.input, opts.ctx.env);
+    }),
+
+  getAll: trpcProcedure
+    .input((values) => {
+      return utilValidateCommonParams(values) as CommonParams;
+    })
+    .query((opts) => {
+      return scheduleGetAll(opts.input, opts.ctx.env);
     }),
 
   create: trpcProcedure
