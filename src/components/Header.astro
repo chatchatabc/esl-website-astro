@@ -162,7 +162,7 @@ const { links } = headerJson;
 
   logoutBtn?.addEventListener("click", () => {
     authLogout();
-    window.location.reload();
+    window.location.href = "/";
   });
 
   if (links && menuIcon && menuBtn && mobileNav) {
