@@ -9,10 +9,11 @@ import type { Bindings } from "src/server";
 
 const secret = "I)0Don't!1Care@2";
 const jwtHeader = JSON.stringify({ alg: "HS256", typ: "JWT" });
-const base64Header = CryptoJS.enc.Base64url.parse(jwtHeader);
+const wordArrayHeader = CryptoJS.enc.Utf8.parse(jwtHeader);
+const base64Header = CryptoJS.enc.Base64url.stringify(wordArrayHeader);
 
 export function authCreateHash(value: string) {
-  return CryptoJS.HmacSHA256(value, secret).toString();
+  return CryptoJS.HmacSHA256(value, secret);
 }
 
 export function authCreateToken(id: number) {
@@ -20,7 +21,8 @@ export function authCreateToken(id: number) {
   const exp = iat + 60 * 60 * 24 * 7; // 7 days
 
   const jwtPayload = JSON.stringify({ exp, id });
-  const base64Payload = CryptoJS.enc.Base64url.parse(jwtPayload);
+  const wordArrayPayload = CryptoJS.enc.Utf8.parse(jwtPayload);
+  const base64Payload = CryptoJS.enc.Base64url.stringify(wordArrayPayload);
   const signature = authCreateHash(`${base64Header}.${base64Payload}`);
 
   return `${base64Header}.${base64Payload}.${signature}`;
@@ -32,7 +34,7 @@ export function authValidateToken(token: string) {
     return false;
   }
 
-  const authSignature = authCreateHash(`${header}.${payload}`);
+  const authSignature = authCreateHash(`${header}.${payload}`).toString();
   if (signature !== authSignature) {
     return false;
   }
@@ -42,22 +44,22 @@ export function authValidateToken(token: string) {
 
 export function authGetTokenPayload(token: string) {
   if (token.startsWith("Bearer ")) {
-    token.slice("bearer ".length);
+    token = token.slice("bearer ".length);
   }
 
   if (!authValidateToken(token)) {
     return null;
   }
 
-  const payload = token.split(".")[1] as any;
-  const data = CryptoJS.enc.Base64url.stringify(payload);
-  const obj = JSON.parse(data) as { id: number; exp: number };
+  const wordArrayPayload = CryptoJS.enc.Base64url.parse(token.split(".")[1]);
+  const payload = wordArrayPayload.toString(CryptoJS.enc.Utf8);
+  const data = JSON.parse(payload) as { id: number; exp: number };
 
-  if (obj.exp < Date.now()) {
+  if (data.exp < Date.now() / 1000) {
     return null;
   }
 
-  return obj.id;
+  return data.id;
 }
 
 export async function authRegister(input: UserRegister, env: Bindings) {
@@ -83,7 +85,7 @@ export async function authLogin(body: UserLogin, env: Bindings) {
   let user = await userDbGetByUsername(body.username, env);
   if (!user) {
     return utilFailedApiResponse("Invalid username or password", 401);
-  } else if (user.password !== authCreateHash(body.password)) {
+  } else if (user.password !== authCreateHash(body.password).toString()) {
     return utilFailedApiResponse("Invalid username or password", 401);
   }
 
