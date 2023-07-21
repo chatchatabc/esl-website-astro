@@ -1,16 +1,30 @@
 import type { Bindings } from "src/server";
-import type { CommonParams } from "../models/CommonModel";
 import type { Booking, BookingCreate } from "../models/BookingModel";
 
-export async function bookingDbGetAll(
-  params: CommonParams,
+export async function bookingDbTotalByUser(id: number, bindings: Bindings) {
+  try {
+    const stmt = bindings.DB.prepare(
+      "SELECT COUNT(*) AS total FROM bookings WHERE teacherId = ? OR studentId = ?"
+    ).bind(id, id);
+    const total = await stmt.first("total");
+    return total as number;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function bookingDbGetAllByUser(
+  params: Record<string, any>,
   bindings: Bindings
 ) {
-  const { size } = params;
+  const { id, size } = params;
 
   try {
-    const results = await bindings.DB.prepare("SELECT * FROM bookings LIMIT ?")
-      .bind(size)
+    const results = await bindings.DB.prepare(
+      "SELECT * FROM bookings WHERE teacherId = ? OR studentId = ? LIMIT ?"
+    )
+      .bind(id, id, size)
       .all<Booking>();
 
     return results;

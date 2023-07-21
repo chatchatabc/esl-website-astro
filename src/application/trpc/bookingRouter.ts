@@ -3,10 +3,27 @@ import {
   trpcRouterCreate,
 } from "src/domain/infra/trpcServerActions";
 import type { BookingCreate } from "src/domain/models/BookingModel";
-import { bookingCreate } from "src/domain/services/server/bookingService";
-import { utilFailedResponse } from "src/domain/services/server/utilService";
+import {
+  bookingCreate,
+  bookingGetAllByUser,
+} from "src/domain/services/server/bookingService";
+import {
+  utilFailedResponse,
+  utilValidateCommonParams,
+} from "src/domain/services/server/utilService";
 
 export default trpcRouterCreate({
+  getAllByUser: trpcProcedure
+    .input((values) => {
+      const data = utilValidateCommonParams(values) as Record<string, any>;
+      if (!data.id) {
+        throw utilFailedResponse("Missing values", 400);
+      }
+      return data;
+    })
+    .query((opts) => {
+      return bookingGetAllByUser(opts.input, opts.ctx.env);
+    }),
   create: trpcProcedure
     .input((values) => {
       const data = values as BookingCreate;

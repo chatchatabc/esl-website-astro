@@ -1,7 +1,9 @@
 import type { BookingCreate } from "src/domain/models/BookingModel";
 import {
+  bookingDbGetAllByUser,
   bookingDbGetOverlap,
   bookingDbInsert,
+  bookingDbTotalByUser,
 } from "src/domain/repositories/bookingRepo";
 import type { Bindings } from "src/server";
 import { utilFailedResponse } from "./utilService";
@@ -24,4 +26,28 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
   }
 
   return success;
+}
+
+export async function bookingGetAllByUser(
+  params: Record<string, any>,
+  bindings: Bindings
+) {
+  const { page, size, id } = params;
+
+  const bookings = await bookingDbGetAllByUser(params, bindings);
+  if (!bookings) {
+    throw utilFailedResponse("Cannot GET", 500);
+  }
+  const total = await bookingDbTotalByUser(id, bindings);
+  if (total === null) {
+    throw utilFailedResponse("Cannot GET", 500);
+  }
+  const data = {
+    content: bookings.results,
+    total,
+    page,
+    size,
+  };
+
+  return data;
 }
