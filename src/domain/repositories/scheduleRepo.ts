@@ -97,10 +97,13 @@ export async function scheduleDbGetOverlap(
       "SELECT COUNT(*) AS total FROM schedules WHERE (day = ? AND ((start <= ? AND end > ?) OR (start < ? AND end >= ?)))"
     ).bind(day, start, start, end, end);
     const total = await stmt.first("total");
-    return total as number;
+    if (total === 0) {
+      return false;
+    }
+    return true;
   } catch (e) {
     console.log(e);
-    return 0;
+    return false;
   }
 }
 
