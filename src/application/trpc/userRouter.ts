@@ -4,10 +4,7 @@ import {
 } from "src/domain/infra/trpcServerActions";
 import type { CommonParams } from "src/domain/models/CommonModel";
 import { userGet } from "src/domain/services/server/userService";
-import {
-  utilFailedResponse,
-  utilValidateCommonParams,
-} from "src/domain/services/server/utilService";
+import { utilValidateCommonParams } from "src/domain/services/server/utilService";
 
 export default trpcRouterCreate({
   get: trpcProcedure.query(() => {

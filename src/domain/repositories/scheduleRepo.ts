@@ -1,6 +1,7 @@
 import type { Bindings } from "src/server";
 import type { CommonParams } from "../models/CommonModel";
 import type { Schedule, ScheduleCreate } from "../models/ScheduleModel";
+import type { BookingCreate } from "../models/BookingModel";
 
 export async function scheduleDbGetAll(
   params: CommonParams,
@@ -66,6 +67,26 @@ export async function scheduleDbGetAllTotal(bindings: Bindings) {
   }
 }
 
+export async function scheduleDbValidateBooking(
+  booking: BookingCreate,
+  bindings: Bindings
+) {
+  const { start, end, teacherId } = booking;
+  try {
+    const stmt = bindings.DB.prepare(
+      "SELECT COUNT(*) AS total FROM schedules WHERE (start BETWEEN ? AND ? OR end BETWEEN ? AND ?) AND (teacherId = ?)"
+    ).bind(start, end, start, end, teacherId);
+    const total = await stmt.first("total");
+    if (total === 0) {
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
 export async function scheduleDbGetOverlap(
   values: ScheduleCreate,
   bindings: Bindings
@@ -76,10 +97,10 @@ export async function scheduleDbGetOverlap(
       "SELECT COUNT(*) AS total FROM schedules WHERE (day = ? AND ((start <= ? AND end > ?) OR (start < ? AND end >= ?)))"
     ).bind(day, start, start, end, end);
     const total = await stmt.first("total");
-    return total;
+    return total as number;
   } catch (e) {
     console.log(e);
-    return null;
+    return 0;
   }
 }
 
