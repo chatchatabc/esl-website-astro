@@ -24,14 +24,14 @@ export async function bookingDbInsert(
   values: BookingCreate,
   bindings: Bindings
 ) {
-  const { start, end, teacherId, studentId } = values;
+  const { start, end, teacherId, studentId, status } = values;
   const date = Date.now();
 
   try {
     const stmt = await bindings.DB.prepare(
-      "INSERT INTO bookings (start, end, teacherId, studentId, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
+      "INSERT INTO bookings (start, end, teacherId, status, studentId, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)"
     )
-      .bind(start, end, teacherId, studentId, date, date)
+      .bind(start, end, teacherId, status, studentId, date, date)
       .run();
 
     return stmt.success;
