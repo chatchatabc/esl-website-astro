@@ -73,7 +73,7 @@ export async function scheduleDbGetOverlap(
   const { day, start, end } = values;
   try {
     const stmt = bindings.DB.prepare(
-      "SELECT COUNT(*) AS total FROM schedules WHERE (day = ? AND ((start <= ? AND end >= ?) OR (start <= ? AND end >= ?)))"
+      "SELECT COUNT(*) AS total FROM schedules WHERE (day = ? AND ((start <= ? AND end > ?) OR (start < ? AND end >= ?)))"
     ).bind(day, start, start, end, end);
     const total = await stmt.first("total");
     return total;
