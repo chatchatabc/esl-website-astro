@@ -4,6 +4,7 @@ import {
   scheduleDbGetAllByUser,
   scheduleDbGetAllTotal,
   scheduleDbGetAllTotalByUser,
+  scheduleDbGetOverlap,
   scheduleDbInsert,
 } from "src/domain/repositories/scheduleRepo";
 import type { Bindings } from "src/server";
@@ -54,8 +55,12 @@ export async function scheduleCreate(
   values: ScheduleCreate,
   bindings: Bindings
 ) {
-  const success = await scheduleDbInsert(values, bindings);
+  const overlap = await scheduleDbGetOverlap(values, bindings);
+  if (overlap) {
+    throw utilFailedResponse("Schedule overlaps", 400);
+  }
 
+  const success = await scheduleDbInsert(values, bindings);
   if (!success) {
     throw utilFailedResponse("Failed to create schedule", 500);
   }

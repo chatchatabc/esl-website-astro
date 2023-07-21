@@ -48,19 +48,14 @@ export const scheduleRouter = trpcRouterCreate({
       const data = value as ScheduleCreate;
 
       if (!data) {
-        throw utilFailedResponse("Bad Request", 400);
-      } else if (
-        !data.status ||
-        !data.teacherId ||
-        !data.endDate ||
-        !data.startDate
-      ) {
         throw utilFailedResponse("Missing fields", 400);
-      } else if (data.startDate > data.endDate) {
+      } else if (!data.day || !data.teacherId || !data.end || !data.start) {
+        throw utilFailedResponse("Missing fields", 400);
+      } else if (data.start > data.end) {
         throw utilFailedResponse("Incorrect start and end date", 400);
-      } else if (data.startDate % 1800 !== 0) {
+      } else if (data.start % 1800 !== 0) {
         throw utilFailedResponse("Incorrect start date", 400);
-      } else if (data.endDate % 1800 !== 0) {
+      } else if (data.end % 1800 !== 0) {
         throw utilFailedResponse("Incorrect end date", 400);
       }
 

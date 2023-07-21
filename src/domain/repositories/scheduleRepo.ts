@@ -66,6 +66,23 @@ export async function scheduleDbGetAllTotal(bindings: Bindings) {
   }
 }
 
+export async function scheduleDbGetOverlap(
+  values: ScheduleCreate,
+  bindings: Bindings
+) {
+  const { day, start, end } = values;
+  try {
+    const stmt = bindings.DB.prepare(
+      "SELECT COUNT(*) AS total FROM schedules WHERE (day = ? AND ((start <= ? AND end >= ?) OR (start <= ? AND end >= ?)))"
+    ).bind(day, start, start, end, end);
+    const total = await stmt.first("total");
+    return total;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
 export async function scheduleDbInsert(
   values: ScheduleCreate,
   bindings: Bindings
