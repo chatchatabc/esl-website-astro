@@ -57,7 +57,7 @@ export async function scheduleCreate(
   const success = await scheduleDbInsert(values, bindings);
 
   if (!success) {
-    throw utilFailedResponse("Failed to create scedule", 500);
+    throw utilFailedResponse("Failed to create schedule", 500);
   }
 
   return true;

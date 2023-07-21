@@ -74,15 +74,8 @@ export async function scheduleDbInsert(
     const date = Date.now();
 
     const stmt = bindings.DB.prepare(
-      "INSERT INTO schedules (teacherId, status, startDate, endDate, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
-    ).bind(
-      values.teacherId,
-      values.status,
-      values.startDate,
-      values.endDate,
-      date,
-      date
-    );
+      "INSERT INTO schedules (teacherId, day, start, end, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
+    ).bind(values.teacherId, values.day, values.start, values.end, date, date);
     await stmt.run();
     return true;
   } catch (e) {

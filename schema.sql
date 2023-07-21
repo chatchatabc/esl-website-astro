@@ -9,5 +9,5 @@ INSERT INTO roles (name, createdAt, updatedAt) VALUES ('admin', 0, 0), ('student
 
 -- Columns: id, teacherId, userId, startDate, endDate, status, createdAt, updatedAt
 DROP TABLE IF EXISTS schedules;
-CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY, teacherId INTEGER NOT NULL, startDate INTEGER NOT NULL, endDate INTEGER NOT NULL, studentId INTEGER, status INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
-INSERT INTO schedules (teacherId, studentId, status, createdAt, updatedAt, startDate, endDate) VALUES (3, 2, 0, 0, 0, 1689840543000, 1689851343000);
+CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY, teacherId INTEGER NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL, day INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
+INSERT INTO schedules (teacherId, day, createdAt, updatedAt, start, end) VALUES (3, 0, 0, 0, 1689840543000, 1689851343000);
