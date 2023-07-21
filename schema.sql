@@ -11,3 +11,8 @@ INSERT INTO roles (name, createdAt, updatedAt) VALUES ('admin', 0, 0), ('student
 DROP TABLE IF EXISTS schedules;
 CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY, teacherId INTEGER NOT NULL, start INTEGER NOT NULL, end INTEGER NOT NULL, day INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
 INSERT INTO schedules (teacherId, day, createdAt, updatedAt, start, end) VALUES (3, 0, 0, 0, 1689840543000, 1689851343000);
+
+-- Columns: 
+DROP TABLE IF EXISTS bookings;
+CREATE TABLE IF NOT EXISTS bookings (id INTEGER PRIMARY KEY, teacherId INTEGER NOT NULL, studentId INTEGER, start INTEGER NOT NULL, end INTEGER NOT NULL, status INTEGER NOT NULL, message TEXT, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
+INSERT INTO bookings (teacherId, studentId, status, createdAt, updatedAt, start, end) VALUES (3, 2, 0, 0, 0, 1689840543000, 1689851343000);
