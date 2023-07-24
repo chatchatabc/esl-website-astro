@@ -18,10 +18,10 @@ export default {
     ctx: ExecutionContext
   ): Promise<Response> {
     // Validate origin
-    const origin = request.headers.get("Origin") ?? "";
-    if (!utilValidOrigin(origin)) {
-      return new Response("Invalid origin", { status: 403 });
-    }
+    // const origin = request.headers.get("Origin") ?? "";
+    // if (!utilValidOrigin(origin)) {
+    //   return new Response("Invalid origin", { status: 403 });
+    // }
 
     // Handle CORS preflight requests
     if (request.method === "OPTIONS") {
