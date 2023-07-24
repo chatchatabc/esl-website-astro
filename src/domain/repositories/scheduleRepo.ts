@@ -6,6 +6,7 @@ import type {
   ScheduleDayAndUser,
 } from "../models/ScheduleModel";
 import type { BookingCreate } from "../models/BookingModel";
+import { utilGetTimestampTimeOnly } from "../services/server/utilService";
 
 export async function scheduleDbGetAll(
   params: CommonParams,
@@ -112,10 +113,15 @@ export async function scheduleDbValidateBooking(
   bindings: Bindings
 ) {
   const { start, end, teacherId } = booking;
+
   try {
     const stmt = bindings.DB.prepare(
-      "SELECT COUNT(*) AS total FROM schedules WHERE (start BETWEEN ? AND ? OR end BETWEEN ? AND ?) AND (teacherId = ?)"
-    ).bind(start, end, start, end, teacherId);
+      "SELECT COUNT(*) AS total FROM schedules WHERE teacherId = ? AND startTime <= ? AND endTime >= ?"
+    ).bind(
+      teacherId,
+      utilGetTimestampTimeOnly(start),
+      utilGetTimestampTimeOnly(end)
+    );
     const total = await stmt.first("total");
     if (total === 0) {
       return false;
@@ -153,10 +159,12 @@ export async function scheduleDbInsert(
 ) {
   try {
     const date = Date.now();
+    const start = utilGetTimestampTimeOnly(values.start);
+    const end = utilGetTimestampTimeOnly(values.end);
 
     const stmt = bindings.DB.prepare(
-      "INSERT INTO schedules (teacherId, day, start, end, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
-    ).bind(values.teacherId, values.day, values.start, values.end, date, date);
+      "INSERT INTO schedules (teacherId, day, startTime, endTime, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
+    ).bind(values.teacherId, values.day, start, end, date, date);
     await stmt.run();
     return true;
   } catch (e) {
