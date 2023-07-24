@@ -5,8 +5,10 @@
   import { onMount } from "svelte";
 
   let data = [] as any[];
+  let create = false;
 
   $: console.log(data);
+  $: console.log(create);
 
   onMount(async () => {
     const response = await scheduleGetAllByUser({ userId: 3 });
@@ -14,8 +16,8 @@
       data = Object.values(response)
         .flat()
         .map((event) => {
-          const start = new Date(event.start);
-          const end = new Date(event.end);
+          const start = new Date(event.startTime);
+          const end = new Date(event.endTime);
 
           const startTime = `${start.getHours()}:${start
             .getMinutes()
@@ -43,15 +45,21 @@
       plugins: [timeGridPlugin],
       initialView: "timeGridWeek",
       events: data,
+      customButtons: {
+        add: {
+          text: "Create +",
+          click: () => {
+            create = !create;
+          },
+        },
+      },
       headerToolbar: {
-        left: "",
-        right: "",
+        left: "prev,next",
+        right: "add",
       },
       views: {
         timeGridWeek: {
-          allDayContent: () => {
-            return "Total Hours";
-          },
+          allDaySlot: false,
         },
       },
     });
@@ -59,10 +67,6 @@
     calendar.render();
   });
 </script>
-
-<header class="flex items-center">
-  <h2 class="text-2xl mr-auto">Schedules</h2>
-</header>
 
 <section>
   <div data-teacher-calendar />

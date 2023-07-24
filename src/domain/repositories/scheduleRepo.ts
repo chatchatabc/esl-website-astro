@@ -139,11 +139,11 @@ export async function scheduleDbGetOverlap(
   values: ScheduleCreate,
   bindings: Bindings
 ) {
-  const { day, start, end } = values;
+  const { day, startTime, endTime } = values;
   try {
     const stmt = bindings.DB.prepare(
       "SELECT COUNT(*) AS total FROM schedules WHERE (day = ? AND ((start <= ? AND end > ?) OR (start < ? AND end >= ?)))"
-    ).bind(day, start, start, end, end);
+    ).bind(day, startTime, startTime, endTime, endTime);
     const total = await stmt.first("total");
     if (total === 0) {
       return false;
@@ -161,8 +161,8 @@ export async function scheduleDbInsert(
 ) {
   try {
     const date = Date.now();
-    const start = utilGetTimestampTimeOnly(values.start);
-    const end = utilGetTimestampTimeOnly(values.end);
+    const start = utilGetTimestampTimeOnly(values.startTime);
+    const end = utilGetTimestampTimeOnly(values.endTime);
 
     const stmt = bindings.DB.prepare(
       "INSERT INTO schedules (teacherId, day, startTime, endTime, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"

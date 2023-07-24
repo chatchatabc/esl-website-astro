@@ -13,6 +13,6 @@ export type ScheduleDayAndUser = {
 };
 
 export type ScheduleTime = {
-  start: number;
-  end: number;
+  startTime: number;
+  endTime: number;
 };
