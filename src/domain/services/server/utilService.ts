@@ -14,6 +14,16 @@ export function utilSuccessApiResponse(data: any, status: number = 200) {
   });
 }
 
+export function utilGetTimestampTimeOnly(timestamp: number) {
+  const timestampTimeOnly = new Date(timestamp);
+
+  timestampTimeOnly.setFullYear(1970);
+  timestampTimeOnly.setMonth(0);
+  timestampTimeOnly.setDate(1);
+
+  return timestampTimeOnly.getTime();
+}
+
 export function utilFailedApiResponse(message: string, status: number = 500) {
   let title = "Internal Server Error";
   switch (status) {
