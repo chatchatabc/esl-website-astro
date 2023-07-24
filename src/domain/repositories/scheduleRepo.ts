@@ -113,14 +113,16 @@ export async function scheduleDbValidateBooking(
   bindings: Bindings
 ) {
   const { start, end, teacherId } = booking;
+  const day = new Date(start).getDay();
 
   try {
     const stmt = bindings.DB.prepare(
-      "SELECT COUNT(*) AS total FROM schedules WHERE teacherId = ? AND startTime <= ? AND endTime >= ?"
+      "SELECT COUNT(*) AS total FROM schedules WHERE teacherId = ? AND startTime <= ? AND endTime >= ? AND day = ?"
     ).bind(
       teacherId,
       utilGetTimestampTimeOnly(start),
-      utilGetTimestampTimeOnly(end)
+      utilGetTimestampTimeOnly(end),
+      day
     );
     const total = await stmt.first("total");
     if (total === 0) {
