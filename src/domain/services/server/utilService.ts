@@ -1,6 +1,5 @@
 import { TRPCError } from "@trpc/server";
 import type { TrpcError } from "../../models/TrpcModel";
-import type { CommonParams } from "src/domain/models/CommonModel";
 
 export function utilSuccessApiResponse(data: any, status: number = 200) {
   return new Response(JSON.stringify(data), {
@@ -8,7 +7,7 @@ export function utilSuccessApiResponse(data: any, status: number = 200) {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "*",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Headers": "Content-Type",
     },
     status,
   });

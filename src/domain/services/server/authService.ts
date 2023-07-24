@@ -92,7 +92,14 @@ export async function authLogin(body: UserLogin, env: Bindings) {
   const token = authCreateToken(user.id);
   delete user.password;
   const response = utilSuccessApiResponse({ data: user }, 200);
-  response.headers.append("x-access-token", token);
-  response.headers.append("Access-Control-Expose-Headers", "x-access-token");
+  response.headers.append(
+    "Set-Cookie",
+    `token=${token}; path=/; max-age=604800; HttpOnly`
+  );
+  response.headers.append(
+    "Set-Cookie",
+    `id=${user.id}; path=/; max-age=604800`
+  );
+
   return response;
 }

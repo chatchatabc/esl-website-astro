@@ -18,14 +18,23 @@ export default {
     ctx: ExecutionContext
   ): Promise<Response> {
     // Validate origin
-    // const origin = request.headers.get("Origin") ?? "";
+    const origin = request.headers.get("Origin") ?? "";
     // if (!utilValidOrigin(origin)) {
     //   return new Response("Invalid origin", { status: 403 });
     // }
 
     // Handle CORS preflight requests
     if (request.method === "OPTIONS") {
-      return utilSuccessApiResponse({}, 200);
+      return new Response(null, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": origin,
+          "Access-Control-Allow-Methods": "*",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        status: 204,
+      });
     }
 
     const { pathname } = new URL(request.url);

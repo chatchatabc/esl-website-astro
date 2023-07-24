@@ -13,18 +13,19 @@ export async function authLogin(data: UserLogin) {
     return response.data;
   }
 
-  const token = response.headers["x-access-token"];
-  if (!token) {
-    return {
-      errors: [
-        {
-          title: "Missing token",
-          message: "Missing token",
-        },
-      ],
-    };
-  }
-  document.cookie = `token=${token}; path=/; max-age=86400`;
+  // console.log(document.cookie);
+  // const setCookieHeader = response.headers["set-cookie"];
+  // console.log(setCookieHeader);
+  // if (!setCookieHeader) {
+  //   return {
+  //     errors: [
+  //       {
+  //         title: "Missing cookie",
+  //         message: "Missing cookie",
+  //       },
+  //     ],
+  //   };
+  // }
 
   return response.data;
 }

@@ -15,16 +15,21 @@ type Props = {
 
 export function trpcContext({ resHeaders, req, ...props }: Props) {
   const origin = req.headers.get("Origin") ?? "";
-  const token = req.headers.get("Authorization") ?? "";
+
+  // Get token from cookie
+  const setCookieHeader = req.headers.get("Cookie");
+  const tokenCookie = setCookieHeader
+    ?.split(";")
+    .find((c) => c.includes("token="));
+  const token = tokenCookie?.split("=")[1] ?? "";
+
   const userId = authGetTokenPayload(token);
 
   if (utilValidOrigin(origin)) {
     resHeaders.append("Access-Control-Allow-Origin", origin);
     resHeaders.append("Access-Control-Allow-Methods", "*");
-    resHeaders.append(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
+    resHeaders.append("Access-Control-Allow-Headers", "Content-Type");
+    resHeaders.append("Access-Control-Allow-Credentials", "true");
   }
 
   return { ...props, resHeaders, req, userId };
