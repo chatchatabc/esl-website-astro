@@ -1,19 +1,19 @@
 <script lang="ts">
   import { Calendar } from "@fullcalendar/core";
   import timeGridPlugin from "@fullcalendar/timegrid";
+  import { bookingGetAllByUser } from "src/domain/services/client/bookingService";
   import { scheduleGetAllByUser } from "src/domain/services/client/scheduleService";
   import { onMount } from "svelte";
 
-  let data = [] as any[];
+  let bookings = [] as any[];
+  let schedules = [] as any[];
   let create = false;
 
-  $: console.log(data);
-  $: console.log(create);
-
   onMount(async () => {
-    const response = await scheduleGetAllByUser({ userId: 3 });
-    if (response) {
-      data = Object.values(response)
+    const responseSchedules = await scheduleGetAllByUser({ userId: 3 });
+    const responseBookings = await bookingGetAllByUser({ userId: 3 });
+    if (responseSchedules) {
+      schedules = Object.values(responseSchedules)
         .flat()
         .map((event) => {
           const start = new Date(event.startTime);
@@ -32,7 +32,23 @@
             title: "Free Schedule",
             startTime,
             endTime,
+            display: "background",
             daysOfWeek: [event.day],
+          };
+        });
+    }
+    if (responseBookings) {
+      bookings = Object.values(responseBookings.content)
+        .flat()
+        .map((event) => {
+          const start = new Date(event.start);
+          const end = new Date(event.end);
+
+          return {
+            title: "Booked Schedule",
+            start,
+            end,
+            color: "red",
           };
         });
     }
@@ -44,7 +60,7 @@
     let calendar = new Calendar(calendarEl, {
       plugins: [timeGridPlugin],
       initialView: "timeGridWeek",
-      events: data,
+      events: [...schedules, ...bookings],
       customButtons: {
         add: {
           text: "Create +",
