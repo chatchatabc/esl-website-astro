@@ -5,9 +5,10 @@ export function utilSuccessApiResponse(data: any, status: number = 200) {
   return new Response(JSON.stringify(data), {
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "https://esl-cca.pages.dev",
       "Access-Control-Allow-Methods": "*",
       "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Credentials": "true",
     },
     status,
   });

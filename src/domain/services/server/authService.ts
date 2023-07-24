@@ -2,6 +2,7 @@ import { userDbGetByUsername, userDbInsert } from "../../repositories/userRepo";
 import CryptoJS from "crypto-js";
 import {
   utilFailedApiResponse,
+  utilFailedResponse,
   utilSuccessApiResponse,
 } from "../server/utilService";
 import type { UserLogin, UserRegister } from "../../models/UserModel";
@@ -84,22 +85,11 @@ export async function authRegister(input: UserRegister, env: Bindings) {
 export async function authLogin(body: UserLogin, env: Bindings) {
   let user = await userDbGetByUsername(body.username, env);
   if (!user) {
-    return utilFailedApiResponse("Invalid username or password", 401);
+    throw utilFailedResponse("Invalid username or password", 401);
   } else if (user.password !== authCreateHash(body.password).toString()) {
-    return utilFailedApiResponse("Invalid username or password", 401);
+    throw utilFailedResponse("Invalid username or password", 401);
   }
 
-  const token = authCreateToken(user.id);
   delete user.password;
-  const response = utilSuccessApiResponse({ data: user }, 200);
-  response.headers.append(
-    "Set-Cookie",
-    `token=${token}; path=/; max-age=604800; HttpOnly`
-  );
-  response.headers.append(
-    "Set-Cookie",
-    `id=${user.id}; path=/; max-age=604800`
-  );
-
-  return response;
+  return user;
 }

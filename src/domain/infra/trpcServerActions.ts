@@ -25,6 +25,7 @@ export function trpcContext({ resHeaders, req, ...props }: Props) {
 
   const userId = authGetTokenPayload(token);
 
+  // Set CORS headers
   if (utilValidOrigin(origin)) {
     resHeaders.append("Access-Control-Allow-Origin", origin);
     resHeaders.append("Access-Control-Allow-Methods", "*");

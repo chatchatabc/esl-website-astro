@@ -139,7 +139,7 @@ const { links } = headerJson;
 
 <script>
   import {
-    authGetToken,
+    authGetUserId,
     authLogout,
   } from "src/domain/services/client/authService";
 
@@ -152,7 +152,7 @@ const { links } = headerJson;
   const userBtn = document.querySelector("[data-navbar-user]");
   const logoutBtn = document.querySelector("[data-navbar-logout]");
 
-  const token = authGetToken();
+  const token = authGetUserId();
   if (token) {
     loginBtn?.classList.remove("flex");
     loginBtn?.classList.add("hidden");

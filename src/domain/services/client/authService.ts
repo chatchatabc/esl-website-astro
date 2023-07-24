@@ -5,33 +5,21 @@ import type {
 } from "src/domain/models/UserModel";
 import type { AxiosResponse } from "src/domain/models/AxiosModel";
 import { restPost } from "src/domain/infra/restActions";
+import { trpcClient } from "src/domain/infra/trpcClientActions";
 
 export async function authLogin(data: UserLogin) {
-  const response: AxiosResponse<User> = await restPost("/auth/login", data);
-
-  if (response.data.errors) {
-    return response.data;
+  try {
+    const user = await trpcClient.auth.login.mutate(data);
+    sessionStorage.setItem("userId", user.id.toString());
+    return user;
+  } catch (e) {
+    console.log(e);
+    return null;
   }
-
-  // console.log(document.cookie);
-  // const setCookieHeader = response.headers["set-cookie"];
-  // console.log(setCookieHeader);
-  // if (!setCookieHeader) {
-  //   return {
-  //     errors: [
-  //       {
-  //         title: "Missing cookie",
-  //         message: "Missing cookie",
-  //       },
-  //     ],
-  //   };
-  // }
-
-  return response.data;
 }
 
 export function authLogout() {
-  document.cookie = `token=; path=/; max-age=0`;
+  sessionStorage.removeItem("userId");
   return true;
 }
 
@@ -41,23 +29,8 @@ export async function authRegister(data: UserRegister) {
   return response.data;
 }
 
-export function authGetToken() {
-  const token = document.cookie
-    .split(";")
-    .find((c) => c.trim().startsWith("token="));
-
-  if (!token) {
-    return null;
-  }
-
-  return token.split("=")[1];
-}
-
 export function authGetUserId() {
-  console.log(document.cookie);
-  const userId = document.cookie
-    .split(";")
-    .find((c) => c.trim().startsWith("id="));
+  const userId = sessionStorage.getItem("userId");
 
   if (!userId) {
     return null;
