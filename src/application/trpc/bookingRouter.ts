@@ -3,6 +3,7 @@ import {
   trpcRouterCreate,
 } from "src/domain/infra/trpcServerActions";
 import type { BookingCreate } from "src/domain/models/BookingModel";
+import type { CommonParams } from "src/domain/models/CommonModel";
 import {
   bookingCreate,
   bookingGetAllByUser,
@@ -15,8 +16,10 @@ import {
 export default trpcRouterCreate({
   getAllByUser: trpcProcedure
     .input((values) => {
-      const data = utilValidateCommonParams(values) as Record<string, any>;
-      if (!data.id) {
+      const data = utilValidateCommonParams(values) as CommonParams & {
+        userId: number;
+      };
+      if (!data.userId) {
         throw utilFailedResponse("Missing values", 400);
       }
       return data;

@@ -1,5 +1,6 @@
 import type { Bindings } from "src/server";
 import type { Booking, BookingCreate } from "../models/BookingModel";
+import type { CommonParams } from "../models/CommonModel";
 
 export async function bookingDbTotalByUser(id: number, bindings: Bindings) {
   try {
@@ -15,16 +16,16 @@ export async function bookingDbTotalByUser(id: number, bindings: Bindings) {
 }
 
 export async function bookingDbGetAllByUser(
-  params: Record<string, any>,
+  params: CommonParams & { userId: number },
   bindings: Bindings
 ) {
-  const { id, size } = params;
+  const { userId, size } = params;
 
   try {
     const results = await bindings.DB.prepare(
       "SELECT * FROM bookings WHERE teacherId = ? OR studentId = ? LIMIT ?"
     )
-      .bind(id, id, size)
+      .bind(userId, userId, size)
       .all<Booking>();
 
     return results;

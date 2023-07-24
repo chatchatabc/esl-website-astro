@@ -8,6 +8,7 @@ import {
 import type { Bindings } from "src/server";
 import { utilFailedResponse } from "./utilService";
 import { scheduleDbValidateBooking } from "src/domain/repositories/scheduleRepo";
+import type { CommonParams } from "src/domain/models/CommonModel";
 
 export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
   const validSchedule = await scheduleDbValidateBooking(values, bindings);
@@ -29,16 +30,16 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
 }
 
 export async function bookingGetAllByUser(
-  params: Record<string, any>,
+  params: CommonParams & { userId: number },
   bindings: Bindings
 ) {
-  const { page, size, id } = params;
+  const { page, size, userId } = params;
 
   const bookings = await bookingDbGetAllByUser(params, bindings);
   if (!bookings) {
     throw utilFailedResponse("Cannot GET", 500);
   }
-  const total = await bookingDbTotalByUser(id, bindings);
+  const total = await bookingDbTotalByUser(userId, bindings);
   if (total === null) {
     throw utilFailedResponse("Cannot GET", 500);
   }
