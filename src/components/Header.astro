@@ -152,8 +152,8 @@ const { links } = headerJson;
   const userBtn = document.querySelector("[data-navbar-user]");
   const logoutBtn = document.querySelector("[data-navbar-logout]");
 
-  const token = authGetUserId();
-  if (token) {
+  const userId = authGetUserId();
+  if (userId) {
     loginBtn?.classList.remove("flex");
     loginBtn?.classList.add("hidden");
     userBtn?.classList.remove("hidden");
