@@ -8,3 +8,8 @@ export type ScheduleCreate = {
   start: number;
   end: number;
 };
+
+export type ScheduleDayAndUser = {
+  day: number;
+  userId: number;
+};

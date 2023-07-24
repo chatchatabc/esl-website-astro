@@ -1,6 +1,10 @@
 import type { Bindings } from "src/server";
 import type { CommonParams } from "../models/CommonModel";
-import type { Schedule, ScheduleCreate } from "../models/ScheduleModel";
+import type {
+  Schedule,
+  ScheduleCreate,
+  ScheduleDayAndUser,
+} from "../models/ScheduleModel";
 import type { BookingCreate } from "../models/BookingModel";
 
 export async function scheduleDbGetAll(
@@ -15,6 +19,42 @@ export async function scheduleDbGetAll(
       .all<Schedule>();
 
     return results;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function scheduleDbGetAllByUserAndDay(
+  params: CommonParams & ScheduleDayAndUser,
+  bindings: Bindings
+) {
+  const { day, size, userId } = params;
+
+  try {
+    const results = await bindings.DB.prepare(
+      "SELECT * FROM schedules WHERE day = ? AND teacherId = ? LIMIT ?"
+    )
+      .bind(day, userId, size)
+      .all<Schedule>();
+    return results;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function scheduleDbGetAllTotalByDay(
+  params: ScheduleDayAndUser,
+  bindings: Bindings
+) {
+  const { day, userId } = params;
+  try {
+    const stmt = bindings.DB.prepare(
+      "SELECT COUNT(*) AS total FROM schedules WHERE day = ? AND teacherId = ?"
+    ).bind(day, userId);
+    const total = await stmt.first("total");
+    return total as number;
   } catch (e) {
     console.log(e);
     return null;

@@ -6,16 +6,16 @@ export type CommonContent<T = any> = {
 };
 
 export type CommonParams = {
-  page?: number;
-  size?: number;
+  page: number;
+  size: number;
   keyword?: string;
 } & (
   | {
-      sortField?: string;
-      sortValue?: "asc" | "desc";
+      sortField: string;
+      sortValue: "asc" | "desc";
     }
   | {
-      sortField?: null;
-      sortValue?: null;
+      sortField: null;
+      sortValue: null;
     }
 );

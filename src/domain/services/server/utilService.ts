@@ -95,12 +95,12 @@ export function utilValidateCommonParams(params?: any) {
     params = {};
   }
 
-  if (!params.page) {
-    params.page = 0;
-  } else if (typeof params.page === "string") {
+  params.page = params.page ?? 0;
+  params.size = params.size ?? 10;
+
+  if (typeof params.page === "string") {
     params.page = Number(params.page);
   }
 
-  params.size = params.size ?? 10;
   return params;
 }

@@ -3,11 +3,15 @@ import {
   trpcRouterCreate,
 } from "src/domain/infra/trpcServerActions";
 import type { CommonParams } from "src/domain/models/CommonModel";
-import type { ScheduleCreate } from "src/domain/models/ScheduleModel";
+import type {
+  ScheduleCreate,
+  ScheduleDayAndUser,
+} from "src/domain/models/ScheduleModel";
 import {
   scheduleCreate,
   scheduleGetAll,
   scheduleGetAllByUser,
+  scheduleGetAllByUserAndDay,
 } from "src/domain/services/server/scheduleService";
 import {
   utilFailedResponse,
@@ -18,6 +22,19 @@ export const scheduleRouter = trpcRouterCreate({
   get: trpcProcedure.query(() => {
     return "Get Schedule";
   }),
+
+  getAllByUserAndDay: trpcProcedure
+    .input((values) => {
+      const data = utilValidateCommonParams(values) as CommonParams &
+        ScheduleDayAndUser;
+      if (!data.day || !data.userId) {
+        throw utilFailedResponse("Missing values", 400);
+      }
+      return data;
+    })
+    .query((opts) => {
+      return scheduleGetAllByUserAndDay(opts.input, opts.ctx.env);
+    }),
 
   getAllByUser: trpcProcedure
     .input((values) => {
