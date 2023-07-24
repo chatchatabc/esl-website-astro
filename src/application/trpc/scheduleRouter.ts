@@ -38,11 +38,11 @@ export const scheduleRouter = trpcRouterCreate({
 
   getAllByUser: trpcProcedure
     .input((values) => {
-      const data = utilValidateCommonParams(values) as CommonParams & {
-        id: number;
+      const data = values as {
+        userId: number;
       };
 
-      if (!data.id) {
+      if (!data.userId) {
         throw utilFailedResponse("Missing values", 400);
       }
 

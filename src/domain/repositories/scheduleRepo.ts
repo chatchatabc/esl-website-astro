@@ -62,16 +62,16 @@ export async function scheduleDbGetAllTotalByDay(
 }
 
 export async function scheduleDbGetAllByUser(
-  params: CommonParams & { id: number },
+  params: { userId: number },
   bindings: Bindings
 ) {
-  const { id, size } = params;
+  const { userId } = params;
 
   try {
     const results = await bindings.DB.prepare(
-      "SELECT * FROM schedules WHERE teacherId = ? LIMIT ?"
+      "SELECT * FROM schedules WHERE teacherId = ?"
     )
-      .bind(id, size)
+      .bind(userId)
       .all<Schedule>();
     return results;
   } catch (e) {

@@ -58,25 +58,23 @@ export async function scheduleGetAllByUserAndDay(
 }
 
 export async function scheduleGetAllByUser(
-  params: CommonParams & { id: number },
+  params: { userId: number },
   bindings: Bindings
 ) {
-  const { page, size } = params;
   const query = await scheduleDbGetAllByUser(params, bindings);
   if (!query) {
     throw utilFailedResponse("Cannot GET", 500);
   }
-
-  const total = await scheduleDbGetAllTotalByUser(params.id, bindings);
-  if (total === null) {
-    throw utilFailedResponse("Cannot GET", 500);
-  }
+  const results = query.results as any as Schedule[];
 
   return {
-    content: query.results as any as Schedule[],
-    total,
-    page,
-    size,
+    sunday: results.filter((schedule) => schedule.day === 0),
+    monday: results.filter((schedule) => schedule.day === 1),
+    tuesday: results.filter((schedule) => schedule.day === 2),
+    wednesday: results.filter((schedule) => schedule.day === 3),
+    thursday: results.filter((schedule) => schedule.day === 4),
+    friday: results.filter((schedule) => schedule.day === 5),
+    saturday: results.filter((schedule) => schedule.day === 6),
   };
 }
 
