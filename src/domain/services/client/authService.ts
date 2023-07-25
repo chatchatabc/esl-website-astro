@@ -35,5 +35,5 @@ export function authGetUserId() {
     return null;
   }
 
-  return userId;
+  return Number(userId);
 }
