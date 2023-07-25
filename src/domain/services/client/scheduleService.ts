@@ -1,5 +1,5 @@
 import { trpcClient } from "src/domain/infra/trpcClientActions";
-import type { Schedule } from "src/domain/models/ScheduleModel";
+import type { Schedule, ScheduleCreate } from "src/domain/models/ScheduleModel";
 
 export async function scheduleGetAllByUser(params: { userId: number }) {
   try {
@@ -19,6 +19,16 @@ export async function scheduleUpdateMany(params: {
     const response = await trpcClient.schedule.updateManyByTeacher.mutate(
       params
     );
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function scheduleCreateMany(schedules: ScheduleCreate[]) {
+  try {
+    const response = await trpcClient.schedule.createMany.mutate(schedules);
     return response;
   } catch (e) {
     console.log(e);
