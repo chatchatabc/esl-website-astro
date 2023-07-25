@@ -81,6 +81,33 @@ export async function scheduleDbGetAllByUser(
   }
 }
 
+export async function scheduleDbUpdateMany(
+  schedules: Schedule[],
+  bindings: Bindings
+) {
+  try {
+    const stmt = bindings.DB.prepare(
+      "UPDATE schedules SET day = ?, startTime = ?, endTime = ?, updatedAt = ?, teacherId = ? WHERE id = ?"
+    );
+    await bindings.DB.batch(
+      schedules.map((schedule) => {
+        return stmt.bind(
+          schedule.day,
+          utilGetTimestampTimeOnly(schedule.startTime),
+          utilGetTimestampTimeOnly(schedule.endTime),
+          Date.now(),
+          schedule.teacherId,
+          schedule.id
+        );
+      })
+    );
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
 export async function scheduleDbGetAllTotalByUser(
   id: number,
   bindings: Bindings
@@ -142,7 +169,7 @@ export async function scheduleDbGetOverlap(
   const { day, startTime, endTime } = values;
   try {
     const stmt = bindings.DB.prepare(
-      "SELECT COUNT(*) AS total FROM schedules WHERE (day = ? AND ((start <= ? AND end > ?) OR (start < ? AND end >= ?)))"
+      "SELECT COUNT(*) AS total FROM schedules WHERE (day = ? AND ((startTime <= ? AND endTime > ?) OR (startTime < ? AND endTime >= ?)))"
     ).bind(day, startTime, startTime, endTime, endTime);
     const total = await stmt.first("total");
     if (total === 0) {

@@ -8,9 +8,10 @@ import {
   scheduleDbGetAllTotalByUser,
   scheduleDbGetOverlap,
   scheduleDbInsert,
+  scheduleDbUpdateMany,
 } from "src/domain/repositories/scheduleRepo";
 import type { Bindings } from "src/server";
-import { utilFailedResponse } from "./utilService";
+import { utilFailedResponse, utilGetTimestampTimeOnly } from "./utilService";
 import type {
   Schedule,
   ScheduleCreate,
@@ -55,6 +56,59 @@ export async function scheduleGetAllByUserAndDay(
     page,
     size,
   };
+}
+
+export async function scheduleUpdateMany(
+  params: { userId: number; schedules: Schedule[] },
+  bindings: Bindings
+) {
+  let { userId, schedules } = params;
+  schedules = schedules.map((schedule) => {
+    return {
+      ...schedule,
+      startTime: utilGetTimestampTimeOnly(schedule.startTime),
+      endTime: utilGetTimestampTimeOnly(schedule.endTime),
+    };
+  });
+
+  const query = await scheduleDbGetAllByUser({ userId }, bindings);
+  if (!query) {
+    throw utilFailedResponse("Cannot GET Schedules", 500);
+  }
+
+  const oldSchedules = query.results as any as Schedule[];
+  const combinedSchedules = oldSchedules.map((schedule) => {
+    const newSchedule = schedules.find((s) => s.id === schedule.id);
+    return newSchedule ? newSchedule : schedule;
+  });
+
+  let overlapped = false;
+  combinedSchedules.forEach((old) => {
+    const overlap = combinedSchedules.find((schedule) => {
+      return (
+        schedule.id !== old.id &&
+        schedule.day === old.day &&
+        ((schedule.startTime >= old.startTime &&
+          schedule.startTime < old.endTime) ||
+          (schedule.endTime > old.startTime && schedule.endTime <= old.endTime))
+      );
+    });
+
+    if (overlap) {
+      overlapped = true;
+    }
+  });
+
+  if (overlapped) {
+    throw utilFailedResponse("Schedule overlaps", 400);
+  }
+
+  const transaction = await scheduleDbUpdateMany(schedules, bindings);
+  if (!transaction) {
+    throw utilFailedResponse("Failed to update schedules", 500);
+  }
+
+  return true;
 }
 
 export async function scheduleGetAllByUser(

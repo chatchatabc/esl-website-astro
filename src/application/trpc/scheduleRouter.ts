@@ -4,6 +4,7 @@ import {
 } from "src/domain/infra/trpcServerActions";
 import type { CommonParams } from "src/domain/models/CommonModel";
 import type {
+  Schedule,
   ScheduleCreate,
   ScheduleDayAndUser,
 } from "src/domain/models/ScheduleModel";
@@ -12,6 +13,7 @@ import {
   scheduleGetAll,
   scheduleGetAllByUser,
   scheduleGetAllByUserAndDay,
+  scheduleUpdateMany,
 } from "src/domain/services/server/scheduleService";
 import {
   utilFailedResponse,
@@ -58,6 +60,18 @@ export const scheduleRouter = trpcRouterCreate({
     })
     .query((opts) => {
       return scheduleGetAll(opts.input, opts.ctx.env);
+    }),
+
+  updateManyByTeacher: trpcProcedure
+    .input((values) => {
+      const data = values as { userId: number; schedules: Schedule[] };
+      if (!data) {
+        throw utilFailedResponse("Missing fields", 400);
+      }
+      return data;
+    })
+    .mutation((opts) => {
+      return scheduleUpdateMany(opts.input, opts.ctx.env);
     }),
 
   create: trpcProcedure
