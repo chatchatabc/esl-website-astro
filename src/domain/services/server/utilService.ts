@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import type { TrpcError } from "../../models/TrpcModel";
+import type { ScheduleCreate } from "src/domain/models/ScheduleModel";
 
 export function utilSuccessApiResponse(data: any, status: number = 200) {
   return new Response(JSON.stringify(data), {
@@ -113,4 +114,36 @@ export function utilValidateCommonParams(params?: any) {
   }
 
   return params;
+}
+
+export function utilCheckScheduleOverlap(
+  schedules: (ScheduleCreate & { id?: number })[]
+) {
+  let overlapped = false;
+  schedules = schedules.map((schedule, index) => {
+    return {
+      ...schedule,
+      startTime: utilGetTimestampTimeOnly(schedule.startTime),
+      endTime: utilGetTimestampTimeOnly(schedule.endTime),
+      id: index,
+    };
+  });
+
+  schedules.forEach((old) => {
+    const overlap = schedules.find((schedule) => {
+      return (
+        schedule.id !== old.id &&
+        schedule.day === old.day &&
+        ((schedule.startTime >= old.startTime &&
+          schedule.startTime < old.endTime) ||
+          (schedule.endTime > old.startTime && schedule.endTime <= old.endTime))
+      );
+    });
+
+    if (overlap) {
+      overlapped = true;
+    }
+  });
+
+  return overlapped;
 }

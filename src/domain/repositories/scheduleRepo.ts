@@ -178,7 +178,40 @@ export async function scheduleDbGetOverlap(
     return true;
   } catch (e) {
     console.log(e);
-    return false;
+    return true;
+  }
+}
+
+export async function scheduleDbGetOverlapMany(
+  schedules: ScheduleCreate[],
+  bindings: Bindings
+) {
+  try {
+    const totals = await bindings.DB.batch<Record<string, any>>(
+      schedules.map((schedule) => {
+        return bindings.DB.prepare(
+          "SELECT COUNT(*) AS total FROM schedules WHERE (day = ? AND ((startTime <= ? AND endTime > ?) OR (startTime < ? AND endTime >= ?)))"
+        ).bind(
+          schedule.day,
+          schedule.startTime,
+          schedule.startTime,
+          schedule.endTime,
+          schedule.endTime
+        );
+      })
+    );
+    const total = totals.reduce((acc, curr) => {
+      return acc + curr.results[0].total;
+    }, 0);
+
+    if (total === 0) {
+      return false;
+    }
+
+    return true;
+  } catch (e) {
+    console.log(e);
+    return true;
   }
 }
 
@@ -195,6 +228,34 @@ export async function scheduleDbInsert(
       "INSERT INTO schedules (teacherId, day, startTime, endTime, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
     ).bind(values.teacherId, values.day, start, end, date, date);
     await stmt.run();
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export async function scheduleDbInsertMany(
+  schedules: ScheduleCreate[],
+  bindings: Bindings
+) {
+  try {
+    const date = Date.now();
+    const stmt = bindings.DB.prepare(
+      "INSERT INTO schedules (teacherId, day, startTime, endTime, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
+    );
+    await bindings.DB.batch(
+      schedules.map((schedule) => {
+        return stmt.bind(
+          schedule.teacherId,
+          schedule.day,
+          schedule.startTime,
+          schedule.endTime,
+          date,
+          date
+        );
+      })
+    );
     return true;
   } catch (e) {
     console.log(e);

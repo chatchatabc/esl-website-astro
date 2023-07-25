@@ -7,11 +7,17 @@ import {
   scheduleDbGetAllTotalByDay,
   scheduleDbGetAllTotalByUser,
   scheduleDbGetOverlap,
+  scheduleDbGetOverlapMany,
   scheduleDbInsert,
+  scheduleDbInsertMany,
   scheduleDbUpdateMany,
 } from "src/domain/repositories/scheduleRepo";
 import type { Bindings } from "src/server";
-import { utilFailedResponse, utilGetTimestampTimeOnly } from "./utilService";
+import {
+  utilCheckScheduleOverlap,
+  utilFailedResponse,
+  utilGetTimestampTimeOnly,
+} from "./utilService";
 import type {
   Schedule,
   ScheduleCreate,
@@ -63,13 +69,6 @@ export async function scheduleUpdateMany(
   bindings: Bindings
 ) {
   let { userId, schedules } = params;
-  schedules = schedules.map((schedule) => {
-    return {
-      ...schedule,
-      startTime: utilGetTimestampTimeOnly(schedule.startTime),
-      endTime: utilGetTimestampTimeOnly(schedule.endTime),
-    };
-  });
 
   const query = await scheduleDbGetAllByUser({ userId }, bindings);
   if (!query) {
@@ -82,23 +81,7 @@ export async function scheduleUpdateMany(
     return newSchedule ? newSchedule : schedule;
   });
 
-  let overlapped = false;
-  combinedSchedules.forEach((old) => {
-    const overlap = combinedSchedules.find((schedule) => {
-      return (
-        schedule.id !== old.id &&
-        schedule.day === old.day &&
-        ((schedule.startTime >= old.startTime &&
-          schedule.startTime < old.endTime) ||
-          (schedule.endTime > old.startTime && schedule.endTime <= old.endTime))
-      );
-    });
-
-    if (overlap) {
-      overlapped = true;
-    }
-  });
-
+  let overlapped = utilCheckScheduleOverlap(combinedSchedules);
   if (overlapped) {
     throw utilFailedResponse("Schedule overlaps", 400);
   }
@@ -106,6 +89,33 @@ export async function scheduleUpdateMany(
   const transaction = await scheduleDbUpdateMany(schedules, bindings);
   if (!transaction) {
     throw utilFailedResponse("Failed to update schedules", 500);
+  }
+
+  return true;
+}
+
+export async function scheduleCreateMany(
+  schedules: ScheduleCreate[],
+  bindings: Bindings
+) {
+  schedules = schedules.map((schedule) => {
+    return {
+      ...schedule,
+      startTime: utilGetTimestampTimeOnly(schedule.startTime),
+      endTime: utilGetTimestampTimeOnly(schedule.endTime),
+    };
+  });
+
+  let overlapped =
+    (await scheduleDbGetOverlapMany(schedules, bindings)) ||
+    utilCheckScheduleOverlap(schedules);
+  if (overlapped) {
+    throw utilFailedResponse("Schedule overlaps", 400);
+  }
+
+  const success = await scheduleDbInsertMany(schedules, bindings);
+  if (!success) {
+    throw utilFailedResponse("Failed to create schedules", 500);
   }
 
   return true;

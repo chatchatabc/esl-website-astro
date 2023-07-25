@@ -10,6 +10,7 @@ import type {
 } from "src/domain/models/ScheduleModel";
 import {
   scheduleCreate,
+  scheduleCreateMany,
   scheduleGetAll,
   scheduleGetAllByUser,
   scheduleGetAllByUserAndDay,
@@ -99,5 +100,14 @@ export const scheduleRouter = trpcRouterCreate({
     })
     .mutation((opts) => {
       return scheduleCreate(opts.input, opts.ctx.env);
+    }),
+
+  createMany: trpcProcedure
+    .input((value) => {
+      const data = value as ScheduleCreate[];
+      return data;
+    })
+    .mutation((opts) => {
+      return scheduleCreateMany(opts.input, opts.ctx.env);
     }),
 });
