@@ -2,6 +2,7 @@
 import MainLayout from "@layouts/MainLayout.astro";
 import StudentProfile from "@components/profiles/StudentProfile.astro";
 import TeacherProfile from "@components/profiles/TeacherProfile.astro";
+import TeacherSchedule from "@components/profiles/TeacherSchedule.svelte";
 ---
 
 <MainLayout>
@@ -11,6 +12,10 @@ import TeacherProfile from "@components/profiles/TeacherProfile.astro";
     </header>
 
     <section class="bg-white rounded-xl p-4">
+      <header>
+        <h2 class="text-2xl">Profile</h2>
+      </header>
+
       <div data-profile-student>
         <StudentProfile />
       </div>
@@ -18,18 +23,24 @@ import TeacherProfile from "@components/profiles/TeacherProfile.astro";
         <TeacherProfile />
       </div>
     </section>
+
+    <section class="bg-white rounded-xl p-4 mt-4">
+      <TeacherSchedule client:load />
+    </section>
+
+    <!-- Modal -->
   </section>
+
+  <script>
+    const studentProfile = document.querySelector("[data-profile-student]");
+    const teacherProfile = document.querySelector("[data-profile-teacher]");
+
+    if (studentProfile) {
+      studentProfile.classList.remove("hidden");
+    }
+
+    if (teacherProfile) {
+      teacherProfile.classList.remove("hidden");
+    }
+  </script>
 </MainLayout>
-
-<script>
-  const studentProfile = document.querySelector("[data-profile-student]");
-  const teacherProfile = document.querySelector("[data-profile-teacher]");
-
-  if (studentProfile) {
-    studentProfile.classList.remove("hidden");
-  }
-
-  if (teacherProfile) {
-    teacherProfile.classList.remove("hidden");
-  }
-</script>
