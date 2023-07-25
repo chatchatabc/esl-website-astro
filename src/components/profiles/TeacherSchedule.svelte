@@ -14,18 +14,44 @@
   } from "src/domain/services/client/scheduleService";
   import { onMount } from "svelte";
 
-  let userId = 0;
   const timeFormatter = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
     hourCycle: "h23",
   });
-  let calendar: Calendar | null = null;
 
-  let bookingsEvent = [] as Record<string, any>[];
-  let bookings = [] as Booking[];
-  let schedulesEvent = [] as Record<string, any>[];
+  let userId = 0;
+  let calendar: Calendar | null = null;
   let schedules = [] as Schedule[];
+  let bookings = [] as Booking[];
   let editing = false;
+
+  $: bookingsEvent = bookings.map((event, index) => {
+    const start = new Date(event.start);
+    const end = new Date(event.end);
+    return {
+      id: `bk-${index}`,
+      title: "Booked Schedule",
+      start,
+      end,
+      color: "red",
+    };
+  });
+  $: schedulesEvent = schedules.map((event, index) => {
+    const start = new Date(event.startTime);
+    const end = new Date(event.endTime);
+
+    const startTime = timeFormatter.format(start);
+    const endTime = timeFormatter.format(end);
+
+    return {
+      id: `open-${index}`,
+      title: "Open Schedule",
+      startTime,
+      endTime,
+      display: "background",
+      daysOfWeek: [event.day],
+    };
+  });
 
   async function handleSave(events: EventImpl[]) {
     const eventSchedules = events.map((event, index) => {
@@ -55,7 +81,19 @@
       schedules: updateSchedules,
     });
     const responseNew = await scheduleCreateMany(newSchedules);
-    alert(`${responseUpdate} ${responseNew}`);
+
+    if (responseNew && responseUpdate) {
+      events.forEach((event) => {
+        event.remove();
+      });
+
+      schedules = (await scheduleGetAllByUser({ userId }))?.content ?? [];
+      bookings = (await bookingGetAllByUser({ userId }))?.content ?? [];
+
+      editing = !editing;
+    } else {
+      alert("Error");
+    }
   }
 
   $: if (editing && calendar) {
@@ -64,10 +102,9 @@
     calendar.setOption("customButtons", {
       add: {
         text: "Save",
-        click: async () => {
+        click: () => {
           const events = calendar?.getEvents() ?? [];
-          const response = await handleSave(events);
-          editing = !editing;
+          handleSave(events);
         },
       },
     });
@@ -97,6 +134,7 @@
       },
     });
     schedulesEvent.forEach((event, index) => {
+      console.log(event);
       calendar?.getEventById(`active-${index}`)?.remove();
       calendar?.addEvent(event);
     });
@@ -109,33 +147,6 @@
     userId = authGetUserId() ?? 0;
     schedules = (await scheduleGetAllByUser({ userId }))?.content ?? [];
     bookings = (await bookingGetAllByUser({ userId }))?.content ?? [];
-    schedulesEvent = schedules.map((event, index) => {
-      const start = new Date(event.startTime);
-      const end = new Date(event.endTime);
-
-      const startTime = timeFormatter.format(start);
-      const endTime = timeFormatter.format(end);
-
-      return {
-        id: `open-${index}`,
-        title: "Open Schedule",
-        startTime,
-        endTime,
-        display: "background",
-        daysOfWeek: [event.day],
-      };
-    });
-    bookingsEvent = bookings.map((event, index) => {
-      const start = new Date(event.start);
-      const end = new Date(event.end);
-      return {
-        id: `bk-${index}`,
-        title: "Booked Schedule",
-        start,
-        end,
-        color: "red",
-      };
-    });
 
     const calendarEl = document.querySelector<HTMLElement>(
       "[data-teacher-calendar]"
