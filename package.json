@@ -20,6 +20,7 @@
     "@astrojs/tailwind": "^4.0.0",
     "@fullcalendar/core": "^6.1.8",
     "@fullcalendar/daygrid": "^6.1.8",
+    "@fullcalendar/interaction": "^6.1.8",
     "@fullcalendar/list": "^6.1.8",
     "@fullcalendar/timegrid": "^6.1.8",
     "@trpc/client": "^10.34.0",
