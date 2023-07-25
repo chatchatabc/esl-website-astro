@@ -1,4 +1,4 @@
-import type { BookingCreate } from "src/domain/models/BookingModel";
+import type { Booking, BookingCreate } from "src/domain/models/BookingModel";
 import {
   bookingDbGetAllByUser,
   bookingDbGetOverlap,
@@ -44,7 +44,7 @@ export async function bookingGetAllByUser(
     throw utilFailedResponse("Cannot GET", 500);
   }
   const data = {
-    content: bookings.results,
+    content: bookings.results as any as Booking[],
     total,
     page,
     size,

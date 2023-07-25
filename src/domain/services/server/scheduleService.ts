@@ -58,24 +58,36 @@ export async function scheduleGetAllByUserAndDay(
 }
 
 export async function scheduleGetAllByUser(
-  params: { userId: number },
+  params: CommonParams & { userId: number },
   bindings: Bindings
 ) {
+  const { page, size } = params;
+
   const query = await scheduleDbGetAllByUser(params, bindings);
   if (!query) {
-    throw utilFailedResponse("Cannot GET", 500);
+    throw utilFailedResponse("Cannot GET Schedules", 500);
   }
-  const results = query.results as any as Schedule[];
+  const total = await scheduleDbGetAllTotalByUser(params.userId, bindings);
+  if (total === null) {
+    throw utilFailedResponse("Cannot GET Total Schedules", 500);
+  }
 
   return {
-    sunday: results.filter((schedule) => schedule.day === 0),
-    monday: results.filter((schedule) => schedule.day === 1),
-    tuesday: results.filter((schedule) => schedule.day === 2),
-    wednesday: results.filter((schedule) => schedule.day === 3),
-    thursday: results.filter((schedule) => schedule.day === 4),
-    friday: results.filter((schedule) => schedule.day === 5),
-    saturday: results.filter((schedule) => schedule.day === 6),
+    content: query.results as any as Schedule[],
+    total,
+    page,
+    size,
   };
+
+  // return {
+  //   sunday: results.filter((schedule) => schedule.day === 0),
+  //   monday: results.filter((schedule) => schedule.day === 1),
+  //   tuesday: results.filter((schedule) => schedule.day === 2),
+  //   wednesday: results.filter((schedule) => schedule.day === 3),
+  //   thursday: results.filter((schedule) => schedule.day === 4),
+  //   friday: results.filter((schedule) => schedule.day === 5),
+  //   saturday: results.filter((schedule) => schedule.day === 6),
+  // };
 }
 
 export async function scheduleCreate(
