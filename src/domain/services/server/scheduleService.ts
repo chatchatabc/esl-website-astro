@@ -69,6 +69,20 @@ export async function scheduleUpdateMany(
   bindings: Bindings
 ) {
   let { userId, schedules } = params;
+  schedules = schedules.map((schedule) => {
+    return {
+      ...schedule,
+      startTime: utilGetTimestampTimeOnly(schedule.startTime),
+      endTime: utilGetTimestampTimeOnly(schedule.endTime),
+    };
+  });
+
+  const correctTimeFormat = schedules.every((schedule) => {
+    return schedule.startTime < schedule.endTime;
+  });
+  if (!correctTimeFormat) {
+    throw utilFailedResponse("Incorrect time format", 400);
+  }
 
   const query = await scheduleDbGetAllByUser({ userId }, bindings);
   if (!query) {
@@ -105,6 +119,13 @@ export async function scheduleCreateMany(
       endTime: utilGetTimestampTimeOnly(schedule.endTime),
     };
   });
+
+  const correctTimeFormat = schedules.every((schedule) => {
+    return schedule.startTime < schedule.endTime;
+  });
+  if (!correctTimeFormat) {
+    throw utilFailedResponse("Incorrect time format", 400);
+  }
 
   let overlapped =
     (await scheduleDbGetOverlapMany(schedules, bindings)) ||
