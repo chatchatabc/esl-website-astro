@@ -9,6 +9,7 @@
   import { bookingGetAllByUser } from "src/domain/services/client/bookingService";
   import {
     scheduleCreateMany,
+    scheduleDeleteMany,
     scheduleGetAllByUser,
     scheduleUpdateMany,
   } from "src/domain/services/client/scheduleService";
@@ -72,17 +73,28 @@
       };
     });
 
+    let response: any = true;
+    if (schedules.length > eventSchedules.length) {
+      const deleteSchedules = schedules.filter(
+        (schedule) => !eventSchedules.find((event) => event.id === schedule.id)
+      );
+      response = await scheduleDeleteMany(deleteSchedules);
+    }
+
     const updateSchedules: Schedule[] = eventSchedules.filter(
       (schedule) => schedule.id
     );
-    const newSchedules = eventSchedules.filter((schedule) => !schedule.id);
     const responseUpdate = await scheduleUpdateMany({
       userId,
       schedules: updateSchedules,
     });
-    const responseNew = await scheduleCreateMany(newSchedules);
 
-    if (responseNew && responseUpdate) {
+    const newSchedules = eventSchedules.filter((schedule) => !schedule.id);
+    if (newSchedules.length) {
+      response = await scheduleCreateMany(newSchedules);
+    }
+
+    if (responseUpdate && response) {
       events.forEach((event) => {
         event.remove();
       });
@@ -108,12 +120,17 @@
         },
       },
     });
+    calendar?.setOption("eventClick", (e) => {
+      e.event.remove();
+    });
+
     schedulesEvent.forEach((event, index) => {
       const activeEvent = {
         ...event,
         title: undefined,
         id: `active-${index}`,
         display: "block",
+        overlap: false,
       };
       delete activeEvent.title;
       calendar?.addEvent(activeEvent);
@@ -133,6 +150,7 @@
         },
       },
     });
+    calendar?.setOption("eventClick", undefined);
     schedulesEvent.forEach((event, index) => {
       console.log(event);
       calendar?.getEventById(`active-${index}`)?.remove();
@@ -168,10 +186,12 @@
         const day = e.start.getDay();
         const endTime = timeFormatter.format(e.end);
         const startTime = timeFormatter.format(e.start);
+        const events = calendar?.getEvents() ?? [];
         const event = {
           endTime,
           startTime,
           daysOfWeek: [day],
+          id: `active-${events.length}`,
         };
         calendar?.addEvent(event);
       },
