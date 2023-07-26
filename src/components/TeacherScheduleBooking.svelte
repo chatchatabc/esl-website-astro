@@ -1,12 +1,16 @@
 <script lang="ts">
-  export let teacherId;
+  export let teacherId: number;
 
   import { Calendar } from "@fullcalendar/core";
   import listPlugin from "@fullcalendar/list";
+  import interactionPlugin from "@fullcalendar/interaction";
   import type { Booking } from "src/domain/models/BookingModel";
   import type { Schedule } from "src/domain/models/ScheduleModel";
   import { authGetUserId } from "src/domain/services/client/authService";
-  import { bookingGetAllByUser } from "src/domain/services/client/bookingService";
+  import {
+    bookingCreate,
+    bookingGetAllByUser,
+  } from "src/domain/services/client/bookingService";
   import { scheduleGetAllByUser } from "src/domain/services/client/scheduleService";
   import { onMount } from "svelte";
 
@@ -14,10 +18,19 @@
     timeStyle: "short",
     hourCycle: "h23",
   });
+  const dateFormatter = new Intl.DateTimeFormat("en", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  let showModal = false;
   let schedules = [] as Schedule[];
   let bookings = [] as Booking[];
   let calendar = null as Calendar | null;
   let calendarDate = new Date();
+  let dateValue = "";
+  let startValue = new Date();
+  let endValue = new Date(startValue.getTime() + 30 * 60000);
 
   function generateOpenSchedules() {
     if (calendar) {
@@ -63,6 +76,28 @@
     }
   }
 
+  async function handleSubmit() {
+    const data = {
+      start: startValue.getTime(),
+      end: endValue.getTime(),
+      teacherId,
+      status: 0,
+      studentId: authGetUserId() ?? undefined,
+    };
+    const response = await bookingCreate(data);
+
+    if (response) {
+      schedules =
+        (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
+      bookings =
+        (await bookingGetAllByUser({ userId: teacherId }))?.content ?? [];
+      generateOpenSchedules();
+      showModal = false;
+    } else {
+      alert("Something went wrong");
+    }
+  }
+
   onMount(async () => {
     calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
     teacherId = authGetUserId() ?? 0;
@@ -76,7 +111,7 @@
     )!;
 
     calendar = new Calendar(calendarEl, {
-      plugins: [listPlugin],
+      plugins: [listPlugin, interactionPlugin],
       aspectRatio: 0.1,
       initialView: "listWeek",
       headerToolbar: {
@@ -88,18 +123,14 @@
           allDaySlot: false,
         },
       },
-      select: (e) => {
-        const day = e.start.getDay();
-        const endTime = timeFormatter.format(e.end);
-        const startTime = timeFormatter.format(e.start);
-        const events = calendar?.getEvents() ?? [];
-        const event = {
-          endTime,
-          startTime,
-          daysOfWeek: [day],
-          id: `active-${events.length}`,
-        };
-        calendar?.addEvent(event);
+      eventClick: (e) => {
+        showModal = true;
+        const selectedDate = new Date(e.event.start ?? 0);
+
+        const dateArray = dateFormatter.format(selectedDate).split("/");
+        dateValue = `${dateArray[2]}-${dateArray[0]}-${dateArray[1]}`;
+        startValue = selectedDate;
+        endValue = new Date(selectedDate.getTime() + 30 * 60000);
       },
     });
 
@@ -107,6 +138,87 @@
     generateOpenSchedules();
   });
 </script>
+
+<!-- Modal -->
+<div
+  aria-hidden={showModal ? "false" : "true"}
+  aria-label="Modal Background"
+  on:click={(e) => {
+    if (e.target === e.currentTarget) {
+      showModal = false;
+    }
+  }}
+  class={`fixed top-0 left-0 bg-black bg-opacity-30 h-full w-full ${
+    showModal
+      ? "opacity-100 pointer-events-auto"
+      : "opacity-0 pointer-events-none"
+  } flex z-[5] justify-center items-center transition`}
+>
+  <!-- Content -->
+  <div class="bg-white p-8 max-w-xs w-full rounded-lg">
+    <form class="space-y-2" on:submit|preventDefault={handleSubmit}>
+      <label class="flex flex-col">
+        <span class="font-bold text-xs">Date</span>
+        <input
+          value={dateValue}
+          name="date"
+          class="border border-black rounded-md p-2"
+          type="date"
+          required
+        />
+      </label>
+
+      <label class="flex flex-col">
+        <span class="font-bold text-xs">Start Time</span>
+        <input
+          disabled
+          value={timeFormatter.format(startValue)}
+          name="start"
+          class="border flex-1 border-black rounded-md p-2"
+          type="time"
+          required
+        />
+      </label>
+
+      <label class="flex flex-col">
+        <span class="font-bold text-xs">End Time</span>
+
+        <div class="flex items-center">
+          <input
+            disabled
+            value={timeFormatter.format(endValue)}
+            name="end"
+            class="border border-black rounded-md p-2 flex-1"
+            type="time"
+            required
+          />
+          <div class="flex px-2 space-x-2 text-2xl">
+            <button
+              type="button"
+              on:click={() => {
+                endValue = new Date(endValue.getTime() - 30 * 60000);
+              }}
+            >
+              -
+            </button>
+            <button
+              type="button"
+              on:click={() => {
+                endValue = new Date(endValue.getTime() + 30 * 60000);
+              }}
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </label>
+
+      <button class="px-4 border-black py-2 border rounded-md mx-auto block">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
 
 <section>
   <header>

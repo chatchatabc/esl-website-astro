@@ -257,13 +257,14 @@ const { teacher } = Astro.props as Props;
       </section>
     </section>
 
+    <!-- Teacher schedules -->
     <section class="mt-8">
       <header class="px-2 lg:px-8">
         <h2 class="text-3xl text-white font-bold">Teacher Schedule</h2>
       </header>
 
       <section class="mt-4 p-4 bg-white md:px-8">
-        <TeacherScheduleBooking client:load teacherId={teacher.id} />
+        <TeacherScheduleBooking client:load teacherId={Number(teacher.id)} />
       </section>
     </section>
   </section>
