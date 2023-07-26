@@ -63,8 +63,8 @@ export async function bookingDbGetOverlap(
   const { start, end, teacherId, studentId } = values;
   try {
     const stmt = bindings.DB.prepare(
-      "SELECT COUNT(*) AS total FROM bookings WHERE (start BETWEEN ? AND ? OR end BETWEEN ? AND ?) AND (teacherId = ? OR studentId = ?)"
-    ).bind(start, end, start, end, teacherId, studentId);
+      "SELECT COUNT(*) AS total FROM bookings WHERE ((start <= ? AND end > ?) OR (start < ? AND end >= ?)) AND (teacherId = ? OR studentId = ?)"
+    ).bind(start, start, end, end, teacherId, studentId);
     const total = await stmt.first("total");
     return total as number;
   } catch (e) {
