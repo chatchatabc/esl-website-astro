@@ -5,6 +5,7 @@ import teachersJson from "@data/teachers.json";
 import MainLayout from "@layouts/MainLayout.astro";
 import ModalComp from "@components/widgets/ModalComp.astro";
 import { Img, Picture } from "astro-imagetools/components";
+import TeacherScheduleBooking from "@components/TeacherScheduleBooking.svelte";
 
 export function getStaticPaths() {
   const teachers = teachersJson.contents;
@@ -233,7 +234,7 @@ const { teacher } = Astro.props as Props;
     </section>
 
     <!-- English Lesson Section -->
-    <section class="mt-8 mb-12">
+    <section class="mt-8">
       <header class="px-2 lg:px-8">
         <h2 class="text-3xl text-white font-bold">English Lessons</h2>
       </header>
@@ -253,6 +254,16 @@ const { teacher } = Astro.props as Props;
             })
           }
         </ul>
+      </section>
+    </section>
+
+    <section class="mt-8">
+      <header class="px-2 lg:px-8">
+        <h2 class="text-3xl text-white font-bold">Teacher Schedule</h2>
+      </header>
+
+      <section class="mt-4 p-4 bg-white md:px-8">
+        <TeacherScheduleBooking client:load teacherId={teacher.id} />
       </section>
     </section>
   </section>
