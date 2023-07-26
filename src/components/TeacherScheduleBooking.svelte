@@ -35,7 +35,7 @@
   function generateOpenSchedules() {
     if (calendar) {
       calendar.removeAllEvents();
-      schedules.map((schedule, index) => {
+      schedules.map((schedule) => {
         const currentDate = new Date(calendarDate);
         currentDate.setDate(currentDate.getDate() + schedule.day);
         const startTime = new Date(schedule.startTime);
@@ -57,7 +57,7 @@
 
         while (start < end) {
           const event = {
-            id: `open-${index}`,
+            id: `open-${start.getTime()}`,
             title: "Open Schedule",
             start,
           };
@@ -65,13 +65,17 @@
           calendar?.addEvent(event);
         }
       });
-      bookings.map((booking) => {
-        const event = {
-          id: `bk-${booking.id}`,
-          start: booking.start,
-          end: booking.end,
-        };
-        calendar?.addEvent(event);
+
+      bookings.forEach((booking) => {
+        let start = new Date(booking.start);
+        const end = new Date(booking.end);
+        while (start < end) {
+          const event = calendar?.getEventById(`open-${start.getTime()}`);
+          if (event) {
+            event.remove();
+          }
+          start = new Date(start.getTime() + 30 * 60000);
+        }
       });
     }
   }
