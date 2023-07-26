@@ -1,5 +1,6 @@
 import type { CommonParams } from "src/domain/models/CommonModel";
 import {
+  scheduleDbDeleteMany,
   scheduleDbGetAll,
   scheduleDbGetAllByUser,
   scheduleDbGetAllByUserAndDay,
@@ -103,6 +104,18 @@ export async function scheduleUpdateMany(
   const transaction = await scheduleDbUpdateMany(schedules, bindings);
   if (!transaction) {
     throw utilFailedResponse("Failed to update schedules", 500);
+  }
+
+  return true;
+}
+
+export async function scheduleDeleteMany(
+  schedules: Schedule[],
+  bindings: Bindings
+) {
+  const success = await scheduleDbDeleteMany(schedules, bindings);
+  if (!success) {
+    throw utilFailedResponse("Failed to delete schedules", 500);
   }
 
   return true;

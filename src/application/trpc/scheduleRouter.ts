@@ -11,6 +11,7 @@ import type {
 import {
   scheduleCreate,
   scheduleCreateMany,
+  scheduleDeleteMany,
   scheduleGetAll,
   scheduleGetAllByUser,
   scheduleGetAllByUserAndDay,
@@ -109,5 +110,14 @@ export const scheduleRouter = trpcRouterCreate({
     })
     .mutation((opts) => {
       return scheduleCreateMany(opts.input, opts.ctx.env);
+    }),
+
+  deleteMany: trpcProcedure
+    .input((value) => {
+      const data = value as Schedule[];
+      return data;
+    })
+    .mutation((opts) => {
+      return scheduleDeleteMany(opts.input, opts.ctx.env);
     }),
 });

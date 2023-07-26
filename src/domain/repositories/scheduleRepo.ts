@@ -182,6 +182,24 @@ export async function scheduleDbGetOverlap(
   }
 }
 
+export async function scheduleDbDeleteMany(
+  schedules: Schedule[],
+  bindings: Bindings
+) {
+  try {
+    const stmt = bindings.DB.prepare("DELETE FROM schedules WHERE id = ?");
+    await bindings.DB.batch(
+      schedules.map((schedule) => {
+        return stmt.bind(schedule.id);
+      })
+    );
+    return true;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
 export async function scheduleDbGetOverlapMany(
   schedules: ScheduleCreate[],
   bindings: Bindings
