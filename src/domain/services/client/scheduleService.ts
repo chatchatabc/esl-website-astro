@@ -35,3 +35,13 @@ export async function scheduleCreateMany(schedules: ScheduleCreate[]) {
     return null;
   }
 }
+
+export async function scheduleDeleteMany(schedules: Schedule[]) {
+  try {
+    const response = await trpcClient.schedule.deleteMany.mutate(schedules);
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
