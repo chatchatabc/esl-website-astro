@@ -2,7 +2,7 @@
 import MainLayout from "@layouts/MainLayout.astro";
 import StudentProfile from "@components/profiles/StudentProfile.astro";
 import TeacherProfile from "@components/profiles/TeacherProfile.astro";
-import TeacherSchedule from "@components/profiles/TeacherSchedule.svelte";
+import TeacherScheduleEditor from "@components/profiles/TeacherScheduleEditor.svelte";
 ---
 
 <MainLayout>
@@ -25,7 +25,7 @@ import TeacherSchedule from "@components/profiles/TeacherSchedule.svelte";
     </section>
 
     <section class="bg-white rounded-xl p-4 mt-4">
-      <TeacherSchedule client:load />
+      <TeacherScheduleEditor client:load />
     </section>
 
     <!-- Modal -->
