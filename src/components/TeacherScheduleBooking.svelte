@@ -6,7 +6,6 @@
   import type { Booking } from "src/domain/models/BookingModel";
   import type { Schedule } from "src/domain/models/ScheduleModel";
   import type { User } from "src/domain/models/UserModel";
-  import { authGetUserId } from "src/domain/services/client/authService";
   import {
     bookingCreate,
     bookingGetAllByUser,
@@ -125,7 +124,7 @@
       end: endValue.getTime(),
       teacherId,
       status: 0,
-      studentId: authGetUserId() ?? undefined,
+      studentId: user?.id,
     };
     const response = await bookingCreate(data);
 
