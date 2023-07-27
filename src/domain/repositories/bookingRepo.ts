@@ -1,6 +1,7 @@
 import type { Bindings } from "src/server";
 import type { Booking, BookingCreate } from "../models/BookingModel";
 import type { CommonParams } from "../models/CommonModel";
+import { utilFailedResponse } from "../services/server/utilService";
 
 export async function bookingDbTotalByUser(id: number, bindings: Bindings) {
   try {
@@ -56,15 +57,38 @@ export async function bookingDbInsert(
   }
 }
 
+export async function bookingDbUpdate(values: Booking, bindings: Bindings) {
+  const { start, end, teacherId, studentId, status, id } = values;
+  const date = Date.now();
+
+  const overlap = await bookingDbGetOverlap(values, bindings);
+  if (overlap) {
+    throw utilFailedResponse("Booking overlaps", 400);
+  }
+
+  try {
+    const stmt = await bindings.DB.prepare(
+      "UPDATE bookings SET start = ?, end = ?, teacherId = ?, status = ?, studentId = ?, updatedAt = ? WHERE id = ?"
+    )
+      .bind(start, end, teacherId, status, studentId, date, id)
+      .run();
+
+    return stmt.success;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
 export async function bookingDbGetOverlap(
-  values: BookingCreate,
+  values: BookingCreate & { id?: number },
   bindings: Bindings
 ) {
-  const { start, end, teacherId, studentId } = values;
+  const { start, end, teacherId, studentId, id } = values;
   try {
     const stmt = bindings.DB.prepare(
-      "SELECT COUNT(*) AS total FROM bookings WHERE ((start <= ? AND end > ?) OR (start < ? AND end >= ?)) AND (teacherId = ? OR studentId = ?)"
-    ).bind(start, start, end, end, teacherId, studentId);
+      "SELECT COUNT(*) AS total FROM bookings WHERE ((start <= ? AND end > ?) OR (start < ? AND end >= ?)) AND (teacherId = ? OR studentId = ?) AND id != ?"
+    ).bind(start, start, end, end, teacherId, studentId, id ?? 0);
     const total = await stmt.first("total");
     return total as number;
   } catch (e) {

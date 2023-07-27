@@ -52,3 +52,12 @@ export async function bookingGetAllByUser(
 
   return data;
 }
+
+export async function bookingUpdate(values: Booking, bindings: Bindings) {
+  const success = await bookingDbInsert(values, bindings);
+  if (!success) {
+    throw utilFailedResponse("Failed to create Booking", 500);
+  }
+
+  return success;
+}

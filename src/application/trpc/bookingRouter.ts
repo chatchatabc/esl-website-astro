@@ -2,11 +2,12 @@ import {
   trpcProcedure,
   trpcRouterCreate,
 } from "src/domain/infra/trpcServerActions";
-import type { BookingCreate } from "src/domain/models/BookingModel";
+import type { Booking, BookingCreate } from "src/domain/models/BookingModel";
 import type { CommonParams } from "src/domain/models/CommonModel";
 import {
   bookingCreate,
   bookingGetAllByUser,
+  bookingUpdate,
 } from "src/domain/services/server/bookingService";
 import {
   utilFailedResponse,
@@ -45,5 +46,14 @@ export default trpcRouterCreate({
     })
     .mutation(async (opts) => {
       return bookingCreate(opts.input, opts.ctx.env);
+    }),
+
+  update: trpcProcedure
+    .input((values) => {
+      const data = values as Booking;
+      return data;
+    })
+    .mutation(async (opts) => {
+      return bookingUpdate(opts.input, opts.ctx.env);
     }),
 });
