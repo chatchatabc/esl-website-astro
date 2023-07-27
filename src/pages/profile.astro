@@ -11,17 +11,17 @@ import ProfileValidator from "@components/profiles/ProfileValidator.svelte";
 
     <ProfileValidator client:load />
   </section>
-
-  <script>
-    const studentProfile = document.querySelector("[data-profile-student]");
-    const teacherProfile = document.querySelector("[data-profile-teacher]");
-
-    if (studentProfile) {
-      studentProfile.classList.remove("hidden");
-    }
-
-    if (teacherProfile) {
-      teacherProfile.classList.remove("hidden");
-    }
-  </script>
 </MainLayout>
+
+<script>
+  const studentProfile = document.querySelector("[data-profile-student]");
+  const teacherProfile = document.querySelector("[data-profile-teacher]");
+
+  if (studentProfile) {
+    studentProfile.classList.remove("hidden");
+  }
+
+  if (teacherProfile) {
+    teacherProfile.classList.remove("hidden");
+  }
+</script>
