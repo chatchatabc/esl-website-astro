@@ -1,9 +1,6 @@
 ---
 import MainLayout from "@layouts/MainLayout.astro";
-import StudentProfile from "@components/profiles/StudentProfile.astro";
-import TeacherProfile from "@components/profiles/TeacherProfile.astro";
-import TeacherScheduleEditor from "@components/profiles/TeacherScheduleEditor.svelte";
-import TeacherClassList from "@components/profiles/TeacherClassList.svelte";
+import ProfileValidator from "@components/profiles/ProfileValidator.svelte";
 ---
 
 <MainLayout>
@@ -12,28 +9,7 @@ import TeacherClassList from "@components/profiles/TeacherClassList.svelte";
       <h1>Profile Page</h1>
     </header>
 
-    <section class="bg-white rounded-xl p-4">
-      <header>
-        <h2 class="text-2xl">Profile</h2>
-      </header>
-
-      <div data-profile-student>
-        <StudentProfile />
-      </div>
-      <div data-profile-teacher>
-        <TeacherProfile />
-      </div>
-    </section>
-
-    <section class="bg-white rounded-xl p-4 mt-4">
-      <TeacherClassList client:load />
-    </section>
-
-    <section class="bg-white rounded-xl p-4 mt-4">
-      <TeacherScheduleEditor client:load />
-    </section>
-
-    <!-- Modal -->
+    <ProfileValidator client:load />
   </section>
 
   <script>

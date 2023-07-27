@@ -22,4 +22,8 @@ export default trpcRouterCreate({
     .query(async (opts) => {
       return userGetAll(opts.input, opts.ctx.env);
     }),
+
+  profile: trpcProcedure.query((opts) => {
+    return userGet({ userId: opts.ctx.userId ?? 0 }, opts.ctx.env);
+  }),
 });

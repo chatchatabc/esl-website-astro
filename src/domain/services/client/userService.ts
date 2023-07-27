@@ -9,3 +9,13 @@ export async function userGet(params: { userId: number }) {
     return null;
   }
 }
+
+export async function userGetProfile() {
+  try {
+    const response = await trpcClient.user.profile.query();
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
