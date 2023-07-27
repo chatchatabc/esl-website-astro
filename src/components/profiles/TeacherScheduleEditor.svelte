@@ -30,7 +30,6 @@
     const start = new Date(event.start);
     const end = new Date(event.end);
     return {
-      id: `bk-${index}`,
       title: "Booked Schedule",
       start,
       end,
@@ -45,7 +44,6 @@
     const endTime = timeFormatter.format(end);
 
     return {
-      id: `open-${index}`,
       title: "Open Schedule",
       startTime,
       endTime,
@@ -93,6 +91,7 @@
     if (newSchedules.length) {
       response = await scheduleCreateMany(newSchedules);
     }
+    console.log(eventSchedules, newSchedules);
 
     if (responseUpdate && response) {
       events.forEach((event) => {
@@ -109,6 +108,9 @@
   }
 
   $: if (editing && calendar) {
+    calendar?.getEvents().forEach((event) => {
+      event.remove();
+    });
     calendar?.setOption("editable", true);
     calendar?.setOption("selectable", true);
     calendar.setOption("customButtons", {
@@ -128,18 +130,16 @@
       const activeEvent = {
         ...event,
         title: undefined,
-        id: `active-${index}`,
         display: "block",
         overlap: false,
       };
       delete activeEvent.title;
       calendar?.addEvent(activeEvent);
-      calendar?.getEventById(`open-${index}`)?.remove();
-    });
-    bookings.forEach((_, index) => {
-      calendar?.getEventById(`bk-${index}`)?.remove();
     });
   } else if (calendar) {
+    calendar?.getEvents().forEach((event) => {
+      event.remove();
+    });
     calendar?.setOption("editable", false);
     calendar?.setOption("selectable", false);
     calendar.setOption("customButtons", {
@@ -151,9 +151,8 @@
       },
     });
     calendar?.setOption("eventClick", undefined);
-    schedulesEvent.forEach((event, index) => {
-      console.log(event);
-      calendar?.getEventById(`active-${index}`)?.remove();
+
+    schedulesEvent.forEach((event) => {
       calendar?.addEvent(event);
     });
     bookingsEvent.forEach((event) => {
@@ -184,16 +183,17 @@
       },
       select: (e) => {
         const day = e.start.getDay();
-        const endTime = timeFormatter.format(e.end);
-        const startTime = timeFormatter.format(e.start);
-        const events = calendar?.getEvents() ?? [];
-        const event = {
-          endTime,
-          startTime,
-          daysOfWeek: [day],
-          id: `active-${events.length}`,
-        };
-        calendar?.addEvent(event);
+
+        if (e.start.getDate() === e.end.getDate()) {
+          const endTime = timeFormatter.format(e.end);
+          const startTime = timeFormatter.format(e.start);
+          const event = {
+            endTime,
+            startTime,
+            daysOfWeek: [day],
+          };
+          calendar?.addEvent(event);
+        }
       },
     });
 
