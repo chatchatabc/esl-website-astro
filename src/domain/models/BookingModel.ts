@@ -1,6 +1,10 @@
+import type { User } from "./UserModel";
+
 export type Booking = {
   createdAt: number;
   updatedAt: number;
+
+  student?: User;
 } & BookingUpdate;
 
 export type BookingUpdate = {
