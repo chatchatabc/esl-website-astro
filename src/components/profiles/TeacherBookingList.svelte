@@ -207,8 +207,26 @@
     </div>
   </div>
 
-  <header>
+  <header class="flex justify-between">
     <h2 class="text-2xl">Bookings</h2>
+    <div class="flex space-x-2">
+      <button
+        class="bg-blue-500 text-white px-4 py-2 rounded-md"
+        on:click={() => {
+          calendar?.prev();
+        }}
+      >
+        Prev
+      </button>
+      <button
+        class="bg-blue-500 text-white px-4 py-2 rounded-md"
+        on:click={() => {
+          calendar?.next();
+        }}
+      >
+        Next
+      </button>
+    </div>
   </header>
 
   <section>
