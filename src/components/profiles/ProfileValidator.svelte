@@ -17,6 +17,10 @@
       window.location.href = "/login";
     }
 
+    if (!user?.firstName || !user?.phoneVerifiedAt) {
+      window.location.href = "/register/completion";
+    }
+
     loading = false;
   });
 </script>
