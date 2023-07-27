@@ -4,6 +4,7 @@ import {
   bookingDbGetOverlap,
   bookingDbInsert,
   bookingDbTotalByUser,
+  bookingDbUpdate,
 } from "src/domain/repositories/bookingRepo";
 import type { Bindings } from "src/server";
 import { utilFailedResponse } from "./utilService";
@@ -54,7 +55,7 @@ export async function bookingGetAllByUser(
 }
 
 export async function bookingUpdate(values: Booking, bindings: Bindings) {
-  const success = await bookingDbInsert(values, bindings);
+  const success = await bookingDbUpdate(values, bindings);
   if (!success) {
     throw utilFailedResponse("Failed to create Booking", 500);
   }
