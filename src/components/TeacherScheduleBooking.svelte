@@ -3,7 +3,6 @@
 
   import { Calendar } from "@fullcalendar/core";
   import listPlugin from "@fullcalendar/list";
-  import interactionPlugin from "@fullcalendar/interaction";
   import type { Booking } from "src/domain/models/BookingModel";
   import type { Schedule } from "src/domain/models/ScheduleModel";
   import { authGetUserId } from "src/domain/services/client/authService";
@@ -60,9 +59,14 @@
             id: `open-${start.getTime()}`,
             title: "Open Schedule",
             start,
+            end,
           };
+
+          if (start > new Date()) {
+            calendar?.addEvent(event);
+          }
+
           start = new Date(start.getTime() + 30 * 60000);
-          calendar?.addEvent(event);
         }
       });
 
@@ -115,7 +119,7 @@
     )!;
 
     calendar = new Calendar(calendarEl, {
-      plugins: [listPlugin, interactionPlugin],
+      plugins: [listPlugin],
       aspectRatio: 0.1,
       initialView: "listWeek",
       headerToolbar: {
