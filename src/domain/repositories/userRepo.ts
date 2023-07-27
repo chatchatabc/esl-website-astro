@@ -3,7 +3,27 @@ import { authCreateHash } from "../services/server/authService";
 import type { User, UserRegister } from "../models/UserModel";
 import type { CommonParams } from "../models/CommonModel";
 
-export async function userDbGet(params: CommonParams, bindings: Bindings) {
+export async function userDbGet(
+  params: { userId: number },
+  bindings: Bindings
+) {
+  const { userId } = params;
+
+  try {
+    const user = await bindings.DB.prepare(
+      "SELECT * FROM users WHERE id = ?"
+    )
+      .bind(userId)
+      .first<User>();
+
+    return user;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function userDbGetAll(params: CommonParams, bindings: Bindings) {
   const { size } = params;
 
   try {
