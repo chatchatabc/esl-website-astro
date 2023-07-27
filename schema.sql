@@ -1,7 +1,7 @@
--- Columns: id, username, password, phone, email, firstName, lastName, role, createdAt, updatedAt
+-- Columns: id, username, password, phone, email, firstName, lastName, role, credit, createdAt, updatedAt
 DROP TABLE IF EXISTS users;
-CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT NOT NULL, password TEXT NOT NULL, phone TEXT, email TEXT, firstName TEXT, lastName TEXT, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL, role INTEGER NOT NULL);
-INSERT INTO users (username, password, createdAt, updatedAt, role) VALUES ('admin', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 0, 0, 1), ('student', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 0, 0, 2), ('teacher', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 0, 0, 3);
+CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT NOT NULL, password TEXT NOT NULL, phone TEXT, email TEXT, firstName TEXT, lastName TEXT, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL, roleId INTEGER NOT NULL, credit INTEGER NOT NULL);
+INSERT INTO users (username, password, createdAt, updatedAt, roleId, credit) VALUES ('admin', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 0, 0, 1, 1000), ('student', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 0, 0, 2, 1000), ('teacher', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 0, 0, 3, 1000);
 
 DROP TABLE IF EXISTS roles;
 CREATE TABLE IF NOT EXISTS roles (id INTEGER PRIMARY KEY, name TEXT, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
