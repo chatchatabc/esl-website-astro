@@ -113,6 +113,9 @@
       (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
     bookings =
       (await bookingGetAllByUser({ userId: teacherId }))?.content ?? [];
+    bookings = bookings.filter((booking) => {
+      return booking.status === 1;
+    });
 
     const calendarEl = document.querySelector<HTMLElement>(
       "[data-teacher-schedule]"
