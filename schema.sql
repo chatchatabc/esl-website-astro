@@ -8,11 +8,13 @@
 * lastName (text?)
 * roleId (integer)
 * credit (integer)
+* phoneVerifiedAt (timestamp?)
+* emailVerifiedAt (timestamp?)
 * createdAt (timestamp)
 * updatedAt (timestamp)
 */
 DROP TABLE IF EXISTS users;
-CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT NOT NULL, password TEXT NOT NULL, phone TEXT, email TEXT, firstName TEXT, lastName TEXT, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL, roleId INTEGER NOT NULL, credit INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT NOT NULL, password TEXT NOT NULL, phone TEXT, email TEXT, firstName TEXT, lastName TEXT, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL, roleId INTEGER NOT NULL, credit INTEGER NOT NULL, phoneVerifiedAt INTEGER, emailVerifiedAt INTEGER);
 INSERT INTO users (username, password, roleId, credit, createdAt, updatedAt) VALUES ('admin', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 1, 1000, 0, 0), ('student', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 2, 1000, 0, 0), ('teacher', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 3, 1000, 0, 0);
 
 /**
