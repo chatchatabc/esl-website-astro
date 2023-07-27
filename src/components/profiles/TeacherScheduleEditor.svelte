@@ -26,7 +26,7 @@
   let bookings = [] as Booking[];
   let editing = false;
 
-  $: bookingsEvent = bookings.map((event, index) => {
+  $: bookingsEvent = bookings.map((event) => {
     const start = new Date(event.start);
     const end = new Date(event.end);
     return {
@@ -36,7 +36,7 @@
       color: "red",
     };
   });
-  $: schedulesEvent = schedules.map((event, index) => {
+  $: schedulesEvent = schedules.map((event) => {
     const start = new Date(event.startTime);
     const end = new Date(event.endTime);
 
@@ -126,7 +126,7 @@
       e.event.remove();
     });
 
-    schedulesEvent.forEach((event, index) => {
+    schedulesEvent.forEach((event) => {
       const activeEvent = {
         ...event,
         title: undefined,
@@ -164,6 +164,7 @@
     userId = authGetUserId() ?? 0;
     schedules = (await scheduleGetAllByUser({ userId }))?.content ?? [];
     bookings = (await bookingGetAllByUser({ userId }))?.content ?? [];
+    bookings = bookings.filter((booking) => booking.status === 1);
 
     const calendarEl = document.querySelector<HTMLElement>(
       "[data-teacher-calendar]"
@@ -202,5 +203,5 @@
 </script>
 
 <section>
-  <div data-teacher-calendar />
+  <div class="h-[80vh]" data-teacher-calendar />
 </section>
