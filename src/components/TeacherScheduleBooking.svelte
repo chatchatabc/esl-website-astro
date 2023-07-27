@@ -5,13 +5,16 @@
   import listPlugin from "@fullcalendar/list";
   import type { Booking } from "src/domain/models/BookingModel";
   import type { Schedule } from "src/domain/models/ScheduleModel";
+  import type { User } from "src/domain/models/UserModel";
   import { authGetUserId } from "src/domain/services/client/authService";
   import {
     bookingCreate,
     bookingGetAllByUser,
   } from "src/domain/services/client/bookingService";
   import { scheduleGetAllByUser } from "src/domain/services/client/scheduleService";
+  import { userGetProfile } from "src/domain/services/client/userService";
   import { onMount } from "svelte";
+  import LoadingComp from "./LoadingComp.svelte";
 
   const timeFormatter = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
@@ -30,6 +33,38 @@
   let dateValue = "";
   let startValue = new Date();
   let endValue = new Date(startValue.getTime() + 30 * 60000);
+  let user: User | null = null;
+  let loading = true;
+  let calendarEl: any;
+
+  $: if (calendarEl) {
+    calendar = new Calendar(calendarEl, {
+      plugins: [listPlugin],
+      aspectRatio: 0.1,
+      initialView: "listWeek",
+      headerToolbar: {
+        left: "",
+        right: "",
+      },
+      views: {
+        timeGridWeek: {
+          allDaySlot: false,
+        },
+      },
+      eventClick: (e) => {
+        showModal = true;
+        const selectedDate = new Date(e.event.start ?? 0);
+
+        const dateArray = dateFormatter.format(selectedDate).split("/");
+        dateValue = `${dateArray[2]}-${dateArray[0]}-${dateArray[1]}`;
+        startValue = selectedDate;
+        endValue = new Date(selectedDate.getTime() + 30 * 60000);
+      },
+    });
+
+    calendar.render();
+    generateOpenSchedules();
+  }
 
   function generateOpenSchedules() {
     if (calendar) {
@@ -110,6 +145,7 @@
   }
 
   onMount(async () => {
+    user = await userGetProfile();
     calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
     schedules =
       (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
@@ -118,37 +154,7 @@
     bookings = bookings.filter((booking) => {
       return booking.status === 1;
     });
-
-    const calendarEl = document.querySelector<HTMLElement>(
-      "[data-teacher-schedule]"
-    )!;
-
-    calendar = new Calendar(calendarEl, {
-      plugins: [listPlugin],
-      aspectRatio: 0.1,
-      initialView: "listWeek",
-      headerToolbar: {
-        left: "",
-        right: "",
-      },
-      views: {
-        timeGridWeek: {
-          allDaySlot: false,
-        },
-      },
-      eventClick: (e) => {
-        showModal = true;
-        const selectedDate = new Date(e.event.start ?? 0);
-
-        const dateArray = dateFormatter.format(selectedDate).split("/");
-        dateValue = `${dateArray[2]}-${dateArray[0]}-${dateArray[1]}`;
-        startValue = selectedDate;
-        endValue = new Date(selectedDate.getTime() + 30 * 60000);
-      },
-    });
-
-    calendar.render();
-    generateOpenSchedules();
+    loading = false;
   });
 </script>
 
@@ -233,31 +239,49 @@
   </div>
 </div>
 
-<section>
-  <header>
-    <section class="flex space-x-2">
-      <button
-        class="bg-blue-500 text-white px-4 py-2 rounded-md"
-        on:click={() => {
-          calendar?.prev();
-          calendarDate.setDate(calendarDate.getDate() - 7);
-          generateOpenSchedules();
-        }}
-      >
-        Prev
-      </button>
-      <button
-        class="bg-blue-500 text-white px-4 py-2 rounded-md"
-        on:click={() => {
-          calendar?.next();
-          calendarDate.setDate(calendarDate.getDate() + 7);
-          generateOpenSchedules();
-        }}
-      >
-        Next
-      </button>
-    </section>
-  </header>
+{#if loading}
+  <div
+    class="bg-white rounded-xl p-4 flex justify-center items-center h-[50vh]"
+  >
+    <LoadingComp />
+  </div>
+{:else if user}
+  <section>
+    <header>
+      <section class="flex space-x-2">
+        <button
+          class="bg-blue-500 text-white px-4 py-2 rounded-md"
+          on:click={() => {
+            calendar?.prev();
+            calendarDate.setDate(calendarDate.getDate() - 7);
+            generateOpenSchedules();
+          }}
+        >
+          Prev
+        </button>
+        <button
+          class="bg-blue-500 text-white px-4 py-2 rounded-md"
+          on:click={() => {
+            calendar?.next();
+            calendarDate.setDate(calendarDate.getDate() + 7);
+            generateOpenSchedules();
+          }}
+        >
+          Next
+        </button>
+      </section>
+    </header>
 
-  <div class="-mt-4 min-h-[50px] max-h-[80vh]" data-teacher-schedule />
-</section>
+    <section>
+      <div bind:this={calendarEl} class="-mt-4 h-[80vh]" />
+    </section>
+  </section>
+{:else}
+  <div
+    class="bg-white rounded-xl p-4 flex justify-center items-center h-[80vh]"
+  >
+    <p class="text-center">
+      Please <a href="/login">login</a> to view this page
+    </p>
+  </div>
+{/if}
