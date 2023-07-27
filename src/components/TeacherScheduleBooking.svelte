@@ -59,7 +59,7 @@
             id: `open-${start.getTime()}`,
             title: "Open Schedule",
             start,
-            end,
+            end: start.getTime() + 30 * 60000,
           };
 
           if (start > new Date()) {
@@ -99,6 +99,9 @@
         (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
       bookings =
         (await bookingGetAllByUser({ userId: teacherId }))?.content ?? [];
+      bookings = bookings.filter((booking) => {
+        return booking.status === 1;
+      });
       generateOpenSchedules();
       showModal = false;
     } else {
