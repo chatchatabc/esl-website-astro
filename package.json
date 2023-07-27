@@ -4,12 +4,13 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "concurrently \"astro dev\" \"wrangler dev\"",
-    "client:dev": "astro dev",
-    "server:dev": "wrangler dev",
+    "dev:client": "astro dev",
+    "dev:server": "wrangler dev",
     "build": "astro build",
     "preview": "astro preview",
-    "client:deploy": "wrangler pages publish dist",
-    "server:deploy": "wrangler deploy",
+    "deploy": "bun run build && bun run deploy:client && bun run deploy:server",
+    "deploy:client": "wrangler pages publish dist",
+    "deploy:server": "wrangler deploy",
     "lh": "unlighthouse",
     "d1:local": "wrangler d1 execute DB --local --file=./schema.sql",
     "d1:remote": "wrangler d1 execute DB --file=./schema.sql"
