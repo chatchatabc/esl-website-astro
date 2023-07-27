@@ -80,23 +80,12 @@ const { teacher } = Astro.props as Props;
                 {teacher.price}
                 <span class="text-gray-500">/{teacher.time}</span>
               </p>
-              <ModalComp className="block">
-                <button
-                  slot="button"
-                  class="bg-[#FF4438] block w-full border-2 text-center border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition hover:text-[#ff4438] hover:bg-white"
-                >
-                  预约
-                </button>
-                <div slot="content" class="pb-[100%] relative">
-                  <div class="absolute w-full h-full top-0">
-                    <Picture
-                      breakpoints={[480]}
-                      src="/images/qr-codes/wechat-black.png"
-                      alt="wechat qr code"
-                    />
-                  </div>
-                </div>
-              </ModalComp>
+              <button
+                data-teacher-schedule-cta
+                class="bg-[#FF4438] block w-full border-2 text-center border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition md:w-fit hover:text-[#ff4438] hover:bg-white"
+              >
+                预约
+              </button>
             </footer>
           </figcaption>
         </figure>
@@ -259,6 +248,12 @@ const { teacher } = Astro.props as Props;
 
     <!-- Teacher schedules -->
     <section class="mt-8">
+      <div
+        aria-label="anchor"
+        id="teacher-schedule"
+        class="-mt-24 absolute lg:-mt-8"
+      >
+      </div>
       <header class="px-2 lg:px-8">
         <h2 class="text-3xl text-white font-bold">Teacher Schedule</h2>
       </header>
@@ -275,6 +270,15 @@ const { teacher } = Astro.props as Props;
   const navButtons = document.querySelectorAll("[data-teacher-nav]");
   const navIndicators = document.querySelectorAll("[data-nav-indicator]");
   const contents = document.querySelectorAll("[data-teacher-content]");
+  const teacherScheduleSection = document.querySelector("#teacher-schedule");
+  const teacherScheduleCta = document.querySelector(
+    "[data-teacher-schedule-cta]"
+  );
+
+  teacherScheduleCta?.addEventListener("click", (e) => {
+    e.preventDefault();
+    teacherScheduleSection?.scrollIntoView({ behavior: "smooth" });
+  });
 
   navButtons.forEach((btn, index) => {
     btn.addEventListener("click", (e) => {
