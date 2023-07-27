@@ -111,7 +111,6 @@
 
   onMount(async () => {
     calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
-    teacherId = authGetUserId() ?? 0;
     schedules =
       (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
     bookings =
