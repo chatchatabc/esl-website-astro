@@ -4,6 +4,7 @@
   import { onMount } from "svelte";
   import TeacherClassList from "./TeacherClassList.svelte";
   import TeacherScheduleEditor from "./TeacherScheduleEditor.svelte";
+  import LoadingComp from "@components/LoadingComp.svelte";
 
   let loading = true;
   let user: User | null = null;
@@ -21,7 +22,11 @@
 </script>
 
 {#if loading}
-  <div>Loading</div>
+  <div
+    class="bg-white rounded-xl p-4 flex justify-center items-center h-[80vh]"
+  >
+    <LoadingComp />
+  </div>
 {:else if user}
   <section class="bg-white rounded-xl p-4">
     <header>
