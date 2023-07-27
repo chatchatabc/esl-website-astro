@@ -3,6 +3,7 @@ import MainLayout from "@layouts/MainLayout.astro";
 import StudentProfile from "@components/profiles/StudentProfile.astro";
 import TeacherProfile from "@components/profiles/TeacherProfile.astro";
 import TeacherScheduleEditor from "@components/profiles/TeacherScheduleEditor.svelte";
+import TeacherClassList from "@components/profiles/TeacherClassList.svelte";
 ---
 
 <MainLayout>
@@ -22,6 +23,10 @@ import TeacherScheduleEditor from "@components/profiles/TeacherScheduleEditor.sv
       <div data-profile-teacher>
         <TeacherProfile />
       </div>
+    </section>
+
+    <section class="bg-white rounded-xl p-4 mt-4">
+      <TeacherClassList client:load />
     </section>
 
     <section class="bg-white rounded-xl p-4 mt-4">
