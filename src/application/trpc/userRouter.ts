@@ -78,7 +78,12 @@ export default trpcRouterCreate({
   }),
 
   validatePhoneToken: trpcProcedure
-    .input((values) => {
+    .input((values: any) => {
+      if (!values) {
+        throw utilFailedResponse("Missing values", 400);
+      } else if (!values.token) {
+        throw utilFailedResponse("Missing token", 400);
+      }
       const data = values as { token: string };
       return data;
     })
