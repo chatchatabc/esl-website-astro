@@ -11,6 +11,7 @@ import {
   userGet,
   userGetAll,
   userUpdateProfile,
+  userValidatePhone,
 } from "src/domain/services/server/userService";
 import {
   utilFailedResponse,
@@ -69,4 +70,9 @@ export default trpcRouterCreate({
       console.log(id);
       return userUpdateProfile(opts.input, opts.ctx.env);
     }),
+
+  validatePhone: trpcProcedure.query((opts) => {
+    const id = opts.ctx.userId ?? 0;
+    return userValidatePhone({ userId: id }, opts.ctx.env);
+  }),
 });
