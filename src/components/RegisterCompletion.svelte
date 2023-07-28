@@ -1,12 +1,32 @@
 <script lang="ts">
   import type { User } from "src/domain/models/UserModel";
-  import { userGetProfile } from "src/domain/services/client/userService";
+  import {
+    userGetProfile,
+    userUpdateProfile,
+  } from "src/domain/services/client/userService";
   import { onMount } from "svelte";
   import LoadingComp from "./LoadingComp.svelte";
 
   let loading = true;
   let user = null as User | null;
   let step = 0;
+
+  async function handleFormSubmit(e: any) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    let data = Object.fromEntries(formData.entries());
+
+    const response = await userUpdateProfile(data);
+
+    if (response) {
+      console.log(response);
+      // window.location.href = "/register/verify";
+    } else {
+      alert("Failed to update profile");
+    }
+  }
 
   onMount(async () => {
     user = await userGetProfile();
@@ -39,7 +59,7 @@
     </header>
 
     <section class="mt-4">
-      <form data-register-form class="-mx-1">
+      <form class="-mx-1" on:submit|preventDefault={handleFormSubmit}>
         <label class="flex flex-col p-1">
           <span class="text-xs font-bold">First name</span>
           <input
@@ -62,7 +82,7 @@
           <span class="text-xs font-bold">Phone number</span>
           <input
             required
-            name="phoneNumber"
+            name="phone"
             class="border rounded-md p-2"
             placeholder="Phone number"
           />
@@ -72,6 +92,7 @@
           <span class="text-xs font-bold">Email</span>
           <input
             required
+            type="email"
             name="email"
             class="border rounded-md p-2"
             placeholder="Email"
@@ -95,7 +116,7 @@
     </header>
 
     <section class="mt-4">
-      <form data-register-form class="-mx-1">
+      <form class="-mx-1">
         <label class="flex flex-col p-1">
           <span class="text-xs font-bold">First name</span>
           <input
