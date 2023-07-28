@@ -3,10 +3,15 @@ import {
   userDbGet,
   userDbGetAll,
   userDbGetTotal,
+  userDbUpdate,
 } from "src/domain/repositories/userRepo";
 import type { Bindings } from "src/server";
 import { utilFailedResponse } from "./utilService";
-import type { User } from "src/domain/models/UserModel";
+import type {
+  User,
+  UserContactInformation,
+  UserPersonalInformation,
+} from "src/domain/models/UserModel";
 
 export async function userGetAll(params: CommonParams, bindings: Bindings) {
   const { page, size } = params;
@@ -35,4 +40,23 @@ export async function userGet(params: { userId: number }, bindings: Bindings) {
   }
 
   return user;
+}
+
+export async function userUpdateProfile(
+  params: UserPersonalInformation & UserContactInformation & { id?: number },
+  bindings: Bindings
+) {
+  let user = await userDbGet({ userId: params.id ?? 0 }, bindings);
+  if (!user) {
+    throw utilFailedResponse("Error", 404);
+  }
+
+  user = { ...user, ...params };
+
+  const query = await userDbUpdate(user, bindings);
+  if (!query) {
+    throw utilFailedResponse("Error", 500);
+  }
+
+  return query;
 }

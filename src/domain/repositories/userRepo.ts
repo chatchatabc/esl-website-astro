@@ -3,6 +3,47 @@ import { authCreateHash } from "../services/server/authService";
 import type { User, UserRegister } from "../models/UserModel";
 import type { CommonParams } from "../models/CommonModel";
 
+export async function userDbUpdate(params: User, bindings: Bindings) {
+  const {
+    id,
+    username,
+    password,
+    roleId,
+    firstName,
+    lastName,
+    phone,
+    email,
+    phoneVerifiedAt,
+    emailVerifiedAt,
+  } = params;
+
+  const date = new Date().getTime();
+  try {
+    const query = await bindings.DB.prepare(
+      "UPDATE users SET username = ?, password = ?, roleId = ?, updatedAt = ?, firstName = ?, lastName = ?, phone = ?, email = ?, phoneVerifiedAt = ?, emailVerifiedAt = ? WHERE id = ?"
+    )
+      .bind(
+        username,
+        password,
+        roleId,
+        date,
+        firstName,
+        lastName,
+        phone,
+        email,
+        phoneVerifiedAt,
+        emailVerifiedAt,
+        id
+      )
+      .first<User>();
+
+    return query;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
 export async function userDbGet(
   params: { userId: number },
   bindings: Bindings
@@ -10,9 +51,7 @@ export async function userDbGet(
   const { userId } = params;
 
   try {
-    const user = await bindings.DB.prepare(
-      "SELECT * FROM users WHERE id = ?"
-    )
+    const user = await bindings.DB.prepare("SELECT * FROM users WHERE id = ?")
       .bind(userId)
       .first<User>();
 
