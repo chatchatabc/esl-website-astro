@@ -3,6 +3,31 @@ import type { Booking, BookingCreate } from "src/domain/models/BookingModel";
 import type { CommonParams } from "src/domain/models/CommonModel";
 import { userGet } from "./userService";
 
+export async function bookingGetAll(params: CommonParams) {
+  try {
+    const response = await trpcClient.booking.getAll.query(params);
+
+    const contentPromise = response.content.map(async (booking) => {
+      const student = await userGet({ userId: booking.studentId ?? 0 });
+      if (student) {
+        booking.student = student;
+      }
+
+      const teacher = await userGet({ userId: booking.teacherId ?? 0 });
+      if (teacher) {
+        booking.teacher = teacher;
+      }
+      return booking;
+    });
+    response.content = await Promise.all(contentPromise);
+
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
 export async function bookingGetAllByUser(
   params: CommonParams & { userId: number }
 ) {

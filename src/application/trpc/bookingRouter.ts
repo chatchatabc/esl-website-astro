@@ -15,6 +15,16 @@ import {
 } from "src/domain/services/server/utilService";
 
 export default trpcRouterCreate({
+  getAll: trpcProcedure
+    .input((values: any) => {
+      const data = utilValidateCommonParams(values) as CommonParams;
+      return data;
+    })
+    .query((opts) => {
+      const userId = opts.ctx.userId ?? 0;
+      return bookingGetAllByUser({ ...opts.input, userId }, opts.ctx.env);
+    }),
+
   getAllByUser: trpcProcedure
     .input((values) => {
       const data = utilValidateCommonParams(values) as CommonParams & {
@@ -28,6 +38,7 @@ export default trpcRouterCreate({
     .query((opts) => {
       return bookingGetAllByUser(opts.input, opts.ctx.env);
     }),
+
   create: trpcProcedure
     .input((values) => {
       const data = values as BookingCreate;

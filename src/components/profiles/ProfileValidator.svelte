@@ -6,6 +6,8 @@
   import TeacherScheduleEditor from "./TeacherScheduleEditor.svelte";
   import LoadingComp from "@components/LoadingComp.svelte";
   import ProfileInformation from "./ProfileInformation.svelte";
+  import StudentClassList from "./StudentClassList.svelte";
+  import StudentCashList from "./StudentCashList.svelte";
 
   let loading = true;
   let user: User | null = null;
@@ -44,6 +46,22 @@
 
     <section class="bg-white rounded-xl p-4 mt-4">
       <TeacherScheduleEditor />
+    </section>
+  {/if}
+
+  {#if user.roleId === 1}
+    <section class="flex -mx-2">
+      <section class="w-1/2 px-2">
+        <section class="bg-white rounded-xl p-4 mt-4">
+          <StudentClassList />
+        </section>
+      </section>
+
+      <section class="w-1/2 px-2">
+        <section class="bg-white rounded-xl p-4 mt-4">
+          <StudentCashList />
+        </section>
+      </section>
     </section>
   {/if}
 {:else}

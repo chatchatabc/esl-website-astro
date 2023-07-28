@@ -5,6 +5,7 @@ export type Booking = {
   updatedAt: number;
 
   student?: User;
+  teacher?: User;
 } & BookingUpdate;
 
 export type BookingUpdate = {
