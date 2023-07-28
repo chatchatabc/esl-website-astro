@@ -10,6 +10,14 @@
   let loading = true;
   let user = null as User | null;
   let step = 0;
+  let phoneCode = "";
+  let emailCode = "";
+
+  $: if (step === 1) {
+    if (user?.phoneVerifiedAt && user?.emailVerifiedAt) {
+      step = 2;
+    }
+  }
 
   async function handleFormSubmit(e: any) {
     e.preventDefault();
@@ -21,8 +29,7 @@
     const response = await userUpdateProfile(data);
 
     if (response) {
-      console.log(response);
-      // window.location.href = "/register/verify";
+      step = 1;
     } else {
       alert("Failed to update profile");
     }
@@ -67,6 +74,7 @@
             name="firstName"
             class="border rounded-md p-2"
             placeholder="First name"
+            value={user?.firstName}
           />
         </label>
         <label class="flex flex-col p-1">
@@ -76,16 +84,21 @@
             name="lastName"
             class="border rounded-md p-2"
             placeholder="Last name"
+            value={user?.lastName}
           />
         </label>
         <label class="flex flex-col p-1">
           <span class="text-xs font-bold">Phone number</span>
-          <input
-            required
-            name="phone"
-            class="border rounded-md p-2"
-            placeholder="Phone number"
-          />
+          <div class="flex items-center space-x-1">
+            <span>+86</span>
+            <input
+              required
+              name="phone"
+              class="border rounded-md p-2 flex-1"
+              placeholder="Phone number"
+              value={user?.phone}
+            />
+          </div>
         </label>
 
         <label class="flex flex-col p-1">
@@ -96,6 +109,7 @@
             name="email"
             class="border rounded-md p-2"
             placeholder="Email"
+            value={user?.email}
           />
         </label>
 
@@ -103,7 +117,7 @@
           <button
             class="mx-auto text-sm w-full block p-2 rounded-md bg-blue-300 transition hover:bg-blue-400"
           >
-            Finish
+            Next
           </button>
         </footer>
       </form>
@@ -112,52 +126,80 @@
 {:else if step === 1}
   <section class="bg-white rounded-xl overflow-hidden p-8">
     <header>
-      <h1 class="text-2xl">More Details</h1>
+      <h1 class="text-2xl">Contact Validation</h1>
     </header>
+
+    <p class="text-xs">
+      The codes have been sent to your contact details, please check and
+      validate your contact details.
+    </p>
 
     <section class="mt-4">
       <form class="-mx-1">
+        <div class="flex items-center">
+          <div class="flex w-1/2 flex-col p-1">
+            <div class="text-xs font-bold flex space-x-2">
+              <p>Phone</p>
+              <p class="text-red-500">(Inactive)</p>
+            </div>
+            <p>{user?.phone}</p>
+          </div>
+
+          <div class="flex w-1/2 flex-col p-1">
+            <div class="text-xs font-bold flex space-x-2">
+              <p>Email</p>
+              <p class="text-red-500">(Inactive)</p>
+            </div>
+            <p>{user?.email}</p>
+          </div>
+        </div>
+
         <label class="flex flex-col p-1">
-          <span class="text-xs font-bold">First name</span>
-          <input
-            required
-            name="firstName"
-            class="border rounded-md p-2"
-            placeholder="First name"
-          />
-        </label>
-        <label class="flex flex-col p-1">
-          <span class="text-xs font-bold">Last name</span>
-          <input
-            required
-            name="lastName"
-            class="border rounded-md p-2"
-            placeholder="Last name"
-          />
-        </label>
-        <label class="flex flex-col p-1">
-          <span class="text-xs font-bold">Phone number</span>
-          <input
-            required
-            name="phoneNumber"
-            class="border rounded-md p-2"
-            placeholder="Phone number"
-          />
+          <span class="text-xs font-bold">Phone Validation</span>
+          <div class="flex space-x-1">
+            <input
+              value={phoneCode}
+              required
+              name="lastName"
+              class="border rounded-md p-2 flex-1"
+              placeholder="Validation code"
+            />
+            <button class="px-4 py-2 text-blue-500">Validate</button>
+          </div>
         </label>
 
         <label class="flex flex-col p-1">
-          <span class="text-xs font-bold">Email</span>
-          <input
-            required
-            name="email"
-            class="border rounded-md p-2"
-            placeholder="Email"
-          />
+          <span class="text-xs font-bold">Email Validation</span>
+          <div class="flex space-x-1">
+            <input
+              value={emailCode}
+              required
+              name="lastName"
+              class="border rounded-md p-2 flex-1"
+              placeholder="Validation code"
+            />
+            <button class="px-4 py-2 text-blue-500">Validate</button>
+          </div>
         </label>
 
-        <footer class="p-1 mt-2 space-y-2">
+        <footer class="p-1 mt-2 flex space-x-2">
           <button
-            class="mx-auto text-sm w-full block p-2 rounded-md bg-blue-300 transition hover:bg-blue-400"
+            on:click={async () => {
+              loading = true;
+
+              user = await userGetProfile();
+              step = 0;
+
+              loading = false;
+            }}
+            type="button"
+            class="mx-auto text-sm w-full block p-2 rounded-md text-blue-500"
+          >
+            Back
+          </button>
+
+          <button
+            class="mx-auto text-sm w-full block p-2 rounded-md bg-blue-500 text-white transition hover:bg-blue-400"
           >
             Finish
           </button>
