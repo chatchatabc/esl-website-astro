@@ -5,6 +5,7 @@
   import TeacherClassList from "./TeacherClassList.svelte";
   import TeacherScheduleEditor from "./TeacherScheduleEditor.svelte";
   import LoadingComp from "@components/LoadingComp.svelte";
+  import ProfileInformation from "./ProfileInformation.svelte";
 
   let loading = true;
   let user: User | null = null;
@@ -33,11 +34,7 @@
   </div>
 {:else if user}
   <section class="bg-white rounded-xl p-4">
-    <header>
-      <h2 class="text-2xl">Profile</h2>
-    </header>
-
-    <section>Test</section>
+    <ProfileInformation {user} />
   </section>
 
   {#if user.roleId === 3}
