@@ -10,8 +10,9 @@ import type {
 import {
   userGet,
   userGetAll,
+  userGetPhoneToken,
   userUpdateProfile,
-  userValidatePhone,
+  userValidatePhoneToken,
 } from "src/domain/services/server/userService";
 import {
   utilFailedResponse,
@@ -71,8 +72,21 @@ export default trpcRouterCreate({
       return userUpdateProfile(opts.input, opts.ctx.env);
     }),
 
-  validatePhone: trpcProcedure.query((opts) => {
+  getPhoneToken: trpcProcedure.query((opts) => {
     const id = opts.ctx.userId ?? 0;
-    return userValidatePhone({ userId: id }, opts.ctx.env);
+    return userGetPhoneToken({ userId: id }, opts.ctx.env);
   }),
+
+  validatePhoneToken: trpcProcedure
+    .input((values) => {
+      const data = values as { token: string };
+      return data;
+    })
+    .mutation((opts) => {
+      const data = {
+        token: opts.input.token,
+        userId: opts.ctx.userId ?? 0,
+      };
+      return userValidatePhoneToken(data, opts.ctx.env);
+    }),
 });

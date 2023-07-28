@@ -93,3 +93,13 @@ export async function authLogin(body: UserLogin, env: Bindings) {
   delete user.password;
   return user;
 }
+
+export function authGenerateRandomToken(length = 6) {
+  const characters = "0123456789";
+  let token = "";
+  for (let i = 0; i < length; i++) {
+    token += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return token;
+}
