@@ -12,7 +12,24 @@ export async function userGet(params: { userId: number }) {
 
 export async function userGetProfile() {
   try {
-    const response = await trpcClient.user.profile.query();
+    const response = await trpcClient.user.getProfile.query();
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function userUpdateProfile(params: Record<string, any>) {
+  const data = {
+    firstName: params.firstName,
+    lastName: params.lastName,
+    email: params.email,
+    phone: params.phone,
+  };
+
+  try {
+    const response = await trpcClient.user.updateProfile.mutate(data);
     return response;
   } catch (e) {
     console.log(e);
