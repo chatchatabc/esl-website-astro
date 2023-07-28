@@ -35,7 +35,7 @@ export async function userDbUpdate(params: User, bindings: Bindings) {
         emailVerifiedAt,
         id
       )
-      .first<User>();
+      .run();
 
     return query;
   } catch (e) {
