@@ -1,8 +1,10 @@
 <script lang="ts">
   import type { User } from "src/domain/models/UserModel";
   import {
+    userGetPhoneToken,
     userGetProfile,
     userUpdateProfile,
+    userValidatePhone,
   } from "src/domain/services/client/userService";
   import { onMount } from "svelte";
   import LoadingComp from "./LoadingComp.svelte";
@@ -10,11 +12,22 @@
   let loading = true;
   let user = null as User | null;
   let step = 0;
-  let phoneCode = "";
-  let emailCode = "";
 
-  $: if (step === 1) {
-    if (user?.phoneVerifiedAt && user?.emailVerifiedAt) {
+  async function handleGetPhoneToken() {
+    const response = await userGetPhoneToken();
+  }
+
+  async function handleValidatePhoneToken(e: any) {
+    const formData = new FormData(e.target);
+    const objData = Object.fromEntries(formData.entries());
+
+    const response = await userValidatePhone({
+      token: objData.token as string,
+    });
+    if (!response) {
+      alert("Failed to validate phone");
+    } else {
+      user = await userGetProfile();
       step = 2;
     }
   }
@@ -29,6 +42,7 @@
     const response = await userUpdateProfile(data);
 
     if (response) {
+      user = await userGetProfile();
       step = 1;
     } else {
       alert("Failed to update profile");
@@ -126,31 +140,22 @@
 {:else if step === 1}
   <section class="bg-white rounded-xl overflow-hidden p-8">
     <header>
-      <h1 class="text-2xl">Contact Validation</h1>
+      <h1 class="text-2xl">Verify Phone Number</h1>
     </header>
 
     <p class="text-xs">
-      The codes have been sent to your contact details, please check and
-      validate your contact details.
+      We would like to verify your contact information to ensure the security of
+      your account.
     </p>
 
     <section class="mt-4">
-      <form class="-mx-1">
+      <form on:submit|preventDefault={handleValidatePhoneToken} class="-mx-1">
         <div class="flex items-center">
           <div class="flex w-1/2 flex-col p-1">
             <div class="text-xs font-bold flex space-x-2">
               <p>Phone</p>
-              <p class="text-red-500">(Inactive)</p>
             </div>
             <p>{user?.phone}</p>
-          </div>
-
-          <div class="flex w-1/2 flex-col p-1">
-            <div class="text-xs font-bold flex space-x-2">
-              <p>Email</p>
-              <p class="text-red-500">(Inactive)</p>
-            </div>
-            <p>{user?.email}</p>
           </div>
         </div>
 
@@ -158,27 +163,16 @@
           <span class="text-xs font-bold">Phone Validation</span>
           <div class="flex space-x-1">
             <input
-              value={phoneCode}
+              name="token"
               required
-              name="lastName"
               class="border rounded-md p-2 flex-1"
               placeholder="Validation code"
             />
-            <button class="px-4 py-2 text-blue-500">Validate</button>
-          </div>
-        </label>
-
-        <label class="flex flex-col p-1">
-          <span class="text-xs font-bold">Email Validation</span>
-          <div class="flex space-x-1">
-            <input
-              value={emailCode}
-              required
-              name="lastName"
-              class="border rounded-md p-2 flex-1"
-              placeholder="Validation code"
-            />
-            <button class="px-4 py-2 text-blue-500">Validate</button>
+            <button
+              type="button"
+              on:click={handleGetPhoneToken}
+              class="px-4 py-2 text-blue-500">Send Code</button
+            >
           </div>
         </label>
 
@@ -201,7 +195,7 @@
           <button
             class="mx-auto text-sm w-full block p-2 rounded-md bg-blue-500 text-white transition hover:bg-blue-400"
           >
-            Finish
+            Validate
           </button>
         </footer>
       </form>
