@@ -26,7 +26,7 @@ INSERT INTO users (username, password, roleId, credit, createdAt, updatedAt) VAL
 * updatedAt (timestamp)
 */
 DROP TABLE IF EXISTS teachers;
-CREATE TABLE IF NOT EXISTS teachers (id INTEGER PRIMARY KEY, userId INTEGER UNIQUE, price INTEGER NOT NULL, interval INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS teachers (userId INTEGER PRIMARY KEY, id INTEGER UNIQUE, price INTEGER NOT NULL, interval INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
 INSERT INTO teachers (userId, price, interval, createdAt, updatedAt) VALUES (3, 50, 25, 0, 0);
 
 
