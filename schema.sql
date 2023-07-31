@@ -67,3 +67,15 @@ INSERT INTO schedules (teacherId, day, createdAt, updatedAt, startTime, endTime)
 DROP TABLE IF EXISTS bookings;
 CREATE TABLE IF NOT EXISTS bookings (id INTEGER PRIMARY KEY, teacherId INTEGER NOT NULL, studentId INTEGER, start INTEGER NOT NULL, end INTEGER NOT NULL, status INTEGER NOT NULL, message TEXT, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
 INSERT INTO bookings (teacherId, studentId, status, createdAt, updatedAt, start, end) VALUES (3, 2, 0, 0, 0, 1689840543000, 1689851343000);
+
+/**
+* id (integer)
+* senderId (integer)
+* receiverId (integer)
+* amount (integer)
+* createdAt (timestamp)
+* updatedAt (timestamp)
+*/
+DROP TABLE IF EXISTS logsCredit;
+CREATE TABLE IF NOT EXISTS logsCredit (id INTEGER PRIMARY KEY, senderId INTEGER NOT NULL, receiverId INTEGER NOT NULL, amount INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
+INSERT INTO logsCredit (senderId, receiverId, amount, createdAt, updatedAt) VALUES (2, 3, 50, 0, 0);
