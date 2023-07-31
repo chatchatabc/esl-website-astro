@@ -8,6 +8,7 @@ export type User = {
   roleId: number;
   createdAt: number;
   updatedAt: number;
+  credit: number;
 
   role?: UserRole;
   teacher?: Teacher;
@@ -16,18 +17,18 @@ export type User = {
   UserContactValidation;
 
 export type UserPersonalInformation = {
-  firstName: string | null;
-  lastName: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
 };
 
 export type UserContactInformation = {
-  phone: string | null;
+  phone?: string | null;
   email?: string | null;
 };
 
 export type UserContactValidation = {
-  phoneVerifiedAt: number | null;
-  emailVerifiedAt: number | null;
+  phoneVerifiedAt?: number | null;
+  emailVerifiedAt?: number | null;
 };
 
 export type UserRole = {
