@@ -45,11 +45,6 @@
         left: "",
         right: "",
       },
-      views: {
-        timeGridWeek: {
-          allDaySlot: false,
-        },
-      },
       eventClick: (e) => {
         showModal = true;
         const selectedDate = new Date(e.event.start ?? 0);
@@ -246,13 +241,14 @@
   </div>
 {:else if user}
   <section>
-    <header>
+    <header class="flex justify-between items-center space-x-2">
       <section class="flex space-x-2">
         <button
           class="bg-blue-500 text-white px-4 py-2 rounded-md"
           on:click={() => {
             calendar?.prev();
             calendarDate.setDate(calendarDate.getDate() - 7);
+            calendarDate = new Date(calendarDate);
             generateOpenSchedules();
           }}
         >
@@ -263,12 +259,19 @@
           on:click={() => {
             calendar?.next();
             calendarDate.setDate(calendarDate.getDate() + 7);
+            calendarDate = new Date(calendarDate);
             generateOpenSchedules();
           }}
         >
           Next
         </button>
       </section>
+
+      <p class="text-lg">
+        {dateFormatter.format(calendarDate)} - {dateFormatter.format(
+          new Date().setDate(calendarDate.getDate() + 6)
+        )}
+      </p>
     </header>
 
     <section>
@@ -277,7 +280,7 @@
   </section>
 {:else}
   <div
-    class="bg-white rounded-xl p-4 flex justify-center items-center h-[80vh]"
+    class="bg-white rounded-xl p-4 flex justify-center items-center h-[40vh]"
   >
     <p class="text-center">
       Please <a href="/login">login</a> to view this page
