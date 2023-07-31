@@ -14,8 +14,19 @@
   let user = null as User | null;
   let step = 0;
 
+  $: if (user) {
+    user.phone = user.phone?.startsWith("+86")
+      ? user.phone.slice(3)
+      : user.phone ?? "";
+  }
+
   async function handleGetPhoneToken() {
     const response = await userGetPhoneToken();
+    if (response) {
+      alert("Phone token sent");
+    } else {
+      alert("Failed to send phone token");
+    }
   }
 
   async function handleValidatePhoneToken(e: any) {
@@ -151,7 +162,7 @@
             <div class="text-xs font-bold flex space-x-2">
               <p>Phone</p>
             </div>
-            <p>{user?.phone}</p>
+            <p>+86{user?.phone}</p>
           </div>
         </div>
 
