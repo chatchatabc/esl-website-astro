@@ -5,16 +5,16 @@ import type { CommonParams } from "../models/CommonModel";
 
 export async function userDbUpdate(params: User, bindings: Bindings) {
   const {
-    id,
-    username,
-    password,
-    roleId,
-    firstName,
-    lastName,
-    phone,
-    email,
-    phoneVerifiedAt,
-    emailVerifiedAt,
+    id = null,
+    username = null,
+    password = null,
+    roleId = null,
+    firstName = null,
+    lastName = null,
+    phone = null,
+    email = null,
+    phoneVerifiedAt = null,
+    emailVerifiedAt = null,
   } = params;
 
   const date = new Date().getTime();
