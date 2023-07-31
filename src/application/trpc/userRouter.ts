@@ -18,6 +18,7 @@ import {
   utilFailedResponse,
   utilValidateCommonParams,
 } from "src/domain/services/server/utilService";
+import { validatePhoneNumber } from "src/domain/services/validationService";
 
 export default trpcRouterCreate({
   get: trpcProcedure
@@ -47,20 +48,19 @@ export default trpcRouterCreate({
         throw utilFailedResponse("Missing values", 400);
       }
 
-      if (
-        !values.firstName ||
-        !values.lastName ||
-        !values.email ||
-        !values.phone
-      ) {
+      if (!values.firstName || !values.lastName || !values.phone) {
         throw utilFailedResponse("Missing values", 400);
+      }
+
+      if (!validatePhoneNumber(values.phone)) {
+        throw utilFailedResponse("Invalid phone number", 400);
       }
 
       const data = {
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
-        phone: values.phone,
+        phone: `+86${values.phone}`,
       } as UserPersonalInformation & UserContactInformation & { id?: number };
 
       return data;
@@ -68,7 +68,6 @@ export default trpcRouterCreate({
     .mutation((opts) => {
       const id = opts.ctx.userId ?? 0;
       opts.input.id = id;
-      console.log(id);
       return userUpdateProfile(opts.input, opts.ctx.env);
     }),
 
