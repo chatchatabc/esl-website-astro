@@ -10,6 +10,9 @@
   import LoadingComp from "./LoadingComp.svelte";
   import { validatePhoneNumber } from "src/domain/services/validationService";
 
+  let sendLoading = false;
+  let interval: any = null;
+  let timer = 0;
   let loading = true;
   let user = null as User | null;
   let step = 0;
@@ -21,12 +24,20 @@
   }
 
   async function handleGetPhoneToken() {
+    sendLoading = true;
     const response = await userGetPhoneToken();
     if (response) {
-      alert("Phone token sent");
+      timer = 60;
+      interval = setInterval(() => {
+        timer = timer - 1;
+        if (timer <= 0) {
+          clearInterval(interval);
+        }
+      }, 1000);
     } else {
       alert("Failed to send phone token");
     }
+    sendLoading = false;
   }
 
   async function handleValidatePhoneToken(e: any) {
@@ -178,8 +189,13 @@
             <button
               type="button"
               on:click={handleGetPhoneToken}
-              class="px-4 py-2 text-blue-500">Send Code</button
+              class={`px-4 py-2 ${
+                timer || sendLoading ? "text-gray-500" : "text-blue-500"
+              }`}
+              disabled={timer ? true : false}
             >
+              {sendLoading ? "loading" : timer ? timer : "Send Code"}
+            </button>
           </div>
         </label>
 
