@@ -8,6 +8,7 @@
   } from "src/domain/services/client/userService";
   import { onMount } from "svelte";
   import LoadingComp from "./LoadingComp.svelte";
+  import { validatePhoneNumber } from "src/domain/services/validationService";
 
   let loading = true;
   let user = null as User | null;
@@ -38,6 +39,12 @@
     const form = e.target;
     const formData = new FormData(form);
     let data = Object.fromEntries(formData.entries());
+
+    const isValid = validatePhoneNumber(data.phone as string);
+    if (!isValid) {
+      alert("Invalid Chinese phone number");
+      return;
+    }
 
     const response = await userUpdateProfile(data);
 
@@ -110,6 +117,7 @@
               name="phone"
               class="border rounded-md p-2 flex-1"
               placeholder="Phone number"
+              title="Chinese phone number"
               value={user?.phone}
             />
           </div>
