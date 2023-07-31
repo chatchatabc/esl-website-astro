@@ -14,6 +14,8 @@
   import { userGetProfile } from "src/domain/services/client/userService";
   import { onMount } from "svelte";
   import LoadingComp from "./LoadingComp.svelte";
+  import { teacherGet } from "src/domain/services/client/teacherService";
+  import type { Teacher } from "src/domain/models/TeacherModel";
 
   const timeFormatter = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
@@ -34,6 +36,7 @@
   let endValue = new Date(startValue.getTime() + 30 * 60000);
   let user: User | null = null;
   let loading = true;
+  let teacher = null as Teacher | null;
   let calendarEl: any;
 
   $: if (calendarEl) {
@@ -114,6 +117,21 @@
   }
 
   async function handleSubmit() {
+    if (endValue <= startValue) {
+      alert(
+        "Invalid time schedule. End time cannot be earlier or the same than start time."
+      );
+      return;
+    }
+
+    const price = endValue.getTime() - startValue.getTime();
+    if (price > user!.credit ?? 0) {
+      alert(
+        "Invalid transaction. Booked price cannot be higher than your available credit points."
+      );
+      return;
+    }
+
     const data = {
       start: startValue.getTime(),
       end: endValue.getTime(),
@@ -140,14 +158,18 @@
 
   onMount(async () => {
     user = await userGetProfile();
-    calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
-    schedules =
-      (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
-    bookings =
-      (await bookingGetAllByUser({ userId: teacherId }))?.content ?? [];
-    bookings = bookings.filter((booking) => {
-      return booking.status === 1;
-    });
+    if (user) {
+      teacher = await teacherGet({ userId: teacherId });
+      calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
+      schedules =
+        (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
+      bookings =
+        (await bookingGetAllByUser({ userId: teacherId }))?.content ?? [];
+      bookings = bookings.filter((booking) => {
+        return booking.status === 1;
+      });
+    }
+
     loading = false;
   });
 </script>
@@ -169,6 +191,22 @@
 >
   <!-- Content -->
   <div class="bg-white p-8 max-w-xs w-full rounded-lg">
+    <section class="flex justify-between">
+      <div class="-space-y-1">
+        <p class="text-xs font-bold">Available Credits</p>
+        <p>{user?.credit}元</p>
+      </div>
+
+      <div class="-space-y-1">
+        <p class="text-xs font-bold">Payment</p>
+        <p class="text-end">
+          {teacher?.price &&
+            (teacher.price * (endValue.getTime() - startValue.getTime())) /
+              30 /
+              60000}元
+        </p>
+      </div>
+    </section>
     <form class="space-y-2" on:submit|preventDefault={handleSubmit}>
       <label class="flex flex-col">
         <span class="font-bold text-xs">Date</span>
