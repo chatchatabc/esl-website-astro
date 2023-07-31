@@ -24,7 +24,6 @@ export async function userUpdateProfile(params: Record<string, any>) {
   const data = {
     firstName: params.firstName,
     lastName: params.lastName,
-    email: params.email,
     phone: params.phone,
   };
 

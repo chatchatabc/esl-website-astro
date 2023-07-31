@@ -22,7 +22,7 @@ export type UserPersonalInformation = {
 
 export type UserContactInformation = {
   phone: string | null;
-  email: string | null;
+  email?: string | null;
 };
 
 export type UserContactValidation = {

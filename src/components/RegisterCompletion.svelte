@@ -64,10 +64,10 @@
       window.location.href = "/login";
     }
 
-    if (user?.firstName && user?.lastName && user?.phone && user?.email) {
+    if (user?.firstName && user?.lastName && user?.phone) {
       step = 1;
-    } else if (user?.phoneVerifiedAt && user?.emailVerifiedAt) {
-      step = 2;
+    } else if (user?.phoneVerifiedAt) {
+      window.location.href = "/profile";
     }
 
     loading = false;
@@ -121,18 +121,6 @@
               value={user?.phone}
             />
           </div>
-        </label>
-
-        <label class="flex flex-col p-1">
-          <span class="text-xs font-bold">Email</span>
-          <input
-            required
-            type="email"
-            name="email"
-            class="border rounded-md p-2"
-            placeholder="Email"
-            value={user?.email}
-          />
         </label>
 
         <footer class="p-1 mt-2 space-y-2">
