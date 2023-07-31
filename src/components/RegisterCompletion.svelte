@@ -17,12 +17,6 @@
   let user = null as User | null;
   let step = 0;
 
-  $: if (user) {
-    user.phone = user.phone?.startsWith("+86")
-      ? user.phone.slice(3)
-      : user.phone ?? "";
-  }
-
   async function handleGetPhoneToken() {
     sendLoading = true;
     const response = await userGetPhoneToken();
@@ -84,9 +78,19 @@
     if (!user) {
       sessionStorage.clear();
       window.location.href = "/login";
+      return;
     }
 
-    if (user?.firstName && user?.lastName && user?.phone) {
+    user.phone = user.phone?.startsWith("+86")
+      ? user.phone.slice(3)
+      : user.phone ?? "";
+
+    if (
+      user.firstName &&
+      user.lastName &&
+      user.phone &&
+      !user.phoneVerifiedAt
+    ) {
       step = 1;
     } else if (user?.phoneVerifiedAt) {
       window.location.href = "/profile";
