@@ -16,9 +16,18 @@ export async function authLogin(data: UserLogin) {
   }
 }
 
-export function authLogout() {
-  sessionStorage.removeItem("userId");
-  return true;
+export async function authLogout() {
+  try {
+    const response = await trpcClient.auth.logout.query();
+    if (response) {
+      sessionStorage.removeItem("userId");
+      return true;
+    }
+    return false;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
 }
 
 export async function authRegister(data: UserRegister) {
