@@ -1,4 +1,8 @@
-import { trpc, trpcRouterCreate } from "src/domain/infra/trpcServerActions";
+import {
+  trpc,
+  trpcProcedure,
+  trpcRouterCreate,
+} from "src/domain/infra/trpcServerActions";
 import type { UserLogin } from "src/domain/models/UserModel";
 import {
   authCreateToken,
@@ -23,4 +27,12 @@ export default trpcRouterCreate({
       );
       return user;
     }),
+
+  logout: trpcProcedure.query((opts) => {
+    opts.ctx.resHeaders.append(
+      "Set-Cookie",
+      `token=; Path=/; SameSite=None; Secure; HttpOnly; Max-Age=0`
+    );
+    return true;
+  }),
 });
