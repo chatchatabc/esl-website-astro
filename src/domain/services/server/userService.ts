@@ -120,7 +120,9 @@ export async function userGetPhoneToken(
 
   const message = {
     to: user.phone,
-    body: `Your verification code is ${randomToken}, only valid for 5 minutes.\n\nMessage from ChatChatABC.\n\n`,
+    // body: `【Vonage】你的验证码是${randomToken}`,
+    body: `【恰恰英语】您的手机验证码是${randomToken}，有效期仅5分钟。`,
+    // body: `Your verification code is ${randomToken}, only valid for 5 minutes.\n\nMessage from ChatChatABC.\n\n`,
   };
 
   const response = await messageSend(message, bindings);
