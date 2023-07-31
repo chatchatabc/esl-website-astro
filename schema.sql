@@ -15,7 +15,7 @@
 */
 DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT NOT NULL, password TEXT NOT NULL, phone TEXT, email TEXT, firstName TEXT, lastName TEXT, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL, roleId INTEGER NOT NULL, credit INTEGER NOT NULL, phoneVerifiedAt INTEGER, emailVerifiedAt INTEGER);
-INSERT INTO users (username, password, roleId, credit, createdAt, updatedAt) VALUES ('admin', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 1, 1000, 0, 0), ('student', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 2, 1000, 0, 0), ('teacher', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 3, 1000, 0, 0);
+INSERT INTO users (username, password, roleId, credit, createdAt, updatedAt, firstName, lastName, phone, phoneVerifiedAt) VALUES ('admin', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 1, 1000, 0, 0, 'Bon Jovi', 'Montes', '+639338520220', 1), ('student', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 2, 1000, 0, 0, 'Joy', 'Surname', '+891234567890', 1), ('teacher', 'd7cd68b6014e62d355e294a622fe95894f047ba5dfd8cc06f98122cc2bb945d3', 3, 1000, 0, 0, 'Michelle', 'Surname', '+891234567890', 1);
 
 /**
 * id (integer)
