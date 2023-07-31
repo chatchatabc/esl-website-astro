@@ -2,6 +2,7 @@ import type { Bindings } from "src/server";
 import type { Booking, BookingCreate } from "../models/BookingModel";
 import type { CommonParams } from "../models/CommonModel";
 import { utilFailedResponse } from "../services/server/utilService";
+import type { User } from "../models/UserModel";
 
 export async function bookingDbTotalByUser(id: number, bindings: Bindings) {
   try {
@@ -38,19 +39,32 @@ export async function bookingDbGetAllByUser(
 
 export async function bookingDbInsert(
   values: BookingCreate,
+  student: User,
+  price: number,
   bindings: Bindings
 ) {
-  const { start, end, teacherId, studentId, status } = values;
+  const {
+    start = null,
+    end = null,
+    teacherId = null,
+    studentId = null,
+    status = null,
+  } = values;
   const date = Date.now();
 
   try {
-    const stmt = await bindings.DB.prepare(
+    const userStmt = bindings.DB.prepare(
+      "UPDATE users SET credit = ? WHERE id = ?"
+    ).bind(student.credit, values.studentId);
+    const bookingStmt = bindings.DB.prepare(
       "INSERT INTO bookings (start, end, teacherId, status, studentId, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    )
-      .bind(start, end, teacherId, status, studentId, date, date)
-      .run();
+    ).bind(start, end, teacherId, status, studentId, date, date);
+    const logsStmt = bindings.DB.prepare(
+      "INSERT INTO logsCredit (senderId, receiverId, amount, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)"
+    ).bind(studentId, teacherId, price, date, date);
 
-    return stmt.success;
+    await bindings.DB.batch([bookingStmt, userStmt, logsStmt]);
+    return true;
   } catch (e) {
     console.log(e);
     return false;

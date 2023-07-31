@@ -10,8 +10,20 @@ import type { Bindings } from "src/server";
 import { utilFailedResponse } from "./utilService";
 import { scheduleDbValidateBooking } from "src/domain/repositories/scheduleRepo";
 import type { CommonParams } from "src/domain/models/CommonModel";
+import { userGet } from "./userService";
+import { teacherGet } from "./teacherService";
 
 export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
+  const student = await userGet({ userId: values.studentId ?? 0 }, bindings);
+  if (!student) {
+    throw utilFailedResponse("Student does not exist", 400);
+  }
+
+  const teacher = await teacherGet({ userId: values.teacherId }, bindings);
+  if (!teacher) {
+    throw utilFailedResponse("Teacher does not exist", 400);
+  }
+
   const validSchedule = await scheduleDbValidateBooking(values, bindings);
   if (!validSchedule) {
     throw utilFailedResponse("Schedule does not exist", 400);
@@ -22,7 +34,15 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
     throw utilFailedResponse("Booking overlaps", 400);
   }
 
-  const success = await bookingDbInsert(values, bindings);
+  const start = new Date(values.start).getTime();
+  const end = new Date(values.end).getTime();
+  const price = teacher.price * ((end - start) / 1800000);
+  if (price > student.credit) {
+    throw utilFailedResponse("Not enough credit", 400);
+  }
+
+  student.credit -= price;
+  const success = await bookingDbInsert(values, student, price, bindings);
   if (!success) {
     throw utilFailedResponse("Failed to create Booking", 500);
   }

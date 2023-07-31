@@ -40,22 +40,36 @@ export default trpcRouterCreate({
     }),
 
   create: trpcProcedure
-    .input((values) => {
-      const data = values as BookingCreate;
-
-      if (!data.end || !data.start || !data.studentId || !data.teacherId) {
+    .input((values: any) => {
+      if (!values) {
         throw utilFailedResponse("Missing fields", 400);
-      } else if (data.start > data.end) {
+      }
+
+      if (
+        !values.end ||
+        !values.start ||
+        !values.studentId ||
+        !values.teacherId
+      ) {
+        throw utilFailedResponse("Missing fields", 400);
+      } else if (values.start > values.end) {
         throw utilFailedResponse("Incorrect start and end date", 400);
-      } else if (data.start % 1800 !== 0) {
+      } else if (values.start % 1800 !== 0) {
         throw utilFailedResponse("Incorrect start date", 400);
-      } else if (data.end % 1800 !== 0) {
+      } else if (values.end % 1800 !== 0) {
         throw utilFailedResponse("Incorrect end date", 400);
       }
 
+      const data = {
+        end: values.end,
+        start: values.start,
+        teacherId: values.teacherId,
+        status: 1,
+      } as BookingCreate;
       return data;
     })
     .mutation(async (opts) => {
+      opts.input.studentId = opts.ctx.userId ?? 0;
       return bookingCreate(opts.input, opts.ctx.env);
     }),
 
