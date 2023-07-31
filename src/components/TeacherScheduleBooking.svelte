@@ -117,6 +117,11 @@
   }
 
   async function handleSubmit() {
+    if (!user || !teacher) {
+      alert("Error. Missing data.");
+      return;
+    }
+
     if (endValue <= startValue) {
       alert(
         "Invalid time schedule. End time cannot be earlier or the same than start time."
@@ -124,8 +129,11 @@
       return;
     }
 
-    const price = endValue.getTime() - startValue.getTime();
-    if (price > user!.credit ?? 0) {
+    const price =
+      ((endValue.getTime() - startValue.getTime()) / 30 / 60000) *
+      teacher.price;
+
+    if (price > user.credit ?? 0) {
       alert(
         "Invalid transaction. Booked price cannot be higher than your available credit points."
       );
@@ -136,7 +144,6 @@
       start: startValue.getTime(),
       end: endValue.getTime(),
       teacherId,
-      status: 0,
       studentId: user?.id,
     };
     const response = await bookingCreate(data);
@@ -149,6 +156,7 @@
       bookings = bookings.filter((booking) => {
         return booking.status === 1;
       });
+      user.credit -= price;
       generateOpenSchedules();
       showModal = false;
     } else {
