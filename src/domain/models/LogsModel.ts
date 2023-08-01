@@ -1,10 +1,14 @@
 export type LogsCredit = {
-  id?: number;
-  senderId?: number;
-  receiverId?: number;
-  amount?: number;
-  createdAt?: number;
-  updatedAt?: number;
+  id: number;
+  createdAt: number;
+  updatedAt: number;
+} & LogsCreditCreate;
 
-  title?: string;
+export type LogsCreditCreate = {
+  senderId: number;
+  receiverId: number;
+  amount: number;
+  status: number;
+
+  title: string | null;
 };

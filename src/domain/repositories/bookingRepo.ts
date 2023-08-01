@@ -1,9 +1,8 @@
 import type { Bindings } from "src/server";
 import type { Booking, BookingCreate } from "../models/BookingModel";
-import type { CommonParams } from "../models/CommonModel";
 import { utilFailedResponse } from "../services/server/utilService";
 import type { User } from "../models/UserModel";
-import type { LogsCredit } from "../models/LogsModel";
+import type { LogsCreditCreate } from "../models/LogsModel";
 
 export async function bookingDbTotalByUser(id: number, bindings: Bindings) {
   try {
@@ -62,7 +61,7 @@ export async function bookingDbCancel(
   booking: Booking,
   teacher: User,
   student: User,
-  logsCredit: LogsCredit,
+  logsCredit: LogsCreditCreate,
   bindings: Bindings
 ) {
   const date = Date.now();
@@ -78,12 +77,13 @@ export async function bookingDbCancel(
       "UPDATE bookings SET status = 2, updatedAt = ? WHERE id = ?"
     ).bind(date, booking.id);
     const logsCreditStmt = bindings.DB.prepare(
-      "INSERT INTO logsCredit (title, senderId, receiverId, amount, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
+      "INSERT INTO logsCredit (title, senderId, receiverId, amount, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)"
     ).bind(
       logsCredit.title,
       logsCredit.senderId,
       logsCredit.receiverId,
       logsCredit.amount,
+      logsCredit.status,
       date,
       date
     );
@@ -106,7 +106,7 @@ export async function bookingDbInsert(
   values: BookingCreate,
   teacher: User,
   student: User,
-  logsCredit: LogsCredit,
+  logsCredit: LogsCreditCreate,
   bindings: Bindings
 ) {
   const {
@@ -138,12 +138,13 @@ export async function bookingDbInsert(
       date
     );
     const logsStmt = bindings.DB.prepare(
-      "INSERT INTO logsCredit (title, senderId, receiverId, amount, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
+      "INSERT INTO logsCredit (title, senderId, receiverId, amount, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)"
     ).bind(
       logsCredit.title,
       studentId,
       teacherId,
       logsCredit.amount,
+      logsCredit.status,
       date,
       date
     );

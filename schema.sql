@@ -78,5 +78,5 @@ INSERT INTO bookings (teacherId, studentId, status, createdAt, updatedAt, start,
 * updatedAt (timestamp)
 */
 DROP TABLE IF EXISTS logsCredit;
-CREATE TABLE IF NOT EXISTS logsCredit (id INTEGER PRIMARY KEY, title TEXT, senderId INTEGER NOT NULL, receiverId INTEGER NOT NULL, amount INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS logsCredit (id INTEGER PRIMARY KEY, title TEXT, senderId INTEGER NOT NULL, receiverId INTEGER NOT NULL, amount INTEGER NOT NULL, status INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
 

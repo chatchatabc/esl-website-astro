@@ -5,16 +5,14 @@ import {
   bookingDbGetAllByUser,
   bookingDbGetOverlap,
   bookingDbInsert,
-  bookingDbTotalByUser,
   bookingDbUpdate,
 } from "src/domain/repositories/bookingRepo";
 import type { Bindings } from "src/server";
 import { utilFailedResponse } from "./utilService";
 import { scheduleDbValidateBooking } from "src/domain/repositories/scheduleRepo";
-import type { CommonParams } from "src/domain/models/CommonModel";
 import { userGet } from "./userService";
 import { teacherGet } from "./teacherService";
-import type { LogsCredit } from "src/domain/models/LogsModel";
+import type { LogsCreditCreate } from "src/domain/models/LogsModel";
 
 export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
   if (values.studentId === values.teacherId) {
@@ -62,6 +60,7 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
     receiverId: teacherInfo.id,
     amount: price,
     title: `Class ${dateTimeFormatter.format(new Date(values.start))}`,
+    status: 1,
   };
 
   teacher.credit += price;
@@ -136,11 +135,12 @@ export async function bookingCancel(
   student.credit += booking.amount ?? 0;
   teacher.credit -= booking.amount ?? 0;
 
-  const logs: LogsCredit = {
+  const logs: LogsCreditCreate = {
     title: "Cancelled Class",
     senderId: teacher.id,
     receiverId: student.id,
     amount: booking.amount ?? 0,
+    status: 1,
   };
 
   const cancel = await bookingDbCancel(
