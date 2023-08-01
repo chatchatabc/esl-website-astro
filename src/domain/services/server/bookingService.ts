@@ -14,13 +14,22 @@ import { userGet } from "./userService";
 import { teacherGet } from "./teacherService";
 
 export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
+  if (values.studentId === values.teacherId) {
+    throw utilFailedResponse("Cannot booked own schedule", 400);
+  }
+
   const student = await userGet({ userId: values.studentId ?? 0 }, bindings);
   if (!student) {
     throw utilFailedResponse("Student does not exist", 400);
   }
 
-  const teacher = await teacherGet({ userId: values.teacherId }, bindings);
+  const teacher = await userGet({ userId: values.teacherId }, bindings);
   if (!teacher) {
+    throw utilFailedResponse("Teacher does not exist", 400);
+  }
+
+  const teacherInfo = await teacherGet({ userId: values.teacherId }, bindings);
+  if (!teacherInfo) {
     throw utilFailedResponse("Teacher does not exist", 400);
   }
 
@@ -40,20 +49,28 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
   });
   const start = new Date(values.start).getTime();
   const end = new Date(values.end).getTime();
-  const price = teacher.price * ((end - start) / 1800000);
+  const price = teacherInfo.price * ((end - start) / 1800000);
   if (price > student.credit) {
     throw utilFailedResponse("Not enough credit", 400);
   }
-  student.credit -= price;
 
   const logsCredit = {
     senderId: student.id,
-    receiverId: teacher.id,
+    receiverId: teacherInfo.id,
     amount: price,
     title: `Class ${dateTimeFormatter.format(new Date(values.start))}`,
   };
 
-  const success = await bookingDbInsert(values, student, logsCredit, bindings);
+  teacher.credit += price;
+  student.credit -= price;
+
+  const success = await bookingDbInsert(
+    values,
+    teacher,
+    student,
+    logsCredit,
+    bindings
+  );
   if (!success) {
     throw utilFailedResponse("Failed to create Booking", 500);
   }

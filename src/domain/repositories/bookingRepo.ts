@@ -40,6 +40,7 @@ export async function bookingDbGetAllByUser(
 
 export async function bookingDbInsert(
   values: BookingCreate,
+  teacher: User,
   student: User,
   logsCredit: LogsCredit,
   bindings: Bindings
@@ -56,10 +57,22 @@ export async function bookingDbInsert(
   try {
     const userStmt = bindings.DB.prepare(
       "UPDATE users SET credit = ? WHERE id = ?"
-    ).bind(student.credit, values.studentId);
+    ).bind(student.credit, student.id);
+    const teacherStmt = bindings.DB.prepare(
+      "UPDATE users SET credit = ? WHERE id = ?"
+    ).bind(teacher.credit, teacher.id);
     const bookingStmt = bindings.DB.prepare(
-      "INSERT INTO bookings (start, end, teacherId, status, studentId, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    ).bind(start, end, teacherId, status, studentId, date, date);
+      "INSERT INTO bookings (start, end, teacherId, status, studentId, amount, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    ).bind(
+      start,
+      end,
+      teacherId,
+      status,
+      studentId,
+      logsCredit.amount,
+      date,
+      date
+    );
     const logsStmt = bindings.DB.prepare(
       "INSERT INTO logsCredit (title, senderId, receiverId, amount, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
     ).bind(
@@ -71,7 +84,7 @@ export async function bookingDbInsert(
       date
     );
 
-    await bindings.DB.batch([bookingStmt, userStmt, logsStmt]);
+    await bindings.DB.batch([bookingStmt, userStmt, logsStmt, teacherStmt]);
     return true;
   } catch (e) {
     console.log(e);
