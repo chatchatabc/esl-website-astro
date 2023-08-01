@@ -3,41 +3,37 @@ import {
   trpcRouterCreate,
 } from "src/domain/infra/trpcServerActions";
 import type { Booking, BookingCreate } from "src/domain/models/BookingModel";
-import type { CommonParams } from "src/domain/models/CommonModel";
 import {
   bookingCancel,
   bookingCreate,
   bookingGetAllByUser,
   bookingUpdate,
 } from "src/domain/services/server/bookingService";
-import {
-  utilFailedResponse,
-  utilValidateCommonParams,
-} from "src/domain/services/server/utilService";
+import { utilFailedResponse } from "src/domain/services/server/utilService";
 
 export default trpcRouterCreate({
   getAll: trpcProcedure
-    .input((values: any) => {
-      const data = utilValidateCommonParams(values) as CommonParams;
-      return data;
+    .input((values: any = {}) => {
+      return values as { start?: number; end?: number };
     })
     .query((opts) => {
-      const userId = opts.ctx.userId ?? 0;
-      return bookingGetAllByUser({ ...opts.input, userId }, opts.ctx.env);
-    }),
+      const currentDate = new Date();
+      let startDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      );
+      let endDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        1
+      );
 
-  getAllByUser: trpcProcedure
-    .input((values) => {
-      const data = utilValidateCommonParams(values) as CommonParams & {
-        userId: number;
-      };
-      if (!data.userId) {
-        throw utilFailedResponse("Missing values", 400);
-      }
-      return data;
-    })
-    .query((opts) => {
-      return bookingGetAllByUser(opts.input, opts.ctx.env);
+      const userId = opts.ctx.userId ?? 0;
+      const { start = startDate.getTime(), end = endDate.getTime() } =
+        opts.input;
+
+      return bookingGetAllByUser({ userId, start, end }, opts.ctx.env);
     }),
 
   create: trpcProcedure

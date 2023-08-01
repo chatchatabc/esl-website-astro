@@ -19,16 +19,16 @@ export async function bookingDbTotalByUser(id: number, bindings: Bindings) {
 }
 
 export async function bookingDbGetAllByUser(
-  params: CommonParams & { userId: number },
+  params: { userId: number; start: number; end: number },
   bindings: Bindings
 ) {
-  const { userId, size } = params;
+  const { userId, start, end } = params;
 
   try {
     const results = await bindings.DB.prepare(
-      "SELECT * FROM bookings WHERE teacherId = ? OR studentId = ? LIMIT ?"
+      "SELECT * FROM bookings WHERE ((teacherId = ? OR studentId = ?) AND (start >= ? AND end <= ?))"
     )
-      .bind(userId, userId, size)
+      .bind(userId, userId, start, end)
       .all<Booking>();
 
     return results;

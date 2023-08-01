@@ -82,27 +82,15 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
 }
 
 export async function bookingGetAllByUser(
-  params: CommonParams & { userId: number },
+  params: { userId: number; start: number; end: number },
   bindings: Bindings
 ) {
-  const { page, size, userId } = params;
-
   const bookings = await bookingDbGetAllByUser(params, bindings);
   if (!bookings) {
     throw utilFailedResponse("Cannot GET", 500);
   }
-  const total = await bookingDbTotalByUser(userId, bindings);
-  if (total === null) {
-    throw utilFailedResponse("Cannot GET", 500);
-  }
-  const data = {
-    content: bookings.results as any as Booking[],
-    total,
-    page,
-    size,
-  };
 
-  return data;
+  return bookings.results;
 }
 
 export async function bookingUpdate(values: Booking, bindings: Bindings) {
