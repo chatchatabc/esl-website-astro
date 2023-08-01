@@ -48,3 +48,11 @@ export const trpcProcedure = trpc.procedure.use(
     return opts.next(opts);
   })
 );
+export const trpcProcedureAdmin = trpc.procedure.use(
+  trpc.middleware((opts) => {
+    if (opts.ctx.userId !== 1) {
+      throw utilFailedResponse("Forbidden Access", 403);
+    }
+    return opts.next(opts);
+  })
+);

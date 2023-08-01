@@ -1,5 +1,6 @@
 import type { Bindings } from "src/server";
 import type { LogsCredit } from "../models/LogsModel";
+import type { User } from "../models/UserModel";
 
 export async function logsDbGetAllCredit(
   params: { userId: number },
@@ -14,6 +15,51 @@ export async function logsDbGetAllCredit(
       .all<LogsCredit>();
 
     return results;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function logsDbGetCredit(
+  params: { logId: number },
+  bindings: Bindings
+) {
+  const { logId } = params;
+  try {
+    const results = await bindings.DB.prepare(
+      "SELECT * FROM logsCredit WHERE id = ?"
+    )
+      .bind(logId)
+      .first<LogsCredit>();
+
+    return results;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function logsDbApproveCredit(
+  logsCredit: LogsCredit,
+  sender: User,
+  receiver: User,
+  bindings: Bindings
+) {
+  try {
+    const logsCreditStmt = bindings.DB.prepare(
+      "UPDATE logsCredit SET status = ? WHERE id = ?"
+    ).bind(logsCredit.status, logsCredit.id);
+    const senderStmt = bindings.DB.prepare(
+      "UPDATE users SET credit = ? WHERE id = ?"
+    ).bind(sender.credit, sender.id);
+    const receiverStmt = bindings.DB.prepare(
+      "UPDATE users SET credit = ? WHERE id = ?"
+    ).bind(receiver.credit, receiver.id);
+
+    await bindings.DB.batch([logsCreditStmt, senderStmt, receiverStmt]);
+
+    return true;
   } catch (e) {
     console.log(e);
     return null;
