@@ -1,5 +1,5 @@
 import type { Bindings } from "src/server";
-import type { LogsCredit } from "../models/LogsModel";
+import type { LogsCredit, LogsCreditCreate } from "../models/LogsModel";
 import type { User } from "../models/UserModel";
 
 export async function logsDbGetAllCredit(
@@ -34,6 +34,33 @@ export async function logsDbGetCredit(
       .first<LogsCredit>();
 
     return results;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function logsDbCreateCredit(
+  logsCredit: LogsCreditCreate,
+  bindings: Bindings
+) {
+  try {
+    const date = Date.now();
+    await bindings.DB.prepare(
+      "INSERT INTO logsCredit (title, senderId, receiverId, amount, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    )
+      .bind(
+        logsCredit.title,
+        logsCredit.senderId,
+        logsCredit.receiverId,
+        logsCredit.amount,
+        logsCredit.status,
+        date,
+        date
+      )
+      .run();
+
+    return true;
   } catch (e) {
     console.log(e);
     return null;

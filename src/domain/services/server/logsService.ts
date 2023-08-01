@@ -1,5 +1,6 @@
 import {
   logsDbApproveCredit,
+  logsDbCreateCredit,
   logsDbGetAllCredit,
   logsDbGetCredit,
 } from "src/domain/repositories/logsRepo";
@@ -17,6 +18,26 @@ export async function logsGetAllCredit(
   }
 
   return logs.results;
+}
+
+export async function logsRequestCredit(
+  params: { amount: number; userId: number },
+  bindings: Bindings
+) {
+  const logsCredit = {
+    receiverId: params.userId,
+    senderId: 1,
+    amount: params.amount,
+    title: "Credits from Admin",
+    status: 0,
+  };
+
+  const create = await logsDbCreateCredit(logsCredit, bindings);
+  if (!create) {
+    throw utilFailedResponse("Cannot create request credit", 500);
+  }
+
+  return true;
 }
 
 export async function logsApproveCredit(

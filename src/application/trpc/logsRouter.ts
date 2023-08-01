@@ -6,6 +6,7 @@ import {
 import {
   logsApproveCredit,
   logsGetAllCredit,
+  logsRequestCredit,
 } from "src/domain/services/server/logsService";
 import { utilFailedResponse } from "src/domain/services/server/utilService";
 
@@ -35,5 +36,20 @@ export default trpcRouterCreate({
     })
     .mutation((opts) => {
       return logsApproveCredit(opts.input, opts.ctx.env);
+    }),
+
+  requestCredit: trpcProcedure
+    .input((values: any = {}) => {
+      if (!values.amount) {
+        throw utilFailedResponse("Missing fields", 400);
+      }
+      const data = {
+        amount: values.amount,
+      } as { amount: number };
+      return data;
+    })
+    .mutation((opts) => {
+      const { userId, env } = opts.ctx;
+      return logsRequestCredit({ ...opts.input, userId: userId ?? 0 }, env);
     }),
 });
