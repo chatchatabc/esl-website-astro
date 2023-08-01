@@ -4,6 +4,7 @@ import userRouter from "./userRouter";
 import bookingRouter from "./bookingRouter";
 import authRouter from "./authRouter";
 import teacherRouter from "./teacherRouter";
+import logsRouter from "./logsRouter";
 
 export const trpcRouter = trpcRouterCreate({
   user: userRouter,
@@ -11,6 +12,7 @@ export const trpcRouter = trpcRouterCreate({
   booking: bookingRouter,
   auth: authRouter,
   teacher: teacherRouter,
+  logs: logsRouter,
 });
 
 export type TrpcRouter = typeof trpcRouter;
