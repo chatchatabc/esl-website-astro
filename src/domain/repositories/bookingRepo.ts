@@ -3,6 +3,7 @@ import type { Booking, BookingCreate } from "../models/BookingModel";
 import type { CommonParams } from "../models/CommonModel";
 import { utilFailedResponse } from "../services/server/utilService";
 import type { User } from "../models/UserModel";
+import type { LogsCredit } from "../models/LogsModel";
 
 export async function bookingDbTotalByUser(id: number, bindings: Bindings) {
   try {
@@ -40,7 +41,7 @@ export async function bookingDbGetAllByUser(
 export async function bookingDbInsert(
   values: BookingCreate,
   student: User,
-  price: number,
+  logsCredit: LogsCredit,
   bindings: Bindings
 ) {
   const {
@@ -60,8 +61,15 @@ export async function bookingDbInsert(
       "INSERT INTO bookings (start, end, teacherId, status, studentId, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)"
     ).bind(start, end, teacherId, status, studentId, date, date);
     const logsStmt = bindings.DB.prepare(
-      "INSERT INTO logsCredit (senderId, receiverId, amount, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)"
-    ).bind(studentId, teacherId, price, date, date);
+      "INSERT INTO logsCredit (senderId, receiverId, amount, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
+    ).bind(
+      studentId,
+      teacherId,
+      logsCredit.amount,
+      logsCredit.status,
+      date,
+      date
+    );
 
     await bindings.DB.batch([bookingStmt, userStmt, logsStmt]);
     return true;

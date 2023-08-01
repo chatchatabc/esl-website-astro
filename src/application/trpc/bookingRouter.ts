@@ -58,6 +58,11 @@ export default trpcRouterCreate({
         throw utilFailedResponse("Incorrect start date", 400);
       } else if (values.end % 1800 !== 0) {
         throw utilFailedResponse("Incorrect end date", 400);
+      } else if (values.start <= Date.now() || values.end <= Date.now()) {
+        throw utilFailedResponse(
+          "Cannot booked schedule past the current time.",
+          400
+        );
       }
 
       const data = {

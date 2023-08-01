@@ -40,9 +40,20 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
   if (price > student.credit) {
     throw utilFailedResponse("Not enough credit", 400);
   }
-
   student.credit -= price;
-  const success = await bookingDbInsert(values, student, price, bindings);
+
+  const logsCredit = {
+    senderId: student.id,
+    receiverId: teacher.id,
+    amount: price,
+    status: 0,
+  };
+  // if booked schedule starts less than 6 hours
+  if (values.start - Date.now() < 21600000) {
+    logsCredit.status = 1;
+  }
+
+  const success = await bookingDbInsert(values, student, logsCredit, bindings);
   if (!success) {
     throw utilFailedResponse("Failed to create Booking", 500);
   }
