@@ -8,7 +8,7 @@ export async function logsDbGetAllCredit(
   const { userId } = params;
   try {
     const results = await bindings.DB.prepare(
-      "SELECT * FROM logsCredit WHERE senderId = ? OR receiverId = ?"
+      "SELECT * FROM logsCredit WHERE senderId = ? OR receiverId = ? ORDER BY createdAt DESC"
     )
       .bind(userId, userId)
       .all<LogsCredit>();
