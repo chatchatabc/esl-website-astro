@@ -59,7 +59,7 @@
 
       <section class="w-1/2 px-2">
         <section class="bg-white rounded-xl p-4 mt-4">
-          <StudentCashList />
+          <StudentCashList userId={user.id} />
         </section>
       </section>
     </section>
