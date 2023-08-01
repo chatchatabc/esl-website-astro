@@ -2,9 +2,13 @@
   export let userId: number;
 
   import type { LogsCredit } from "src/domain/models/LogsModel";
-  import { logsGetAllCredit } from "src/domain/services/client/logsService";
+  import {
+    logsGetAllCredit,
+    logsRequestCredit,
+  } from "src/domain/services/client/logsService";
   import { onMount } from "svelte";
 
+  let showModal = false;
   let logs: LogsCredit[] = [];
   const dateFormatter = new Intl.DateTimeFormat("en", {
     year: "numeric",
@@ -17,13 +21,73 @@
     second: "2-digit",
   });
 
+  async function handleSubmit(e: any) {
+    const formData = new FormData(e.target);
+    const objData = Object.fromEntries(formData.entries());
+    const data = {
+      amount: Number(objData.amount),
+    };
+    const response = await logsRequestCredit(data);
+    if (!response) {
+      alert("Unable to make a request.");
+    } else {
+      showModal = false;
+    }
+  }
+
   onMount(async () => {
     logs = (await logsGetAllCredit()) ?? [];
   });
 </script>
 
-<header>
+<!-- Modal -->
+<div
+  aria-hidden={showModal ? "false" : "true"}
+  aria-label="Modal Background"
+  on:click={(e) => {
+    if (e.target === e.currentTarget) {
+      showModal = false;
+    }
+  }}
+  class={`fixed top-0 left-0 bg-black bg-opacity-30 h-full w-full ${
+    showModal
+      ? "opacity-100 pointer-events-auto"
+      : "opacity-0 pointer-events-none"
+  } flex z-[5] justify-center items-center transition`}
+>
+  <!-- Content -->
+  <div class="bg-white p-8 max-w-sm w-full rounded-lg">
+    <section>
+      <p>How much credits do you want to add?</p>
+    </section>
+
+    <form class="space-y-2 mt-4" on:submit|preventDefault={handleSubmit}>
+      <label class="flex flex-col">
+        <span class="font-bold text-xs">Amount</span>
+        <input
+          name="amount"
+          class="border flex-1 border-black rounded-md p-2"
+          required
+        />
+      </label>
+
+      <button class="px-4 border-black py-2 border rounded-md mx-auto block">
+        Request
+      </button>
+    </form>
+  </div>
+</div>
+
+<header class="justify-between flex">
   <h2 class="text-2xl">Transaction History</h2>
+  <button
+    class="bg-blue-500 text-white px-4 py-2 rounded-md"
+    on:click={() => {
+      showModal = true;
+    }}
+  >
+    Add +
+  </button>
 </header>
 
 <section class="border mt-4">
