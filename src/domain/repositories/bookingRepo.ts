@@ -69,10 +69,10 @@ export async function bookingDbCancel(
 
   try {
     const studentStmt = bindings.DB.prepare(
-      "UPDATE users SET credit = ?, updatedAt = ?, WHERE id = ?"
+      "UPDATE users SET credit = ?, updatedAt = ? WHERE id = ?"
     ).bind(student.credit, date, student.id);
     const teacherStmt = bindings.DB.prepare(
-      "UPDATE users SET credit = ?, updatedAt = ?, WHERE id = ?"
+      "UPDATE users SET credit = ?, updatedAt = ? WHERE id = ?"
     ).bind(teacher.credit, date, teacher.id);
     const bookingStmt = bindings.DB.prepare(
       "UPDATE bookings SET status = 2, updatedAt = ? WHERE id = ?"
