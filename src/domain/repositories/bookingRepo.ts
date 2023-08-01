@@ -26,7 +26,7 @@ export async function bookingDbGetAllByUser(
 
   try {
     const results = await bindings.DB.prepare(
-      "SELECT * FROM bookings WHERE ((teacherId = ? OR studentId = ?) AND (start >= ? AND end <= ?))"
+      "SELECT * FROM bookings WHERE ((teacherId = ? OR studentId = ?) AND (start >= ? AND end <= ?) AND status = 1)"
     )
       .bind(userId, userId, start, end)
       .all<Booking>();
