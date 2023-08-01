@@ -230,6 +230,6 @@
   </header>
 
   <section>
-    <div class="-mt-4 h-[300px]" bind:this={calendarEl} />
+    <div class="-mt-4 h-[50vh]" bind:this={calendarEl} />
   </section>
 </section>

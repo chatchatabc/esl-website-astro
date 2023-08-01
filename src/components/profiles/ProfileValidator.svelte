@@ -7,7 +7,7 @@
   import LoadingComp from "@components/LoadingComp.svelte";
   import ProfileInformation from "./ProfileInformation.svelte";
   import StudentClassList from "./StudentClassList.svelte";
-  import StudentCashList from "./StudentCashList.svelte";
+  import StudentCashList from "./ProfileCreditLogs.svelte";
 
   let loading = true;
   let user: User | null = null;
