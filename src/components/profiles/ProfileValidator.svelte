@@ -40,8 +40,18 @@
   </section>
 
   {#if user.roleId === 3}
-    <section class="bg-white rounded-xl p-4 mt-4">
-      <TeacherClassList />
+    <section class="flex -mx-2">
+      <section class="w-1/2 px-2">
+        <section class="bg-white rounded-xl p-4 mt-4">
+          <TeacherClassList />
+        </section>
+      </section>
+
+      <section class="w-1/2 px-2">
+        <section class="bg-white rounded-xl p-4 mt-4">
+          <StudentCashList userId={user.id} />
+        </section>
+      </section>
     </section>
 
     <section class="bg-white rounded-xl p-4 mt-4">
@@ -49,7 +59,7 @@
     </section>
   {/if}
 
-  {#if user.roleId === 1}
+  {#if user.roleId === 1 || user.roleId === 2}
     <section class="flex -mx-2">
       <section class="w-1/2 px-2">
         <section class="bg-white rounded-xl p-4 mt-4">
