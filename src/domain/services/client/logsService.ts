@@ -12,3 +12,13 @@ export async function logsGetAllCredit() {
     return null;
   }
 }
+
+export async function logsRequestCredit(params: { amount: number }) {
+  try {
+    const response = await trpcClient.logs.requestCredit.mutate(params);
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
