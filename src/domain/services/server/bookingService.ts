@@ -34,6 +34,10 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
     throw utilFailedResponse("Booking overlaps", 400);
   }
 
+  const dateTimeFormatter = new Intl.DateTimeFormat("en", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
   const start = new Date(values.start).getTime();
   const end = new Date(values.end).getTime();
   const price = teacher.price * ((end - start) / 1800000);
@@ -47,8 +51,8 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
     receiverId: teacher.id,
     amount: price,
     status: 0,
+    title: `Class ${dateTimeFormatter.format(new Date(values.start))}`,
   };
-  // if booked schedule starts less than 6 hours
   if (values.start - Date.now() < 21600000) {
     logsCredit.status = 1;
   }

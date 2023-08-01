@@ -61,8 +61,9 @@ export async function bookingDbInsert(
       "INSERT INTO bookings (start, end, teacherId, status, studentId, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)"
     ).bind(start, end, teacherId, status, studentId, date, date);
     const logsStmt = bindings.DB.prepare(
-      "INSERT INTO logsCredit (senderId, receiverId, amount, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
+      "INSERT INTO logsCredit (title, senderId, receiverId, amount, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)"
     ).bind(
+      logsCredit.title,
       studentId,
       teacherId,
       logsCredit.amount,

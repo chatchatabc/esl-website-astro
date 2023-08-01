@@ -41,7 +41,7 @@
               new Date(log.updatedAt ?? 0)
             )}
           </p>
-          <p>Title here</p>
+          <p>{log.title}</p>
         </div>
 
         <div class="w-1/2 text-end">
