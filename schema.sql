@@ -65,8 +65,8 @@ INSERT INTO schedules (teacherId, day, createdAt, updatedAt, startTime, endTime)
 * updatedAt (timestamp)
 */
 DROP TABLE IF EXISTS bookings;
-CREATE TABLE IF NOT EXISTS bookings (id INTEGER PRIMARY KEY, teacherId INTEGER NOT NULL, studentId INTEGER, start INTEGER NOT NULL, end INTEGER NOT NULL, status INTEGER NOT NULL, message TEXT, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
-INSERT INTO bookings (teacherId, studentId, status, createdAt, updatedAt, start, end) VALUES (3, 2, 0, 0, 0, 1689840543000, 1689851343000);
+CREATE TABLE IF NOT EXISTS bookings (id INTEGER PRIMARY KEY, amount INTEGER NOT NULL, teacherId INTEGER NOT NULL, studentId INTEGER, start INTEGER NOT NULL, end INTEGER NOT NULL, status INTEGER NOT NULL, message TEXT, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
+INSERT INTO bookings (teacherId, studentId, status, createdAt, updatedAt, start, end, amount) VALUES (3, 2, 0, 0, 0, 1689840543000, 1689851343000, 100);
 
 /**
 * id (integer)
