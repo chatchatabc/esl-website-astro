@@ -4,7 +4,7 @@
   import listPlugin from "@fullcalendar/list";
   import { authGetUserId } from "src/domain/services/client/authService";
   import {
-    bookingGetAllByUser,
+    bookingGetAll,
     bookingUpdate,
   } from "src/domain/services/client/bookingService";
   import { onMount } from "svelte";
@@ -77,7 +77,7 @@
 
   onMount(async () => {
     userId = authGetUserId() ?? 0;
-    bookings = (await bookingGetAllByUser({ userId }))?.content ?? [];
+    bookings = (await bookingGetAll({})) ?? [];
 
     calendar = new Calendar(calendarEl, {
       plugins: [listPlugin],

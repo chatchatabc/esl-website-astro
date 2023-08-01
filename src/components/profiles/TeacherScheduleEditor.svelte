@@ -6,7 +6,7 @@
   import type { Booking } from "src/domain/models/BookingModel";
   import type { Schedule } from "src/domain/models/ScheduleModel";
   import { authGetUserId } from "src/domain/services/client/authService";
-  import { bookingGetAllByUser } from "src/domain/services/client/bookingService";
+  import { bookingGetAll } from "src/domain/services/client/bookingService";
   import {
     scheduleCreateMany,
     scheduleDeleteMany,
@@ -99,7 +99,7 @@
       });
 
       schedules = (await scheduleGetAllByUser({ userId }))?.content ?? [];
-      bookings = (await bookingGetAllByUser({ userId }))?.content ?? [];
+      bookings = (await bookingGetAll({})) ?? [];
 
       editing = !editing;
     } else {
@@ -163,7 +163,7 @@
   onMount(async () => {
     userId = authGetUserId() ?? 0;
     schedules = (await scheduleGetAllByUser({ userId }))?.content ?? [];
-    bookings = (await bookingGetAllByUser({ userId }))?.content ?? [];
+    bookings = (await bookingGetAll({})) ?? [];
     bookings = bookings.filter((booking) => booking.status === 1);
 
     const calendarEl = document.querySelector<HTMLElement>(
