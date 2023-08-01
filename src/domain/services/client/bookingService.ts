@@ -69,3 +69,13 @@ export async function bookingUpdate(params: Booking) {
     return null;
   }
 }
+
+export async function bookingCancel(params: { bookingId: number }) {
+  try {
+    const response = await trpcClient.booking.cancel.mutate(params);
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
