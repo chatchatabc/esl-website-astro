@@ -38,7 +38,9 @@
       bookings.forEach((booking) => {
         calendar?.addEvent({
           id: String(booking.id),
-          title: booking.teacher?.username,
+          title: `${booking.teacher?.firstName ?? booking.teacher?.username} ${
+            booking.teacher?.lastName ?? ""
+          }`,
           start: booking.start,
           end: booking.end,
         });
@@ -58,8 +60,6 @@
       calendarDate.getMonth() + 1,
       0
     );
-
-    console.log(start, end);
 
     bookings =
       (await bookingGetAll({ start: start.getTime(), end: end.getTime() })) ??
