@@ -127,6 +127,10 @@ export async function bookingCancel(
     throw utilFailedResponse("Can't get booking", 400);
   }
 
+  if (booking.status !== 1) {
+    throw utilFailedResponse("Can't cancel booking", 400);
+  }
+
   if (booking.studentId !== studentId) {
     throw utilFailedResponse("Can't get booking", 403);
   }
