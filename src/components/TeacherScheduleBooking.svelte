@@ -8,7 +8,7 @@
   import type { User } from "src/domain/models/UserModel";
   import {
     bookingCreate,
-    bookingGetAllByUser,
+    bookingGetAll,
   } from "src/domain/services/client/bookingService";
   import { scheduleGetAllByUser } from "src/domain/services/client/scheduleService";
   import { userGetProfile } from "src/domain/services/client/userService";
@@ -151,8 +151,7 @@
     if (response) {
       schedules =
         (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
-      bookings =
-        (await bookingGetAllByUser({ userId: teacherId }))?.content ?? [];
+      bookings = (await bookingGetAll({})) ?? [];
       bookings = bookings.filter((booking) => {
         return booking.status === 1;
       });
@@ -171,8 +170,7 @@
       calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
       schedules =
         (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
-      bookings =
-        (await bookingGetAllByUser({ userId: teacherId }))?.content ?? [];
+      bookings = (await bookingGetAll({})) ?? [];
       bookings = bookings.filter((booking) => {
         return booking.status === 1;
       });
