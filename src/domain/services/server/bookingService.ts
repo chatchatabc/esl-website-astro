@@ -50,12 +50,8 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
     senderId: student.id,
     receiverId: teacher.id,
     amount: price,
-    status: 0,
     title: `Class ${dateTimeFormatter.format(new Date(values.start))}`,
   };
-  if (values.start - Date.now() < 21600000) {
-    logsCredit.status = 1;
-  }
 
   const success = await bookingDbInsert(values, student, logsCredit, bindings);
   if (!success) {

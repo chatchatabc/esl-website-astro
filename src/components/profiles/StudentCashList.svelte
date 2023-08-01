@@ -6,11 +6,6 @@
   import { onMount } from "svelte";
 
   let logs: LogsCredit[] = [];
-  const logStatus: Record<number, string> = {
-    0: "Pending",
-    1: "Success",
-    2: "Cancelled",
-  };
   const dateFormatter = new Intl.DateTimeFormat("en", {
     year: "numeric",
     month: "short",
@@ -44,15 +39,15 @@
           <p>{log.title}</p>
         </div>
 
-        <div class="w-1/2 text-end">
+        <div
+          class={`${
+            userId === log.receiverId ? "text-green-500" : "text-red-500"
+          } w-1/2 text-end`}
+        >
           <p class="text-xs font-bold">
-            {logStatus[log.status ?? 0]}
+            {userId === log.receiverId ? "Cash In" : "Cash Out"}
           </p>
-          <p
-            class={userId === log.receiverId
-              ? "text-green-500"
-              : "text-red-500"}
-          >
+          <p>
             {log.amount}元
           </p>
         </div>
