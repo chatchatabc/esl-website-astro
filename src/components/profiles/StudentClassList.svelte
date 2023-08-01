@@ -47,11 +47,24 @@
   }
 
   async function fetchData() {
-    const responseBooking = await bookingGetAll({});
-    if (responseBooking) {
-      bookings = responseBooking?.content ?? [];
-      generateClass();
-    }
+    const calendarDate = calendar ? calendar.getDate() : new Date();
+    let start = new Date(
+      calendarDate.getFullYear(),
+      calendarDate.getMonth(),
+      0
+    );
+    let end = new Date(
+      calendarDate.getFullYear(),
+      calendarDate.getMonth() + 1,
+      0
+    );
+
+    console.log(start, end);
+
+    bookings =
+      (await bookingGetAll({ start: start.getTime(), end: end.getTime() })) ??
+      [];
+    generateClass();
     loading = false;
   }
 
@@ -118,6 +131,7 @@
       class="bg-blue-500 text-white px-4 py-2 rounded-md"
       on:click={() => {
         calendar?.prev();
+        fetchData();
       }}
     >
       Prev
@@ -126,6 +140,7 @@
       class="bg-blue-500 text-white px-4 py-2 rounded-md"
       on:click={() => {
         calendar?.next();
+        fetchData();
       }}
     >
       Next
