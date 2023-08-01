@@ -18,6 +18,7 @@ export type BookingCreate = {
   end: number;
   studentId?: number;
   status?: number;
+  amount?: number;
 
   message?: string;
 };

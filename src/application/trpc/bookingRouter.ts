@@ -5,6 +5,7 @@ import {
 import type { Booking, BookingCreate } from "src/domain/models/BookingModel";
 import type { CommonParams } from "src/domain/models/CommonModel";
 import {
+  bookingCancel,
   bookingCreate,
   bookingGetAllByUser,
   bookingUpdate,
@@ -85,5 +86,22 @@ export default trpcRouterCreate({
     })
     .mutation(async (opts) => {
       return bookingUpdate(opts.input, opts.ctx.env);
+    }),
+
+  cancel: trpcProcedure
+    .input((values: any = {}) => {
+      if (!values.bookingId) {
+        throw utilFailedResponse("Missing fields", 400);
+      }
+
+      const data = { bookingId: values.bookingId } as {
+        bookingId: number;
+        studentId?: number;
+      };
+      return data;
+    })
+    .mutation((opts) => {
+      opts.input.studentId = opts.ctx.userId ?? 0;
+      return bookingCancel(opts.input, opts.ctx.env);
     }),
 });
