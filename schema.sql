@@ -79,4 +79,4 @@ INSERT INTO bookings (teacherId, studentId, status, createdAt, updatedAt, start,
 */
 DROP TABLE IF EXISTS logsCredit;
 CREATE TABLE IF NOT EXISTS logsCredit (id INTEGER PRIMARY KEY, title TEXT, senderId INTEGER NOT NULL, receiverId INTEGER NOT NULL, amount INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
-INSERT INTO logsCredit (senderId, receiverId, amount, createdAt, updatedAt) VALUES (2, 3, 50, 0, 0);
+
