@@ -86,7 +86,7 @@
 </div>
 
 <header class="justify-between flex">
-  <h2 class="text-2xl">Transaction History</h2>
+  <h2 class="text-2xl">Credit Requests</h2>
 </header>
 
 <section class="border mt-2">

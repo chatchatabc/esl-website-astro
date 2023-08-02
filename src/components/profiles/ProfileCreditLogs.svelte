@@ -105,11 +105,19 @@
 
         <div
           class={`${
-            userId === log.receiverId ? "text-green-500" : "text-red-500"
+            log.status === 0
+              ? ""
+              : userId === log.receiverId
+              ? "text-green-500"
+              : "text-red-500"
           } w-1/2 text-end`}
         >
           <p class="text-xs font-bold">
-            {userId === log.receiverId ? "Cash In" : "Cash Out"}
+            {log.status === 0
+              ? "Pending"
+              : userId === log.receiverId
+              ? "Cash In"
+              : "Cash Out"}
           </p>
           <p>
             {log.amount}元
