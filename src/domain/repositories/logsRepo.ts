@@ -21,6 +21,26 @@ export async function logsDbGetAllCredit(
   }
 }
 
+export async function logsDbUpdateCredit(
+  logsCredit: LogsCredit,
+  bindings: Bindings
+) {
+  const { id, senderId, receiverId, status, amount, title = null } = logsCredit;
+  const date = Date.now();
+  try {
+    const results = await bindings.DB.prepare(
+      "UPDATE logsCredit SET updatedAt = ?, senderId = ?, receiverId = ?, status = ?, amount = ?, title = ? WHERE id = ?"
+    )
+      .bind(date, senderId, receiverId, status, amount, title, id)
+      .run();
+
+    return results;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
 export async function logsDbGetCredit(
   params: { logId: number },
   bindings: Bindings

@@ -3,6 +3,7 @@ import {
   logsDbCreateCredit,
   logsDbGetAllCredit,
   logsDbGetCredit,
+  logsDbUpdateCredit,
 } from "src/domain/repositories/logsRepo";
 import type { Bindings } from "src/server";
 import { utilFailedResponse } from "./utilService";
@@ -35,6 +36,25 @@ export async function logsRequestCredit(
   const create = await logsDbCreateCredit(logsCredit, bindings);
   if (!create) {
     throw utilFailedResponse("Cannot create request credit", 500);
+  }
+
+  return true;
+}
+
+export async function logsRejectCredit(
+  params: { logId: number },
+  bindings: Bindings
+) {
+  const logsCredit = await logsDbGetCredit(params, bindings);
+  if (!logsCredit) {
+    throw utilFailedResponse("Cannot get the log credit.", 500);
+  }
+
+  logsCredit.status = 2;
+
+  const success = logsDbUpdateCredit(logsCredit, bindings);
+  if (!success) {
+    throw utilFailedResponse("Failed to reject credit", 500);
   }
 
   return true;
