@@ -5,6 +5,7 @@
   import {
     logsApproveCredit,
     logsGetAllCredit,
+    logsRejectCredit,
   } from "src/domain/services/client/logsService";
   import { onMount } from "svelte";
 
@@ -25,7 +26,10 @@
   let isApprove = false;
 
   async function handleApprove() {
-    const response = await logsApproveCredit({ logId: selectedLogId ?? 0 });
+    const data = { logId: selectedLogId ?? 0 };
+    const response = isApprove
+      ? await logsApproveCredit(data)
+      : await logsRejectCredit(data);
     if (response) {
       logs = (await logsGetAllCredit()) ?? [];
       showModal = false;
