@@ -53,3 +53,13 @@ export async function logsApproveCredit(params: { logId: number }) {
     return null;
   }
 }
+
+export async function logsRejectCredit(params: { logId: number }) {
+  try {
+    const response = await trpcClient.logs.rejectCredit.mutate(params);
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
