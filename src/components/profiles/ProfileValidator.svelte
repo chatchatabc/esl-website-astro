@@ -8,6 +8,7 @@
   import ProfileInformation from "./ProfileInformation.svelte";
   import StudentClassList from "./StudentClassList.svelte";
   import StudentCashList from "./ProfileCreditLogs.svelte";
+  import AdminCreditList from "./AdminCreditList.svelte";
 
   let loading = true;
   let user: User | null = null;
@@ -59,7 +60,7 @@
     </section>
   {/if}
 
-  {#if user.roleId === 1 || user.roleId === 2}
+  {#if user.roleId === 2}
     <section class="flex -mx-2">
       <section class="w-1/2 px-2">
         <section class="bg-white rounded-xl p-4 mt-4">
@@ -72,6 +73,12 @@
           <StudentCashList userId={user.id} />
         </section>
       </section>
+    </section>
+  {/if}
+
+  {#if user.roleId === 1}
+    <section class="bg-white rounded-xl p-4 mt-4">
+      <AdminCreditList userId={user.id} />
     </section>
   {/if}
 {:else}
