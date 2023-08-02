@@ -6,7 +6,28 @@ export async function logsGetAllCredit() {
       page: 0,
       size: 10,
     });
-    return response;
+
+    const contentPromise = response.map(async (logsCredit) => {
+      const sender = await trpcClient.user.get.query({
+        userId: logsCredit.senderId,
+      });
+      if (sender) {
+        logsCredit.sender = sender;
+      }
+
+      const receiver = await trpcClient.user.get.query({
+        userId: logsCredit.receiverId,
+      });
+      if (receiver) {
+        logsCredit.receiver = receiver;
+      }
+
+      return logsCredit;
+    });
+
+    const content = await Promise.all(contentPromise);
+
+    return content;
   } catch (e) {
     console.log(e);
     return null;

@@ -1,7 +1,12 @@
+import type { User } from "./UserModel";
+
 export type LogsCredit = {
   id: number;
   createdAt: number;
   updatedAt: number;
+
+  sender?: User;
+  receiver?: User;
 } & LogsCreditCreate;
 
 export type LogsCreditCreate = {
