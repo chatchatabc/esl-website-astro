@@ -28,6 +28,21 @@ export default trpcRouterCreate({
       return bookingGetAllByUser(data, opts.ctx.env);
     }),
 
+  getAllByUser: trpcProcedure
+    .input((values: any = {}) => {
+      return values as { userId: number; page?: number; size?: number };
+    })
+    .query((opts) => {
+      const { page, size, ...others } = opts.input;
+      const data = {
+        page: page ?? 0,
+        size: size ?? 10,
+        ...others,
+      };
+
+      return bookingGetAllByUser(data, opts.ctx.env);
+    }),
+
   create: trpcProcedure
     .input((values: any) => {
       if (!values) {

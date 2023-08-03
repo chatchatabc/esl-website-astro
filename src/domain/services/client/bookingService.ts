@@ -27,6 +27,35 @@ export async function bookingGetAll(params: { page?: number; size?: number }) {
   }
 }
 
+export async function bookingGetAllByUser(params: {
+  userId: number;
+  page?: number;
+  size?: number;
+}) {
+  try {
+    const response = await trpcClient.booking.getAllByUser.query(params);
+
+    const contentPromise = response.map(async (booking) => {
+      const student = await userGet({ userId: booking.studentId ?? 0 });
+      if (student) {
+        booking.student = student;
+      }
+
+      const teacher = await userGet({ userId: booking.teacherId ?? 0 });
+      if (teacher) {
+        booking.teacher = teacher;
+      }
+      return booking;
+    });
+    const content = await Promise.all(contentPromise);
+
+    return content;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
 export async function bookingCreate(params: BookingCreate) {
   try {
     const response = await trpcClient.booking.create.mutate(params);

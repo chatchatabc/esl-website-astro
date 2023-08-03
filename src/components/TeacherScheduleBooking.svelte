@@ -8,11 +8,10 @@
   import type { User } from "src/domain/models/UserModel";
   import {
     bookingCreate,
-    bookingGetAll,
+    bookingGetAllByUser,
   } from "src/domain/services/client/bookingService";
   import { scheduleGetAllByUser } from "src/domain/services/client/scheduleService";
   import { userGetProfile } from "src/domain/services/client/userService";
-  import { onMount } from "svelte";
   import LoadingComp from "./LoadingComp.svelte";
   import { teacherGet } from "src/domain/services/client/teacherService";
   import type { Teacher } from "src/domain/models/TeacherModel";
@@ -60,7 +59,6 @@
     });
 
     calendar.render();
-    generateOpenSchedules();
   }
 
   function generateOpenSchedules() {
@@ -149,35 +147,31 @@
     const response = await bookingCreate(data);
 
     if (response) {
-      schedules =
-        (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
-      bookings = (await bookingGetAll({})) ?? [];
-      bookings = bookings.filter((booking) => {
-        return booking.status === 1;
-      });
-      user.credit -= price;
-      generateOpenSchedules();
+      loading = true;
       showModal = false;
     } else {
       alert("Something went wrong");
     }
   }
 
-  onMount(async () => {
-    user = await userGetProfile();
-    if (user) {
-      teacher = await teacherGet({ userId: teacherId });
-      calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
-      schedules =
-        (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
-      bookings = (await bookingGetAll({})) ?? [];
-      bookings = bookings.filter((booking) => {
-        return booking.status === 1;
-      });
-    }
+  $: if (loading) {
+    (async () => {
+      user = await userGetProfile();
+      if (user) {
+        teacher = await teacherGet({ userId: teacherId });
+        calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
+        schedules =
+          (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
+        bookings = (await bookingGetAllByUser({ userId: teacherId })) ?? [];
+        bookings = bookings.filter((booking) => {
+          return booking.status === 1;
+        });
+      }
 
-    loading = false;
-  });
+      generateOpenSchedules();
+      loading = false;
+    })();
+  }
 </script>
 
 <!-- Modal -->
