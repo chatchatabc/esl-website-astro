@@ -91,7 +91,7 @@
 </header>
 
 <section class="border mt-4">
-  <ul class="h-[50vh] -mt-4 -mb-2 pt-4">
+  <ul class="h-[50vh] overflow-auto">
     {#each logs as log}
       <li class="p-2 flex shadow">
         <div class="w-1/2">
