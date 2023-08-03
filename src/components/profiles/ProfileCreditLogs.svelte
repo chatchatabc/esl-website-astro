@@ -115,7 +115,7 @@
 
           <div
             class={`${
-              log.status === 0
+              log.status === 0 || log.status === 2
                 ? ""
                 : userId === log.receiverId
                 ? "text-green-500"
@@ -125,6 +125,8 @@
             <p class="text-xs font-bold">
               {log.status === 0
                 ? "Pending"
+                : log.status === 2
+                ? "Rejected"
                 : userId === log.receiverId
                 ? "Cash In"
                 : "Cash Out"}
