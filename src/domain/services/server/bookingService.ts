@@ -81,7 +81,7 @@ export async function bookingCreate(values: BookingCreate, bindings: Bindings) {
 }
 
 export async function bookingGetAllByUser(
-  params: { userId: number; start: number; end: number },
+  params: { userId: number; page: number; size: number },
   bindings: Bindings
 ) {
   const bookings = await bookingDbGetAllByUser(params, bindings);

@@ -3,6 +3,7 @@ import {
   trpcRouterCreate,
 } from "src/domain/infra/trpcServerActions";
 import type { Booking, BookingCreate } from "src/domain/models/BookingModel";
+import type { CommonParams } from "src/domain/models/CommonModel";
 import {
   bookingCancel,
   bookingCreate,
@@ -14,26 +15,17 @@ import { utilFailedResponse } from "src/domain/services/server/utilService";
 export default trpcRouterCreate({
   getAll: trpcProcedure
     .input((values: any = {}) => {
-      return values as { start?: number; end?: number };
+      return values as { page?: number; size?: number };
     })
     .query((opts) => {
-      const currentDate = new Date();
-      let startDate = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        1
-      );
-      let endDate = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1,
-        1
-      );
+      const { page, size } = opts.input;
+      const data = {
+        page: page ?? 0,
+        size: size ?? 10,
+        userId: opts.ctx.userId ?? 0,
+      };
 
-      const userId = opts.ctx.userId ?? 0;
-      const { start = startDate.getTime(), end = endDate.getTime() } =
-        opts.input;
-
-      return bookingGetAllByUser({ userId, start, end }, opts.ctx.env);
+      return bookingGetAllByUser(data, opts.ctx.env);
     }),
 
   create: trpcProcedure

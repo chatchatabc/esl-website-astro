@@ -2,7 +2,7 @@ import { trpcClient } from "src/domain/infra/trpcClientActions";
 import type { Booking, BookingCreate } from "src/domain/models/BookingModel";
 import { userGet } from "./userService";
 
-export async function bookingGetAll(params: { start?: number; end?: number }) {
+export async function bookingGetAll(params: { page?: number; size?: number }) {
   try {
     const response = await trpcClient.booking.getAll.query(params);
 
