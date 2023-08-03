@@ -1,13 +1,14 @@
 <script lang="ts">
   export let userId: number;
 
+  import LoadingComp from "@components/LoadingComp.svelte";
   import type { LogsCredit } from "src/domain/models/LogsModel";
   import {
     logsGetAllCredit,
     logsRequestCredit,
   } from "src/domain/services/client/logsService";
-  import { onMount } from "svelte";
 
+  let loading = true;
   let showModal = false;
   let logs: LogsCredit[] = [];
   const dateFormatter = new Intl.DateTimeFormat("en", {
@@ -32,12 +33,16 @@
       alert("Unable to make a request.");
     } else {
       showModal = false;
+      loading = true;
     }
   }
 
-  onMount(async () => {
-    logs = (await logsGetAllCredit()) ?? [];
-  });
+  $: if (loading) {
+    (async () => {
+      logs = (await logsGetAllCredit()) ?? [];
+      loading = false;
+    })();
+  }
 </script>
 
 <!-- Modal -->
@@ -91,39 +96,45 @@
 </header>
 
 <section class="border mt-4">
-  <ul class="h-[50vh] overflow-auto">
-    {#each logs as log}
-      <li class="p-2 flex shadow">
-        <div class="w-1/2">
-          <p class="text-xs font-bold">
-            {dateFormatter.format(new Date(log.updatedAt ?? 0))} @ {timeFormatter.format(
-              new Date(log.updatedAt ?? 0)
-            )}
-          </p>
-          <p>{log.title}</p>
-        </div>
+  {#if loading}
+    <div class="flex justify-center p-8">
+      <LoadingComp />
+    </div>
+  {:else}
+    <ul class="h-[50vh] overflow-auto">
+      {#each logs as log}
+        <li class="p-2 flex shadow">
+          <div class="w-1/2">
+            <p class="text-xs font-bold">
+              {dateFormatter.format(new Date(log.updatedAt ?? 0))} @ {timeFormatter.format(
+                new Date(log.updatedAt ?? 0)
+              )}
+            </p>
+            <p>{log.title}</p>
+          </div>
 
-        <div
-          class={`${
-            log.status === 0
-              ? ""
-              : userId === log.receiverId
-              ? "text-green-500"
-              : "text-red-500"
-          } w-1/2 text-end`}
-        >
-          <p class="text-xs font-bold">
-            {log.status === 0
-              ? "Pending"
-              : userId === log.receiverId
-              ? "Cash In"
-              : "Cash Out"}
-          </p>
-          <p>
-            {log.amount}元
-          </p>
-        </div>
-      </li>
-    {/each}
-  </ul>
+          <div
+            class={`${
+              log.status === 0
+                ? ""
+                : userId === log.receiverId
+                ? "text-green-500"
+                : "text-red-500"
+            } w-1/2 text-end`}
+          >
+            <p class="text-xs font-bold">
+              {log.status === 0
+                ? "Pending"
+                : userId === log.receiverId
+                ? "Cash In"
+                : "Cash Out"}
+            </p>
+            <p>
+              {log.amount}元
+            </p>
+          </div>
+        </li>
+      {/each}
+    </ul>
+  {/if}
 </section>
