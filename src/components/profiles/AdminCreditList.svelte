@@ -1,13 +1,13 @@
 <script lang="ts">
   export let userId: number;
 
+  import Pagination from "@components/widgets/Pagination.svelte";
   import type { LogsCredit } from "src/domain/models/LogsModel";
   import {
     logsApproveCredit,
     logsGetAllCredit,
     logsRejectCredit,
   } from "src/domain/services/client/logsService";
-  import { onMount } from "svelte";
 
   const logStatus: Record<number, string> = {
     0: "Requested",
@@ -24,6 +24,12 @@
   let logs: LogsCredit[] = [];
   let selectedLogId: null | number = null;
   let isApprove = false;
+  let loading = true;
+  let pagination = {
+    page: 1,
+    size: 10,
+    totalElements: 1,
+  };
 
   async function handleApprove() {
     const data = { logId: selectedLogId ?? 0 };
@@ -31,16 +37,31 @@
       ? await logsApproveCredit(data)
       : await logsRejectCredit(data);
     if (response) {
-      logs = (await logsGetAllCredit()) ?? [];
+      loading = true;
       showModal = false;
     } else {
       alert("Something went wrong");
     }
   }
 
-  onMount(async () => {
-    logs = (await logsGetAllCredit()) ?? [];
-  });
+  $: if (loading) {
+    (async () => {
+      const response = await logsGetAllCredit({
+        page: pagination.page,
+        size: pagination.size,
+      });
+      if (!response) {
+        alert("Unable to fetch data.");
+      } else {
+        logs = response.content;
+        pagination = {
+          ...pagination,
+          totalElements: response.totalElements,
+        };
+      }
+      loading = false;
+    })();
+  }
 </script>
 
 <!-- Modal -->
@@ -94,7 +115,7 @@
 </header>
 
 <section class="border mt-2">
-  <ul class="h-[50vh] overflow-hidden">
+  <ul class="h-[50vh] overflow-auto">
     {#each logs as log}
       <li class="p-2 flex shadow">
         <div class="w-1/2">
@@ -153,4 +174,17 @@
       </li>
     {/each}
   </ul>
+</section>
+
+<section class="flex justify-end mt-2">
+  <Pagination
+    {...pagination}
+    handleChange={(page) => {
+      pagination = {
+        ...pagination,
+        page,
+      };
+      loading = true;
+    }}
+  />
 </section>
