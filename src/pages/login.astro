@@ -82,8 +82,8 @@ import MainLayout from "@layouts/MainLayout.astro";
 
     const response = await authLogin(data);
 
-    if (response.errors) {
-      alert(response.errors[0].message);
+    if (!response) {
+      alert("Login failed!");
     } else {
       // alert("Login successful!");
       window.location.href = "/profile";
