@@ -186,15 +186,17 @@
             </p>
           {/if}
         </div>
-        <button
-          class="w-8 h-8 bg-red-500 text-white rounded-full"
-          on:click={() => {
-            bookingId = booking.id;
-            showModal = true;
-          }}
-        >
-          X
-        </button>
+        {#if roleId !== 3 || new Date(booking.start) > new Date(Date.now() + 6 * 60 * 60 * 1000)}
+          <button
+            class="w-8 h-8 bg-red-500 text-white rounded-full"
+            on:click={() => {
+              bookingId = booking.id;
+              showModal = true;
+            }}
+          >
+            X
+          </button>
+        {/if}
       </li>
     {/each}
   </ul>
