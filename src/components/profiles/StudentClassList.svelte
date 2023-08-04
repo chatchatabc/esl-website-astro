@@ -141,6 +141,16 @@
 
 <section class="border mt-2">
   <ul class="overflow-auto h-[50vh]">
+    {#if !bookings.length}
+      <li class="p-2 shadow text-center">
+        <p class="mx-auto w-3/4">
+          No booked classes yet, please visit <a
+            class="text-blue-500 underline hover:no-underline"
+            href="/teachers">teachers page</a
+          > to browse and book a class.
+        </p>
+      </li>
+    {/if}
     {#each bookings as booking}
       <li class="p-2 shadow flex items-center">
         <div class="flex-1">
