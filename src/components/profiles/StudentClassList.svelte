@@ -125,31 +125,8 @@
 
 <header class="flex justify-between">
   <h2 class="text-2xl">Class History</h2>
-  <section class="flex space-x-2">
-    <button
-      class="bg-blue-500 text-white px-4 py-2 rounded-md"
-      on:click={() => {
-        pagination = {
-          ...pagination,
-          page: pagination.page - 1,
-        };
-        loading = true;
-      }}
-    >
-      Prev
-    </button>
-    <button
-      class="bg-blue-500 text-white px-4 py-2 rounded-md"
-      on:click={() => {
-        pagination = {
-          ...pagination,
-          page: pagination.page + 1,
-        };
-        loading = true;
-      }}
-    >
-      Next
-    </button>
+  <section class="hidden">
+    <button class="bg-blue-500 text-white px-4 py-2 rounded-md"> Prev </button>
   </section>
 </header>
 
