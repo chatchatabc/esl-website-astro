@@ -67,7 +67,7 @@
     </section>
 
     <section class="bg-white rounded-xl p-4 mt-4">
-      <TeacherScheduleEditor />
+      <TeacherScheduleEditor userId={user.id} />
     </section>
   {/if}
 

@@ -1,4 +1,6 @@
 <script lang="ts">
+  export let userId: number;
+
   import { Calendar } from "@fullcalendar/core";
   import type { EventImpl } from "@fullcalendar/core/internal";
   import interactionPlugin from "@fullcalendar/interaction";
@@ -20,11 +22,12 @@
     hourCycle: "h23",
   });
 
-  let userId = 0;
+  let calendarEl: any;
   let calendar: Calendar | null = null;
   let schedules = [] as Schedule[];
   let bookings = [] as Booking[];
   let editing = false;
+  let loading = true;
 
   $: bookingsEvent = bookings.map((event) => {
     const start = new Date(event.start);
@@ -91,26 +94,18 @@
     if (newSchedules.length) {
       response = await scheduleCreateMany(newSchedules);
     }
-    console.log(eventSchedules, newSchedules);
 
     if (responseUpdate && response) {
-      events.forEach((event) => {
-        event.remove();
-      });
-
-      schedules = (await scheduleGetAllByUser({ userId }))?.content ?? [];
-      bookings = (await bookingGetAll({})) ?? [];
-
       editing = !editing;
     } else {
       alert("Error");
     }
+
+    loading = true;
   }
 
   $: if (editing && calendar) {
-    calendar?.getEvents().forEach((event) => {
-      event.remove();
-    });
+    calendar?.removeAllEvents();
     calendar?.setOption("editable", true);
     calendar?.setOption("selectable", true);
     calendar.setOption("customButtons", {
@@ -137,9 +132,7 @@
       calendar?.addEvent(activeEvent);
     });
   } else if (calendar) {
-    calendar?.getEvents().forEach((event) => {
-      event.remove();
-    });
+    calendar?.removeAllEvents();
     calendar?.setOption("editable", false);
     calendar?.setOption("selectable", false);
     calendar.setOption("customButtons", {
@@ -160,16 +153,20 @@
     });
   }
 
-  onMount(async () => {
-    userId = authGetUserId() ?? 0;
-    schedules = (await scheduleGetAllByUser({ userId }))?.content ?? [];
-    bookings = (await bookingGetAll({})) ?? [];
-    bookings = bookings.filter((booking) => booking.status === 1);
+  $: if (loading) {
+    (async () => {
+      const responseBooking = await bookingGetAll({ page: 0, size: 10000 });
+      if (!responseBooking) {
+        return;
+      }
+      schedules = (await scheduleGetAllByUser({ userId }))?.content ?? [];
+      bookings = responseBooking.content;
 
-    const calendarEl = document.querySelector<HTMLElement>(
-      "[data-teacher-calendar]"
-    )!;
+      loading = false;
+    })();
+  }
 
+  $: if (calendarEl) {
     calendar = new Calendar(calendarEl, {
       plugins: [timeGridPlugin, interactionPlugin],
       initialView: "timeGridWeek",
@@ -199,9 +196,9 @@
     });
 
     calendar.render();
-  });
+  }
 </script>
 
 <section>
-  <div class="h-[80vh]" data-teacher-calendar />
+  <div bind:this={calendarEl} class="h-[80vh]" />
 </section>
