@@ -186,7 +186,7 @@
             </p>
           {/if}
         </div>
-        {#if roleId !== 3 || new Date(booking.start) > new Date(Date.now() + 6 * 60 * 60 * 1000)}
+        {#if roleId !== 3 && new Date(booking.start) < new Date(Date.now() - 6 * 60 * 60 * 1000)}
           <button
             class="w-8 h-8 bg-red-500 text-white rounded-full"
             on:click={() => {
