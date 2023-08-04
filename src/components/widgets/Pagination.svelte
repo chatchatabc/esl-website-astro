@@ -4,18 +4,18 @@
     size: number,
     handleChange: (page: number) => void;
 
-  const totalPages = Math.ceil(totalElements / size) + 1;
+  $: totalPages = Math.ceil(totalElements / size);
 </script>
 
 <div class="flex space-x-2 items-center">
-  <p>{page + 1} / {totalPages}</p>
+  <p>{page} / {totalPages}</p>
 
   <div class="space-x-1 flex items-center">
     <button
       class={`h-8 w-8 rounded-full bg-blue-500 text-white ${
-        page === 0 && "opacity-50"
+        page === 1 && "opacity-50"
       }`}
-      disabled={page === 0}
+      disabled={page === 1}
       on:click={() => {
         handleChange(page - 1);
       }}
@@ -25,9 +25,9 @@
 
     <button
       class={`h-8 w-8 rounded-full bg-blue-500 text-white ${
-        page + 1 === totalPages && "opacity-50"
+        page === totalPages && "opacity-50"
       }`}
-      disabled={page + 1 === totalPages}
+      disabled={page === totalPages}
       on:click={() => {
         handleChange(page + 1);
       }}
