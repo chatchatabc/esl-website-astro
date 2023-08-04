@@ -37,6 +37,7 @@
   let loading = true;
   let teacher = null as Teacher | null;
   let calendarEl: any;
+  let sending = false;
 
   $: if (calendarEl) {
     calendar = new Calendar(calendarEl, {
@@ -64,8 +65,10 @@
   function generateOpenSchedules() {
     if (calendar) {
       calendar.removeAllEvents();
+
       schedules.map((schedule) => {
         const currentDate = new Date(calendarDate);
+        console.log(currentDate);
         currentDate.setDate(currentDate.getDate() + schedule.day);
         const startTime = new Date(schedule.startTime);
         const endTime = new Date(schedule.endTime);
@@ -111,10 +114,16 @@
           start = new Date(start.getTime() + 30 * 60000);
         }
       });
+
+      calendar?.gotoDate(calendarDate);
     }
   }
 
   async function handleSubmit() {
+    if (sending) {
+      return;
+    }
+
     if (!user || !teacher) {
       alert("Error. Missing data.");
       return;
@@ -147,34 +156,33 @@
     const response = await bookingCreate(data);
 
     if (response) {
-      loading = true;
       showModal = false;
     } else {
       alert("Something went wrong");
     }
+
+    loading = true;
   }
 
   $: if (loading) {
     (async () => {
-      user = await userGetProfile();
-      if (user) {
-        teacher = await teacherGet({ userId: teacherId });
+      if (!user) {
+        user = await userGetProfile();
         calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
-        schedules =
-          (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
-        const responseBooking = await bookingGetAllByUser({
-          userId: teacherId,
-          page: 0,
-          size: 100000,
-        });
-        if (!responseBooking) {
-          alert("Something went wrong");
-        } else {
-          bookings = responseBooking.content;
-        }
-        bookings = bookings.filter((booking) => {
-          return booking.status === 1;
-        });
+      }
+
+      teacher = await teacherGet({ userId: teacherId });
+      schedules =
+        (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
+      const responseBooking = await bookingGetAllByUser({
+        userId: teacherId,
+        page: 0,
+        size: 100000,
+      });
+      if (!responseBooking) {
+        alert("Something went wrong");
+      } else {
+        bookings = responseBooking.content;
       }
 
       generateOpenSchedules();
@@ -273,14 +281,17 @@
         </div>
       </label>
 
-      <button class="px-4 border-black py-2 border rounded-md mx-auto block">
-        Submit
+      <button
+        class="px-4 border-black py-2 border rounded-md mx-auto block"
+        disabled={loading}
+      >
+        {sending ? "Sending" : "Submit"}
       </button>
     </form>
   </div>
 </div>
 
-{#if loading}
+{#if loading && !user}
   <div
     class="bg-white rounded-xl p-4 flex justify-center items-center h-[50vh]"
   >
@@ -288,14 +299,25 @@
   </div>
 {:else if user}
   <section>
-    <header class="flex justify-between items-center space-x-2">
+    {#if loading}
+      <div
+        class="bg-white rounded-xl p-4 flex justify-center items-center h-[50vh]"
+      >
+        <LoadingComp />
+      </div>
+    {/if}
+    <header
+      class={`justify-between items-center space-x-2 ${
+        loading ? "hidden" : "flex"
+      }`}
+    >
       <section class="flex space-x-2">
         <button
           class="bg-blue-500 text-white px-4 py-2 rounded-md"
           on:click={() => {
-            calendar?.prev();
             calendarDate.setDate(calendarDate.getDate() - 7);
             calendarDate = new Date(calendarDate);
+
             generateOpenSchedules();
           }}
         >
@@ -304,9 +326,9 @@
         <button
           class="bg-blue-500 text-white px-4 py-2 rounded-md"
           on:click={() => {
-            calendar?.next();
             calendarDate.setDate(calendarDate.getDate() + 7);
             calendarDate = new Date(calendarDate);
+
             generateOpenSchedules();
           }}
         >
@@ -321,7 +343,7 @@
       </p>
     </header>
 
-    <section>
+    <section class={`${loading ? "hidden" : ""}`}>
       <div bind:this={calendarEl} class="-mt-4 h-[80vh]" />
     </section>
   </section>
