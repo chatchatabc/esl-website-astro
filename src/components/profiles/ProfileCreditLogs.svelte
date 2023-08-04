@@ -135,7 +135,7 @@
       {/if}
       {#each logs as log}
         <li class="p-2 flex shadow">
-          <div class="w-1/2">
+          <div class="w-2/3">
             <p class="text-xs font-bold">
               {dateFormatter.format(new Date(log.updatedAt ?? 0))} @ {timeFormatter.format(
                 new Date(log.updatedAt ?? 0)
@@ -151,7 +151,7 @@
                 : userId === log.receiverId
                 ? "text-green-500"
                 : "text-red-500"
-            } w-1/2 text-end`}
+            } w-1/3 text-end`}
           >
             <p class="text-xs font-bold">
               {log.status === 0
