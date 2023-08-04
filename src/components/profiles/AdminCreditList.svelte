@@ -28,7 +28,7 @@
   let pagination = {
     page: 1,
     size: 10,
-    totalElements: 1,
+    totalElements: 0,
   };
 
   async function handleApprove() {

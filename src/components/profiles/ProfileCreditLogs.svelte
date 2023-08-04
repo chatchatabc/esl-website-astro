@@ -12,7 +12,7 @@
   let pagination = {
     page: 1,
     size: 10,
-    totalElements: 1,
+    totalElements: 0,
   };
   let loading = true;
   let showModal = false;

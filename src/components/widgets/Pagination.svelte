@@ -4,7 +4,7 @@
     size: number,
     handleChange: (page: number) => void;
 
-  $: totalPages = Math.ceil(totalElements / size);
+  $: totalPages = Math.ceil(totalElements / size) || 1;
 </script>
 
 <div class="flex space-x-2 items-center">
