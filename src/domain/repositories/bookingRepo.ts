@@ -27,7 +27,7 @@ export async function bookingDbGetAllByUser(
     const results = await bindings.DB.prepare(
       "SELECT * FROM bookings WHERE ((teacherId = ? OR studentId = ?) AND status = 1) LIMIT ? OFFSET ?"
     )
-      .bind(userId, userId, size, page * size)
+      .bind(userId, userId, size, (page - 1) * size)
       .all<Booking>();
 
     return results;

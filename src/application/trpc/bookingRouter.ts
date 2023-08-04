@@ -20,7 +20,7 @@ export default trpcRouterCreate({
     .query((opts) => {
       const { page, size } = opts.input;
       const data = {
-        page: page ?? 0,
+        page: page ?? 1,
         size: size ?? 10,
         userId: opts.ctx.userId ?? 0,
       };
@@ -35,7 +35,7 @@ export default trpcRouterCreate({
     .query((opts) => {
       const { page, size, ...others } = opts.input;
       const data = {
-        page: page ?? 0,
+        page: page ?? 1,
         size: size ?? 10,
         ...others,
       };
