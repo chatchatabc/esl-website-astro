@@ -3,6 +3,7 @@ import {
   logsDbCreateCredit,
   logsDbGetAllCredit,
   logsDbGetCredit,
+  logsDbGetTotalCredit,
   logsDbUpdateCredit,
 } from "src/domain/repositories/logsRepo";
 import type { Bindings } from "src/server";
@@ -10,15 +11,26 @@ import { utilFailedResponse } from "./utilService";
 import { userGet } from "./userService";
 
 export async function logsGetAllCredit(
-  params: { userId: number },
+  params: { userId: number; page: number; size: number },
   bindings: Bindings
 ) {
+  const { userId, page, size } = params;
   const logs = await logsDbGetAllCredit(params, bindings);
   if (!logs) {
     throw utilFailedResponse("Failed to get logs", 500);
   }
 
-  return logs.results;
+  const totalElements = await logsDbGetTotalCredit({ userId }, bindings);
+  if (totalElements === null) {
+    throw utilFailedResponse("Failed to get total elements", 500);
+  }
+
+  return {
+    content: logs.results,
+    page,
+    size,
+    totalElements,
+  };
 }
 
 export async function logsRequestCredit(

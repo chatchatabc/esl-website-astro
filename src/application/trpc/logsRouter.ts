@@ -14,15 +14,17 @@ import { utilFailedResponse } from "src/domain/services/server/utilService";
 export default trpcRouterCreate({
   getCreditAll: trpcProcedure
     .input((values: any = {}) => {
-      const data = {
-        page: values.page ?? 0,
-        size: values.size ?? 10,
-      };
-      return data;
+      return values as { page?: number; size?: number };
     })
     .query((opts) => {
       const { userId, env } = opts.ctx;
-      return logsGetAllCredit({ userId: userId ?? 0 }, env);
+      const data = {
+        page: opts.input.page ?? 1,
+        size: opts.input.size ?? 10,
+        userId: userId ?? 0,
+      };
+
+      return logsGetAllCredit(data, env);
     }),
 
   approveCredit: trpcProcedureAdmin

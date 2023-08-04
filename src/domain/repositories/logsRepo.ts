@@ -3,18 +3,35 @@ import type { LogsCredit, LogsCreditCreate } from "../models/LogsModel";
 import type { User } from "../models/UserModel";
 
 export async function logsDbGetAllCredit(
+  params: { userId: number; page: number; size: number },
+  bindings: Bindings
+) {
+  const { userId, page, size } = params;
+  try {
+    const results = await bindings.DB.prepare(
+      "SELECT * FROM logsCredit WHERE senderId = ? OR receiverId = ? ORDER BY createdAt DESC LIMIT ? OFFSET ?"
+    )
+      .bind(userId, userId, size, (page - 1) * size)
+      .all<LogsCredit>();
+
+    return results;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function logsDbGetTotalCredit(
   params: { userId: number },
   bindings: Bindings
 ) {
   const { userId } = params;
   try {
-    const results = await bindings.DB.prepare(
-      "SELECT * FROM logsCredit WHERE senderId = ? OR receiverId = ? ORDER BY createdAt DESC"
-    )
-      .bind(userId, userId)
-      .all<LogsCredit>();
-
-    return results;
+    const stmt = bindings.DB.prepare(
+      "SELECT COUNT(*) as total FROM logsCredit WHERE senderId = ? OR receiverId = ?"
+    ).bind(userId, userId);
+    const total = await stmt.first("total");
+    return total as number;
   } catch (e) {
     console.log(e);
     return null;
