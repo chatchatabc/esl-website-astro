@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let reset: number, handleReset: () => void;
+  export let reset: number, handleReset: () => void, roleId: number;
 
   import Pagination from "@components/widgets/Pagination.svelte";
   import { Calendar } from "@fullcalendar/core";
@@ -162,16 +162,29 @@
               @ {dateFormatter.format(new Date(booking.start))}
             </span>
           </p>
-          <p>
-            {booking.teacher?.firstName}
-            {booking.teacher?.lastName} |
-            <a
-              class="text-blue-500 underline hover:no-underline"
-              href={`tel:${booking.teacher?.phone}`}
-            >
-              {booking.teacher?.phone}
-            </a>
-          </p>
+          {#if roleId === 3}
+            <p>
+              {booking.student?.firstName}
+              {booking.student?.lastName} |
+              <a
+                class="text-blue-500 underline hover:no-underline"
+                href={`tel:${booking.student?.phone}`}
+              >
+                {booking.student?.phone}
+              </a>
+            </p>
+          {:else}
+            <p>
+              {booking.teacher?.firstName}
+              {booking.teacher?.lastName} |
+              <a
+                class="text-blue-500 underline hover:no-underline"
+                href={`tel:${booking.teacher?.phone}`}
+              >
+                {booking.teacher?.phone}
+              </a>
+            </p>
+          {/if}
         </div>
         <button
           class="w-8 h-8 bg-red-500 text-white rounded-full"

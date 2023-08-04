@@ -2,11 +2,10 @@
   import type { User } from "src/domain/models/UserModel";
   import { userGetProfile } from "src/domain/services/client/userService";
   import { onMount } from "svelte";
-  import TeacherClassList from "./TeacherClassList.svelte";
   import TeacherScheduleEditor from "./TeacherScheduleEditor.svelte";
   import LoadingComp from "@components/LoadingComp.svelte";
   import ProfileInformation from "./ProfileInformation.svelte";
-  import StudentClassList from "./StudentClassList.svelte";
+  import ClassList from "./ClassList.svelte";
   import StudentCashList from "./ProfileCreditLogs.svelte";
   import AdminCreditList from "./AdminCreditList.svelte";
 
@@ -55,7 +54,7 @@
     <section class="flex -mx-2">
       <section class="w-1/2 px-2">
         <section class="bg-white rounded-xl p-4 mt-4">
-          <TeacherClassList />
+          <ClassList {reset} {handleReset} roleId={user.roleId} />
         </section>
       </section>
 
@@ -75,7 +74,7 @@
     <section class="flex -mx-2 flex-wrap">
       <section class="px-2 w-full lg:w-1/2">
         <section class="bg-white rounded-xl p-4 mt-4">
-          <StudentClassList {reset} {handleReset} />
+          <ClassList {reset} {handleReset} roleId={user.roleId} />
         </section>
       </section>
 
