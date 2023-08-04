@@ -2,12 +2,18 @@
   export let userId: number;
 
   import LoadingComp from "@components/LoadingComp.svelte";
+  import Pagination from "@components/widgets/Pagination.svelte";
   import type { LogsCredit } from "src/domain/models/LogsModel";
   import {
     logsGetAllCredit,
     logsRequestCredit,
   } from "src/domain/services/client/logsService";
 
+  let pagination = {
+    page: 1,
+    size: 10,
+    totalElements: 0,
+  };
   let loading = true;
   let showModal = false;
   let logs: LogsCredit[] = [];
@@ -39,7 +45,21 @@
 
   $: if (loading) {
     (async () => {
-      logs = (await logsGetAllCredit()) ?? [];
+      const response = await logsGetAllCredit({
+        page: pagination.page,
+        size: pagination.size,
+      });
+      if (!response) {
+        alert("Unable to fetch data.");
+      } else {
+        logs = response.content;
+        pagination = {
+          page: response.page,
+          size: response.size,
+          totalElements: response.totalElements,
+        };
+      }
+
       loading = false;
     })();
   }
@@ -95,7 +115,7 @@
   </button>
 </header>
 
-<section class="border mt-4">
+<section class="border mt-2">
   {#if loading}
     <div class="flex justify-center p-8">
       <LoadingComp />
@@ -139,4 +159,17 @@
       {/each}
     </ul>
   {/if}
+</section>
+
+<section class="mt-2 flex justify-end">
+  <Pagination
+    {...pagination}
+    handleChange={(page) => {
+      pagination = {
+        ...pagination,
+        page,
+      };
+      loading = true;
+    }}
+  />
 </section>
