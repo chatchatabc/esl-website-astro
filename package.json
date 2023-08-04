@@ -24,9 +24,9 @@
     "@fullcalendar/interaction": "^6.1.8",
     "@fullcalendar/list": "^6.1.8",
     "@fullcalendar/timegrid": "^6.1.8",
-    "@trpc/client": "^10.36.0",
-    "@trpc/server": "^10.36.0",
-    "astro": "^2.9.6",
+    "@trpc/client": "^10.37.1",
+    "@trpc/server": "^10.37.1",
+    "astro": "^2.10.1",
     "astro-i18next": "^1.0.0-beta.21",
     "astro-imagetools": "^0.8.1",
     "astro-robots-txt": "^0.5.0",
@@ -39,13 +39,13 @@
     "tailwindcss": "^3.3.3"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20230724.0",
+    "@cloudflare/workers-types": "^4.20230801.0",
     "@types/crypto-js": "^4.1.1",
     "astro-icon": "^0.8.1",
     "concurrently": "^8.2.0",
     "typescript": "^5.1.6",
     "unlighthouse": "^0.10.0",
-    "vitest": "^0.33.0",
+    "vitest": "^0.34.1",
     "wrangler": "3.4.0"
   }
 }
