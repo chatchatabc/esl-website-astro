@@ -196,3 +196,20 @@ export async function bookingDbGetOverlap(
     return 0;
   }
 }
+
+export async function bookingDbGetTotalByUser(
+  params: { userId: number },
+  bindings: Bindings
+) {
+  const { userId } = params;
+  try {
+    const stmt = bindings.DB.prepare(
+      "SELECT COUNT(*) AS total FROM bookings WHERE teacherId = ? OR studentId = ?"
+    ).bind(userId, userId);
+    const total = await stmt.first("total");
+    return total as number;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}

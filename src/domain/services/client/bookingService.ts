@@ -6,7 +6,7 @@ export async function bookingGetAll(params: { page?: number; size?: number }) {
   try {
     const response = await trpcClient.booking.getAll.query(params);
 
-    const contentPromise = response.map(async (booking) => {
+    const contentPromise = response.content.map(async (booking) => {
       const student = await userGet({ userId: booking.studentId ?? 0 });
       if (student) {
         booking.student = student;
@@ -18,9 +18,9 @@ export async function bookingGetAll(params: { page?: number; size?: number }) {
       }
       return booking;
     });
-    const content = await Promise.all(contentPromise);
+    response.content = await Promise.all(contentPromise);
 
-    return content;
+    return response;
   } catch (e) {
     console.log(e);
     return null;
@@ -35,7 +35,7 @@ export async function bookingGetAllByUser(params: {
   try {
     const response = await trpcClient.booking.getAllByUser.query(params);
 
-    const contentPromise = response.map(async (booking) => {
+    const contentPromise = response.content.map(async (booking) => {
       const student = await userGet({ userId: booking.studentId ?? 0 });
       if (student) {
         booking.student = student;
@@ -47,9 +47,9 @@ export async function bookingGetAllByUser(params: {
       }
       return booking;
     });
-    const content = await Promise.all(contentPromise);
+    response.content = await Promise.all(contentPromise);
 
-    return content;
+    return response;
   } catch (e) {
     console.log(e);
     return null;

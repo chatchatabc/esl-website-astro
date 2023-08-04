@@ -4,6 +4,7 @@ import {
   bookingDbGet,
   bookingDbGetAllByUser,
   bookingDbGetOverlap,
+  bookingDbGetTotalByUser,
   bookingDbInsert,
   bookingDbUpdate,
 } from "src/domain/repositories/bookingRepo";
@@ -84,12 +85,24 @@ export async function bookingGetAllByUser(
   params: { userId: number; page: number; size: number },
   bindings: Bindings
 ) {
+  const { page, size, userId } = params;
+
   const bookings = await bookingDbGetAllByUser(params, bindings);
   if (!bookings) {
     throw utilFailedResponse("Cannot GET", 500);
   }
 
-  return bookings.results;
+  const totalElements = await bookingDbGetTotalByUser({ userId }, bindings);
+  if (totalElements === null) {
+    throw utilFailedResponse("Cannot GET total", 500);
+  }
+
+  return {
+    content: bookings.results,
+    totalElements,
+    page,
+    size,
+  };
 }
 
 export async function bookingUpdate(values: Booking, bindings: Bindings) {
