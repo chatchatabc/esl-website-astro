@@ -162,7 +162,16 @@
         calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
         schedules =
           (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
-        bookings = (await bookingGetAllByUser({ userId: teacherId })) ?? [];
+        const responseBooking = await bookingGetAllByUser({
+          userId: teacherId,
+          page: 0,
+          size: 100000,
+        });
+        if (!responseBooking) {
+          alert("Something went wrong");
+        } else {
+          bookings = responseBooking.content;
+        }
         bookings = bookings.filter((booking) => {
           return booking.status === 1;
         });
