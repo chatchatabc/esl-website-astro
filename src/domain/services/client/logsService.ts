@@ -1,13 +1,13 @@
 import { trpcClient } from "src/domain/infra/trpcClientActions";
 
-export async function logsGetAllCredit() {
+export async function logsGetAllCredit(params: {
+  page?: number;
+  size?: number;
+}) {
   try {
-    const response = await trpcClient.logs.getCreditAll.query({
-      page: 0,
-      size: 10,
-    });
+    const response = await trpcClient.logs.getCreditAll.query(params);
 
-    const contentPromise = response.map(async (logsCredit) => {
+    const contentPromise = response.content.map(async (logsCredit) => {
       const sender = await trpcClient.user.get.query({
         userId: logsCredit.senderId,
       });
@@ -25,9 +25,9 @@ export async function logsGetAllCredit() {
       return logsCredit;
     });
 
-    const content = await Promise.all(contentPromise);
+    response.content = await Promise.all(contentPromise);
 
-    return content;
+    return response;
   } catch (e) {
     console.log(e);
     return null;
