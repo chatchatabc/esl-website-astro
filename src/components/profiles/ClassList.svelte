@@ -1,4 +1,6 @@
 <script lang="ts">
+  import LoadingComp from "@components/LoadingComp.svelte";
+
   export let reset: number, handleReset: () => void, roleId: number;
 
   import Pagination from "@components/widgets/Pagination.svelte";
@@ -140,66 +142,72 @@
 </header>
 
 <section class="border mt-2">
-  <ul class="overflow-auto h-[50vh]">
-    {#if !bookings.length}
-      <li class="p-2 shadow text-center">
-        <p class="mx-auto w-5/6 md:w-3/4">
-          No booked classes yet, please visit <a
-            class="text-blue-500 underline hover:no-underline"
-            href="/teachers">teachers page</a
-          > to browse and book a class.
-        </p>
-      </li>
-    {/if}
-    {#each bookings as booking}
-      <li class="p-2 shadow flex items-center">
-        <div class="flex-1">
-          <p class="text-xs">
-            {timeFormatter.format(new Date(booking.start))} - {timeFormatter.format(
-              new Date(booking.end)
-            )}
-            <span class="font-bold">
-              @ {dateFormatter.format(new Date(booking.start))}
-            </span>
+  {#if loading}
+    <div class="flex h-[50vh] justify-center p-8">
+      <LoadingComp />
+    </div>
+  {:else}
+    <ul class="overflow-auto h-[50vh]">
+      {#if !bookings.length}
+        <li class="p-2 shadow text-center">
+          <p class="mx-auto w-5/6 md:w-3/4">
+            No booked classes yet, please visit <a
+              class="text-blue-500 underline hover:no-underline"
+              href="/teachers">teachers page</a
+            > to browse and book a class.
           </p>
-          {#if roleId === 3}
-            <p>
-              {booking.student?.firstName}
-              {booking.student?.lastName} |
-              <a
-                class="text-blue-500 underline hover:no-underline"
-                href={`tel:${booking.student?.phone}`}
-              >
-                {booking.student?.phone}
-              </a>
+        </li>
+      {/if}
+      {#each bookings as booking}
+        <li class="p-2 shadow flex items-center">
+          <div class="flex-1">
+            <p class="text-xs">
+              {timeFormatter.format(new Date(booking.start))} - {timeFormatter.format(
+                new Date(booking.end)
+              )}
+              <span class="font-bold">
+                @ {dateFormatter.format(new Date(booking.start))}
+              </span>
             </p>
-          {:else}
-            <p>
-              {booking.teacher?.firstName}
-              {booking.teacher?.lastName} |
-              <a
-                class="text-blue-500 underline hover:no-underline"
-                href={`tel:${booking.teacher?.phone}`}
-              >
-                {booking.teacher?.phone}
-              </a>
-            </p>
+            {#if roleId === 3}
+              <p>
+                {booking.student?.firstName}
+                {booking.student?.lastName} |
+                <a
+                  class="text-blue-500 underline hover:no-underline"
+                  href={`tel:${booking.student?.phone}`}
+                >
+                  {booking.student?.phone}
+                </a>
+              </p>
+            {:else}
+              <p>
+                {booking.teacher?.firstName}
+                {booking.teacher?.lastName} |
+                <a
+                  class="text-blue-500 underline hover:no-underline"
+                  href={`tel:${booking.teacher?.phone}`}
+                >
+                  {booking.teacher?.phone}
+                </a>
+              </p>
+            {/if}
+          </div>
+          {#if roleId !== 3 && new Date(booking.start) > new Date(Date.now() + 6 * 60 * 60 * 1000)}
+            <button
+              class="w-8 h-8 bg-red-500 text-white rounded-full"
+              on:click={() => {
+                bookingId = booking.id;
+                showModal = true;
+              }}
+            >
+              X
+            </button>
           {/if}
-        </div>
-        {#if roleId !== 3 && new Date(booking.start) > new Date(Date.now() + 6 * 60 * 60 * 1000)}
-          <button
-            class="w-8 h-8 bg-red-500 text-white rounded-full"
-            on:click={() => {
-              bookingId = booking.id;
-              showModal = true;
-            }}
-          >
-            X
-          </button>
-        {/if}
-      </li>
-    {/each}
-  </ul>
+        </li>
+      {/each}
+    </ul>
+  {/if}
 </section>
 
 <section class="mt-2 flex justify-end">
