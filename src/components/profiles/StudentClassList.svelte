@@ -8,6 +8,12 @@
     bookingGetAll,
   } from "src/domain/services/client/bookingService";
 
+  const dateFormatter = new Intl.DateTimeFormat("en", {
+    dateStyle: "medium",
+  });
+  const timeFormatter = new Intl.DateTimeFormat("en", {
+    timeStyle: "short",
+  });
   let pagination = {
     page: 1,
     size: 10,
@@ -124,16 +130,43 @@
 </div>
 
 <header class="flex justify-between">
-  <h2 class="text-2xl">Class History</h2>
-  <section class="hidden">
-    <button class="bg-blue-500 text-white px-4 py-2 rounded-md"> Prev </button>
-  </section>
+  <h2 class="text-2xl py-1">Class History</h2>
 </header>
 
 <section class="border mt-2">
   <ul class="overflow-auto h-[50vh]">
     {#each bookings as booking}
-      <li>{booking.start}</li>
+      <li class="p-2 shadow flex items-center">
+        <div class="flex-1">
+          <p class="text-xs">
+            {timeFormatter.format(new Date(booking.start))} - {timeFormatter.format(
+              new Date(booking.end)
+            )}
+            <span class="font-bold">
+              @ {dateFormatter.format(new Date(booking.start))}
+            </span>
+          </p>
+          <p>
+            {booking.teacher?.firstName}
+            {booking.teacher?.lastName} |
+            <a
+              class="text-blue-500 underline hover:no-underline"
+              href={`tel:${booking.teacher?.phone}`}
+            >
+              {booking.teacher?.phone}
+            </a>
+          </p>
+        </div>
+        <button
+          class="w-8 h-8 bg-red-500 text-white rounded-full"
+          on:click={() => {
+            bookingId = booking.id;
+            showModal = true;
+          }}
+        >
+          X
+        </button>
+      </li>
     {/each}
   </ul>
 </section>
