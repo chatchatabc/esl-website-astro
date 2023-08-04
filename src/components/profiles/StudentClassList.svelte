@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Pagination from "@components/widgets/Pagination.svelte";
   import { Calendar } from "@fullcalendar/core";
   import listPlugin from "@fullcalendar/list";
   import type { Booking } from "src/domain/models/BookingModel";
@@ -6,8 +7,12 @@
     bookingCancel,
     bookingGetAll,
   } from "src/domain/services/client/bookingService";
-  import { onMount } from "svelte";
 
+  let pagination = {
+    page: 0,
+    size: 10,
+    totalElements: 0,
+  };
   let loading = true;
   let bookingId = 0;
   let showModal = false;
@@ -48,38 +53,32 @@
     }
   }
 
-  async function fetchData() {
-    const calendarDate = calendar ? calendar.getDate() : new Date();
-    let start = new Date(
-      calendarDate.getFullYear(),
-      calendarDate.getMonth(),
-      0
-    );
-    let end = new Date(
-      calendarDate.getFullYear(),
-      calendarDate.getMonth() + 1,
-      0
-    );
-
-    bookings =
-      (await bookingGetAll({ start: start.getTime(), end: end.getTime() })) ??
-      [];
-    generateClass();
-    loading = false;
-  }
-
   async function handleCancel() {
     const response = await bookingCancel({ bookingId });
     if (!response) {
       alert("Unable to cancel");
     }
-    fetchData();
+    loading = true;
     showModal = false;
   }
 
-  onMount(async () => {
-    fetchData();
-  });
+  $: if (loading) {
+    (async () => {
+      const response = await bookingGetAll(pagination);
+      if (!response) {
+        alert("Unable to fetch bookings");
+      } else {
+        pagination = {
+          page: response.page,
+          size: response.size,
+          totalElements: response.totalElements,
+        };
+        bookings = response.content;
+        generateClass();
+      }
+      loading = false;
+    })();
+  }
 </script>
 
 <!-- Modal -->
@@ -130,8 +129,11 @@
     <button
       class="bg-blue-500 text-white px-4 py-2 rounded-md"
       on:click={() => {
-        calendar?.prev();
-        fetchData();
+        pagination = {
+          ...pagination,
+          page: pagination.page - 1,
+        };
+        loading = true;
       }}
     >
       Prev
@@ -139,8 +141,11 @@
     <button
       class="bg-blue-500 text-white px-4 py-2 rounded-md"
       on:click={() => {
-        calendar?.next();
-        fetchData();
+        pagination = {
+          ...pagination,
+          page: pagination.page + 1,
+        };
+        loading = true;
       }}
     >
       Next
@@ -148,6 +153,23 @@
   </section>
 </header>
 
-<section>
-  <div class="-mt-4 h-[50vh]" bind:this={calendarEl} />
+<section class="border mt-2">
+  <ul class="overflow-auto h-[50vh]">
+    {#each bookings as booking}
+      <li>{booking.start}</li>
+    {/each}
+  </ul>
+</section>
+
+<section class="mt-2 flex justify-end">
+  <Pagination
+    handleChange={(page) => {
+      pagination = {
+        ...pagination,
+        page,
+      };
+      loading = true;
+    }}
+    {...pagination}
+  />
 </section>
