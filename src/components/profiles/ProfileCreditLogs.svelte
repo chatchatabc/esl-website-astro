@@ -126,6 +126,13 @@
     </div>
   {:else}
     <ul class="h-[50vh] overflow-auto">
+      {#if logs.length === 0}
+        <li class="p-2 flex justify-center text-center">
+          <p class="mx-auto w-5/6 md:w-3/4">
+            No transactions have been made yet.
+          </p>
+        </li>
+      {/if}
       {#each logs as log}
         <li class="p-2 flex shadow">
           <div class="w-1/2">

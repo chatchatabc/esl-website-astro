@@ -143,7 +143,7 @@
   <ul class="overflow-auto h-[50vh]">
     {#if !bookings.length}
       <li class="p-2 shadow text-center">
-        <p class="mx-auto w-3/4">
+        <p class="mx-auto w-5/6 md:w-3/4">
           No booked classes yet, please visit <a
             class="text-blue-500 underline hover:no-underline"
             href="/teachers">teachers page</a
