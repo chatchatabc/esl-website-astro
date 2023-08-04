@@ -10,8 +10,19 @@
   import StudentCashList from "./ProfileCreditLogs.svelte";
   import AdminCreditList from "./AdminCreditList.svelte";
 
+  let reset = 0;
   let loading = true;
   let user: User | null = null;
+
+  function handleReset() {
+    reset = reset + 1;
+  }
+
+  $: if (reset) {
+    (async () => {
+      user = await userGetProfile();
+    })();
+  }
 
   onMount(async () => {
     user = await userGetProfile();
@@ -50,7 +61,7 @@
 
       <section class="w-1/2 px-2">
         <section class="bg-white rounded-xl p-4 mt-4">
-          <StudentCashList userId={user.id} />
+          <StudentCashList userId={user.id} {reset} />
         </section>
       </section>
     </section>
@@ -64,13 +75,13 @@
     <section class="flex -mx-2">
       <section class="w-1/2 px-2">
         <section class="bg-white rounded-xl p-4 mt-4">
-          <StudentClassList />
+          <StudentClassList {reset} {handleReset} />
         </section>
       </section>
 
       <section class="w-1/2 px-2">
         <section class="bg-white rounded-xl p-4 mt-4">
-          <StudentCashList userId={user.id} />
+          <StudentCashList userId={user.id} {reset} />
         </section>
       </section>
     </section>

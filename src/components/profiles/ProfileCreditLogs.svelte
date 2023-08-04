@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let userId: number;
+  export let userId: number, reset: number;
 
   import LoadingComp from "@components/LoadingComp.svelte";
   import Pagination from "@components/widgets/Pagination.svelte";
@@ -38,9 +38,13 @@
     if (!response) {
       alert("Unable to make a request.");
     } else {
-      showModal = false;
       loading = true;
+      showModal = false;
     }
+  }
+
+  $: if (reset) {
+    loading = true;
   }
 
   $: if (loading) {

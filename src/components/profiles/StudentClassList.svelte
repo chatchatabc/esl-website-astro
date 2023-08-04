@@ -1,4 +1,6 @@
 <script lang="ts">
+  export let reset: number, handleReset: () => void;
+
   import Pagination from "@components/widgets/Pagination.svelte";
   import { Calendar } from "@fullcalendar/core";
   import listPlugin from "@fullcalendar/list";
@@ -64,8 +66,12 @@
     if (!response) {
       alert("Unable to cancel");
     }
-    loading = true;
     showModal = false;
+    handleReset();
+  }
+
+  $: if (reset) {
+    loading = true;
   }
 
   $: if (loading) {
