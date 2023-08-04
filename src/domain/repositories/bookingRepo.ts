@@ -204,7 +204,7 @@ export async function bookingDbGetTotalByUser(
   const { userId } = params;
   try {
     const stmt = bindings.DB.prepare(
-      "SELECT COUNT(*) AS total FROM bookings WHERE teacherId = ? OR studentId = ?"
+      "SELECT COUNT(*) AS total FROM bookings WHERE ((teacherId = ? OR studentId = ?) AND status = 1)"
     ).bind(userId, userId);
     const total = await stmt.first("total");
     return total as number;
