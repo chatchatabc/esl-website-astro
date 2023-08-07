@@ -7,7 +7,6 @@
   import timeGridPlugin from "@fullcalendar/timegrid";
   import type { Booking } from "src/domain/models/BookingModel";
   import type { Schedule } from "src/domain/models/ScheduleModel";
-  import { authGetUserId } from "src/domain/services/client/authService";
   import { bookingGetAll } from "src/domain/services/client/bookingService";
   import {
     scheduleConvertToRecurringEvent,
@@ -49,14 +48,12 @@
     const eventSchedules = events.map((event, index) => {
       const start = new Date(event.start ?? 0);
       const end = new Date(event.end ?? 0);
-      const day = start.getDay();
       const startTime = start.getTime();
       const endTime = end.getTime();
-      const teacherId = authGetUserId() ?? 0;
+      const teacherId = userId;
       const id = schedules[index]?.id;
 
       return {
-        day,
         startTime,
         endTime,
         teacherId,
