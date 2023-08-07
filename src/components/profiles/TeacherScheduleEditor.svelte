@@ -37,16 +37,17 @@
       const date = new Date();
       date.setDate(date.getDate() - date.getDay());
 
-      const start = new Date(schedule.startTime).setFullYear(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate()
-      );
-      const end = new Date(schedule.endTime).setFullYear(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate()
-      );
+      const start = new Date(schedule.startTime);
+      const startDay = start.getDay();
+      start.setFullYear(date.getFullYear());
+      start.setMonth(date.getMonth());
+      start.setDate(date.getDate() + startDay);
+
+      const end = new Date(schedule.endTime);
+      const endDay = end.getDay();
+      end.setFullYear(date.getFullYear());
+      end.setMonth(date.getMonth());
+      end.setDate(date.getDate() + endDay);
 
       return {
         start,
