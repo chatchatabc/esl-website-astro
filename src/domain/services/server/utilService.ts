@@ -23,6 +23,16 @@ export function utilGetTimestampTimeOnly(timestamp: number) {
   return timestampTimeOnly;
 }
 
+export function utilGetTimestampDateOnly(timestamp: number) {
+  const day = new Date(timestamp).getUTCDay();
+
+  const date = new Date(0);
+  date.setUTCMonth(1);
+  date.setUTCDate(day);
+
+  return date.getTime();
+}
+
 export function utilFailedApiResponse(message: string, status: number = 500) {
   let title = "Internal Server Error";
   switch (status) {
@@ -135,7 +145,6 @@ export function utilCheckScheduleOverlap(
     const overlap = schedules.find((schedule) => {
       return (
         schedule.id !== old.id &&
-        schedule.day === old.day &&
         ((schedule.startTime >= old.startTime &&
           schedule.startTime < old.endTime) ||
           (schedule.endTime > old.startTime && schedule.endTime <= old.endTime))
