@@ -257,7 +257,7 @@ export async function scheduleDbInsertMany(
 ) {
   try {
     const stmt = bindings.DB.prepare(
-      "INSERT INTO schedules (teacherId, day, startTime, endTime, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
+      "INSERT INTO schedules (teacherId, startTime, endTime, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)"
     );
     await bindings.DB.batch(
       schedules.map((schedule) => {
