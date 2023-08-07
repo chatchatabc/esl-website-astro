@@ -49,7 +49,7 @@ export function authGetTokenPayload(token: string) {
   }
 
   if (!authValidateToken(token)) {
-    return null;
+    return undefined;
   }
 
   const wordArrayPayload = CryptoJS.enc.Base64url.parse(token.split(".")[1]);
@@ -57,7 +57,7 @@ export function authGetTokenPayload(token: string) {
   const data = JSON.parse(payload) as { id: number; exp: number };
 
   if (data.exp < Date.now() / 1000) {
-    return null;
+    return undefined;
   }
 
   return data.id;
