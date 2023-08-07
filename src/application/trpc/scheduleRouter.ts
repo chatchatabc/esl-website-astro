@@ -104,9 +104,26 @@ export const scheduleRouter = trpcRouterCreate({
     }),
 
   createMany: trpcProcedure
-    .input((value) => {
-      const data = value as ScheduleCreate[];
-      return data;
+    .input((values: any = []) => {
+      const data = values.map((value: any) => {
+        if (!value.teacherId || !value.startTime || !value.endTime) {
+          throw utilFailedResponse("Missing fields", 400);
+        } else if (value.startTime > value.endTime) {
+          throw utilFailedResponse("Start time cannot be after end time", 400);
+        }
+
+        return {
+          teacherId: value.teacherId,
+          startTime: value.startTime,
+          endTime: value.endTime,
+        };
+      });
+
+      return data as {
+        teacherId: number;
+        startTime: number;
+        endTime: number;
+      }[];
     })
     .mutation((opts) => {
       return scheduleCreateMany(opts.input, opts.ctx.env);

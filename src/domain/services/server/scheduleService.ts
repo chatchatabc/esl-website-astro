@@ -122,23 +122,21 @@ export async function scheduleDeleteMany(
 }
 
 export async function scheduleCreateMany(
-  schedules: ScheduleCreate[],
+  data: { startTime: number; endTime: number; teacherId: number }[],
   bindings: Bindings
 ) {
-  schedules = schedules.map((schedule) => {
+  // Fix day & time format
+  const schedules = data.map((schedule) => {
+    const day = new Date(schedule.startTime).getUTCDay();
+    const startTime = utilGetTimestampTimeOnly(schedule.startTime);
+    const endTime = startTime + (schedule.endTime - schedule.startTime);
     return {
       ...schedule,
-      startTime: utilGetTimestampTimeOnly(schedule.startTime),
-      endTime: utilGetTimestampTimeOnly(schedule.endTime),
+      startTime,
+      endTime,
+      day,
     };
   });
-
-  const correctTimeFormat = schedules.every((schedule) => {
-    return schedule.startTime < schedule.endTime;
-  });
-  if (!correctTimeFormat) {
-    throw utilFailedResponse("Incorrect time format", 400);
-  }
 
   let overlapped =
     (await scheduleDbGetOverlapMany(schedules, bindings)) ||

@@ -16,13 +16,11 @@ export function utilSuccessApiResponse(data: any, status: number = 200) {
 }
 
 export function utilGetTimestampTimeOnly(timestamp: number) {
-  const timestampTimeOnly = new Date(timestamp);
+  const hour = new Date(timestamp).getUTCHours();
+  const minute = new Date(timestamp).getUTCMinutes();
+  const timestampTimeOnly = hour * 60 * 60 * 1000 + minute * 60 * 1000;
 
-  timestampTimeOnly.setFullYear(1970);
-  timestampTimeOnly.setMonth(0);
-  timestampTimeOnly.setDate(1);
-
-  return timestampTimeOnly.getTime();
+  return timestampTimeOnly;
 }
 
 export function utilFailedApiResponse(message: string, status: number = 500) {
@@ -121,10 +119,14 @@ export function utilCheckScheduleOverlap(
 ) {
   let overlapped = false;
   schedules = schedules.map((schedule, index) => {
+    const day = new Date(schedule.startTime).getUTCDay();
+    const startTime = utilGetTimestampTimeOnly(schedule.startTime);
+    const endTime = startTime + (schedule.endTime - schedule.startTime);
     return {
       ...schedule,
-      startTime: utilGetTimestampTimeOnly(schedule.startTime),
-      endTime: utilGetTimestampTimeOnly(schedule.endTime),
+      startTime,
+      endTime,
+      day,
       id: index,
     };
   });
