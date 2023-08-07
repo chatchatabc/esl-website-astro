@@ -9,17 +9,11 @@
   import type { Schedule } from "src/domain/models/ScheduleModel";
   import { bookingGetAll } from "src/domain/services/client/bookingService";
   import {
-    scheduleConvertToRecurringEvent,
     scheduleCreateMany,
     scheduleDeleteMany,
     scheduleGetAllByUser,
     scheduleUpdateMany,
   } from "src/domain/services/client/scheduleService";
-
-  const timeFormatter = new Intl.DateTimeFormat("en", {
-    timeStyle: "short",
-    hourCycle: "h23",
-  });
 
   let calendarEl: any;
   let calendar: Calendar | null = null;
@@ -40,7 +34,24 @@
   });
   $: schedulesEvent = schedules
     .map((schedule) => {
-      return scheduleConvertToRecurringEvent(schedule);
+      const date = new Date();
+      date.setDate(date.getDate() - date.getDay());
+
+      const start = new Date(schedule.startTime).setFullYear(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      );
+      const end = new Date(schedule.endTime).setFullYear(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      );
+
+      return {
+        start,
+        end,
+      };
     })
     .flat();
 
@@ -95,15 +106,6 @@
     calendar?.removeAllEvents();
     calendar?.setOption("editable", true);
     calendar?.setOption("selectable", true);
-    calendar.setOption("customButtons", {
-      add: {
-        text: "Save",
-        click: () => {
-          const events = calendar?.getEvents() ?? [];
-          handleSave(events);
-        },
-      },
-    });
     calendar?.setOption("eventClick", (e) => {
       e.event.remove();
     });
@@ -119,14 +121,6 @@
     calendar?.removeAllEvents();
     calendar?.setOption("editable", false);
     calendar?.setOption("selectable", false);
-    calendar.setOption("customButtons", {
-      add: {
-        text: "Edit",
-        click: () => {
-          editing = !editing;
-        },
-      },
-    });
     calendar?.setOption("eventClick", undefined);
 
     schedulesEvent.forEach((event) => {
@@ -163,28 +157,22 @@
     calendar = new Calendar(calendarEl, {
       plugins: [timeGridPlugin, interactionPlugin],
       initialView: "timeGridWeek",
-      headerToolbar: {
-        left: "prev,next",
-        right: "add",
-      },
+      headerToolbar: false,
       views: {
         timeGridWeek: {
           allDaySlot: false,
+          dayHeaderContent: (header) => {
+            const date = header.date;
+            const dayName = date.toDateString().split(" ")[0];
+            return dayName;
+          },
         },
       },
       select: (e) => {
-        const day = e.start.getDay();
-
-        if (e.start.getDate() === e.end.getDate()) {
-          const endTime = timeFormatter.format(e.end);
-          const startTime = timeFormatter.format(e.start);
-          const event = {
-            endTime,
-            startTime,
-            daysOfWeek: [day],
-          };
-          calendar?.addEvent(event);
-        }
+        calendar?.addEvent({
+          start: e.start,
+          end: e.end,
+        });
       },
     });
 
@@ -192,6 +180,23 @@
   }
 </script>
 
-<section>
+<header class="flex justify-between items-center">
+  <h2 class="text-2xl">Weekly Schedule</h2>
+
+  <button
+    on:click={() => {
+      if (editing) {
+        handleSave(calendar?.getEvents() ?? []);
+      } else {
+        editing = !editing;
+      }
+    }}
+    class="px-4 py-2 bg-blue-500 rounded-md text-white"
+  >
+    {editing ? "Save" : "Edit"}
+  </button>
+</header>
+
+<section class="mt-2">
   <div bind:this={calendarEl} class="h-[80vh]" />
 </section>
