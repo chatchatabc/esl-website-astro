@@ -10,12 +10,12 @@
   import { authGetUserId } from "src/domain/services/client/authService";
   import { bookingGetAll } from "src/domain/services/client/bookingService";
   import {
+    scheduleConvertToRecurringEvent,
     scheduleCreateMany,
     scheduleDeleteMany,
     scheduleGetAllByUser,
     scheduleUpdateMany,
   } from "src/domain/services/client/scheduleService";
-  import { onMount } from "svelte";
 
   const timeFormatter = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
@@ -39,21 +39,11 @@
       color: "red",
     };
   });
-  $: schedulesEvent = schedules.map((event) => {
-    const start = new Date(event.startTime);
-    const end = new Date(event.endTime);
-
-    const startTime = timeFormatter.format(start);
-    const endTime = timeFormatter.format(end);
-
-    return {
-      title: "Open Schedule",
-      startTime,
-      endTime,
-      display: "background",
-      daysOfWeek: [event.day],
-    };
-  });
+  $: schedulesEvent = schedules
+    .map((schedule) => {
+      return scheduleConvertToRecurringEvent(schedule);
+    })
+    .flat();
 
   async function handleSave(events: EventImpl[]) {
     const eventSchedules = events.map((event, index) => {
@@ -122,14 +112,11 @@
     });
 
     schedulesEvent.forEach((event) => {
-      const activeEvent = {
+      calendar?.addEvent({
         ...event,
-        title: undefined,
         display: "block",
         overlap: false,
-      };
-      delete activeEvent.title;
-      calendar?.addEvent(activeEvent);
+      });
     });
   } else if (calendar) {
     calendar?.removeAllEvents();
@@ -146,7 +133,11 @@
     calendar?.setOption("eventClick", undefined);
 
     schedulesEvent.forEach((event) => {
-      calendar?.addEvent(event);
+      calendar?.addEvent({
+        ...event,
+        title: "Open Schedule",
+        display: "background",
+      });
     });
     bookingsEvent.forEach((event) => {
       calendar?.addEvent(event);
@@ -159,7 +150,12 @@
       if (!responseBooking) {
         return;
       }
-      schedules = (await scheduleGetAllByUser({ userId }))?.content ?? [];
+      const responseSchedule = await scheduleGetAllByUser({ userId });
+      if (!responseSchedule) {
+        return;
+      }
+
+      schedules = responseSchedule.content;
       bookings = responseBooking.content;
 
       loading = false;

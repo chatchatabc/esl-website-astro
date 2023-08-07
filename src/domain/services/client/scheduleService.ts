@@ -11,6 +11,44 @@ export async function scheduleGetAllByUser(params: { userId: number }) {
   }
 }
 
+/**
+ * Converts a schedule object to a recurring event object for FullCalendar
+ * @param schedules
+ * @returns recurring event object for FullCalendar
+ * @see https://fullcalendar.io/docs/event-object
+ */
+export function scheduleConvertToRecurringEvent(schedule: Schedule) {
+  const startDate = new Date(schedule.startTime);
+  const endDate = new Date(schedule.endTime);
+  const startTime = startDate.toTimeString().split(" ")[0];
+  const endTime = endDate.toTimeString().split(" ")[0];
+  const startDay = startDate.getDay();
+  const endDay = endDate.getDay();
+
+  if (startDay === endDay) {
+    return [
+      {
+        startTime,
+        endTime,
+        daysOfWeek: [startDay],
+      },
+    ];
+  }
+
+  return [
+    {
+      startTime,
+      endTime: "23:59:59",
+      daysOfWeek: [startDay],
+    },
+    {
+      startTime: "00:00:00",
+      endTime,
+      daysOfWeek: [endDay],
+    },
+  ];
+}
+
 export async function scheduleUpdateMany(params: {
   userId: number;
   schedules: Schedule[];
