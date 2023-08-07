@@ -28,7 +28,7 @@ export function utilGetTimestampDateOnly(timestamp: number) {
 
   const date = new Date(0);
   date.setUTCMonth(1);
-  date.setUTCDate(day);
+  date.setUTCDate(day + 1);
 
   return date.getTime();
 }
