@@ -65,15 +65,45 @@ export const scheduleRouter = trpcRouterCreate({
     }),
 
   updateManyByTeacher: trpcProcedure
-    .input((values) => {
-      const data = values as { userId: number; schedules: Schedule[] };
-      if (!data) {
+    .input((values: any = {}) => {
+      if (!values.schedules) {
         throw utilFailedResponse("Missing fields", 400);
       }
-      return data;
+
+      // Clean up the schedules input
+      values.schedule = values.schedules.map((schedule: Schedule) => {
+        return {
+          id: schedule.id,
+          teacherId: schedule.teacherId,
+          startTime: schedule.startTime,
+          endTime: schedule.endTime,
+        };
+      });
+
+      return values as {
+        userId?: number;
+        schedules: Schedule[];
+      };
     })
     .mutation((opts) => {
-      return scheduleUpdateMany(opts.input, opts.ctx.env);
+      const { userId = 0, env } = opts.ctx;
+
+      // If admin is updating a user's schedule
+      if (opts.input.userId && userId === 1) {
+        return scheduleUpdateMany(
+          { userId: opts.input.userId, schedules: opts.input.schedules },
+          env
+        );
+      }
+
+      // Check if the user is updating their own schedule
+      opts.input.schedules.forEach((schedule) => {
+        if (schedule.teacherId !== userId) {
+          throw utilFailedResponse("Unauthorized", 401);
+        }
+      });
+
+      return scheduleUpdateMany({ ...opts.input, userId }, env);
     }),
 
   create: trpcProcedure
