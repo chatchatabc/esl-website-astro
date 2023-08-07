@@ -4,7 +4,6 @@ export type Schedule = {
 
 export type ScheduleCreate = {
   teacherId: number;
-  day: number;
 } & ScheduleTime;
 
 export type ScheduleDayAndUser = {

@@ -50,8 +50,8 @@ INSERT INTO roles (name, createdAt, updatedAt) VALUES ('admin', 0, 0), ('student
 * updatedAt (timestamp)
 */
 DROP TABLE IF EXISTS schedules;
-CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY, teacherId INTEGER NOT NULL, startTime INTEGER NOT NULL, endTime INTEGER NOT NULL, day INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
-INSERT INTO schedules (teacherId, day, createdAt, updatedAt, startTime, endTime) VALUES (3, 0, 0, 0, -28800000, -10800000);
+CREATE TABLE IF NOT EXISTS schedules (id INTEGER PRIMARY KEY, teacherId INTEGER NOT NULL, startTime INTEGER NOT NULL, endTime INTEGER NOT NULL, createdAt INTEGER NOT NULL, updatedAt INTEGER NOT NULL);
+INSERT INTO schedules (teacherId, createdAt, updatedAt, startTime, endTime) VALUES (3, 0, 0, -28800000, -14400000);
 
 /**
 * id (integer)

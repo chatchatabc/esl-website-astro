@@ -82,12 +82,7 @@ export const scheduleRouter = trpcRouterCreate({
 
       if (!data) {
         throw utilFailedResponse("Missing fields", 400);
-      } else if (
-        !data.day ||
-        !data.teacherId ||
-        !data.endTime ||
-        !data.startTime
-      ) {
+      } else if (!data.teacherId || !data.endTime || !data.startTime) {
         throw utilFailedResponse("Missing fields", 400);
       } else if (data.startTime > data.endTime) {
         throw utilFailedResponse("Incorrect start and end date", 400);

@@ -127,14 +127,13 @@ export async function scheduleCreateMany(
 ) {
   // Fix day & time format
   const schedules = data.map((schedule) => {
-    const day = new Date(schedule.startTime).getUTCDay();
-    const startTime = utilGetTimestampTimeOnly(schedule.startTime);
+    const day = new Date(schedule.startTime).getUTCDay() * 24 * 60 * 60 * 1000;
+    const startTime = utilGetTimestampTimeOnly(schedule.startTime) + day;
     const endTime = startTime + (schedule.endTime - schedule.startTime);
     return {
       ...schedule,
       startTime,
       endTime,
-      day,
     };
   });
 
