@@ -17,6 +17,7 @@ import type { Bindings } from "src/server";
 import {
   utilCheckScheduleOverlap,
   utilFailedResponse,
+  utilGetTimestampDateOnly,
   utilGetTimestampTimeOnly,
 } from "./utilService";
 import type {
@@ -70,37 +71,50 @@ export async function scheduleUpdateMany(
   bindings: Bindings
 ) {
   let { userId, schedules } = params;
-  schedules = schedules.map((schedule) => {
-    return {
-      ...schedule,
-      startTime: utilGetTimestampTimeOnly(schedule.startTime),
-      endTime: utilGetTimestampTimeOnly(schedule.endTime),
-    };
-  });
 
-  const correctTimeFormat = schedules.every((schedule) => {
-    return schedule.startTime < schedule.endTime;
-  });
-  if (!correctTimeFormat) {
-    throw utilFailedResponse("Incorrect time format", 400);
-  }
-
+  // Get old schedules
   const query = await scheduleDbGetAllByUser({ userId }, bindings);
   if (!query) {
     throw utilFailedResponse("Cannot GET Schedules", 500);
   }
 
+  // Check if all schedules are owned by user
   const oldSchedules = query.results as any as Schedule[];
-  const combinedSchedules = oldSchedules.map((schedule) => {
-    const newSchedule = schedules.find((s) => s.id === schedule.id);
-    return newSchedule ? newSchedule : schedule;
+  if (
+    !schedules.every((schedule) => {
+      const oldSchedule = oldSchedules.find((s) => s.id === schedule.id);
+      return oldSchedule ? true : false;
+    })
+  ) {
+    throw utilFailedResponse("Unauthorized", 401);
+  }
+
+  // Fix day & time format
+  schedules = schedules.map((schedule) => {
+    const startTime =
+      utilGetTimestampTimeOnly(schedule.startTime) +
+      utilGetTimestampDateOnly(schedule.startTime);
+    const endTime = startTime + (schedule.endTime - schedule.startTime);
+    return {
+      ...schedule,
+      startTime,
+      endTime,
+    };
   });
 
+  // Merge old and new schedules
+  const combinedSchedules = oldSchedules.map((schedule) => {
+    const newSchedule = schedules.find((s) => s.id === schedule.id);
+    return newSchedule ?? schedule;
+  });
+
+  // Check if schedules overlap
   let overlapped = utilCheckScheduleOverlap(combinedSchedules);
   if (overlapped) {
     throw utilFailedResponse("Schedule overlaps", 400);
   }
 
+  // Update schedules
   const transaction = await scheduleDbUpdateMany(schedules, bindings);
   if (!transaction) {
     throw utilFailedResponse("Failed to update schedules", 500);
@@ -127,15 +141,11 @@ export async function scheduleCreateMany(
 ) {
   // Fix day & time format
   const schedules = data.map((schedule) => {
-    const day = new Date(schedule.startTime).getUTCDay();
-
-    const date = new Date(0);
-    date.setUTCMonth(1);
-    date.setUTCDate(day);
-
     const startTime =
-      utilGetTimestampTimeOnly(schedule.startTime) + date.getTime();
+      utilGetTimestampTimeOnly(schedule.startTime) +
+      utilGetTimestampDateOnly(schedule.startTime);
     const endTime = startTime + (schedule.endTime - schedule.startTime);
+
     return {
       ...schedule,
       startTime,

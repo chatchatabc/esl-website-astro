@@ -67,11 +67,22 @@ export const scheduleRouter = trpcRouterCreate({
   updateManyByTeacher: trpcProcedure
     .input((values: any = {}) => {
       if (!values.schedules) {
-        throw utilFailedResponse("Missing fields", 400);
+        throw utilFailedResponse("Missing schedules", 400);
       }
 
       // Clean up the schedules input
       values.schedule = values.schedules.map((schedule: Schedule) => {
+        if (
+          !schedule.id ||
+          !schedule.endTime ||
+          !schedule.startTime ||
+          !schedule.teacherId
+        ) {
+          throw utilFailedResponse("Missing fields in schedules", 400);
+        } else if (schedule.startTime > schedule.endTime) {
+          throw utilFailedResponse("Start time should not be after end time");
+        }
+
         return {
           id: schedule.id,
           teacherId: schedule.teacherId,
