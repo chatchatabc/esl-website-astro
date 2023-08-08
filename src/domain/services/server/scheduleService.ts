@@ -23,7 +23,9 @@ import {
 import type {
   Schedule,
   ScheduleCreate,
+  ScheduleCreateInput,
   ScheduleDayAndUser,
+  ScheduleUpdateInput,
 } from "src/domain/models/ScheduleModel";
 
 export async function scheduleGetAll(params: CommonParams, bindings: Bindings) {
@@ -67,7 +69,7 @@ export async function scheduleGetAllByUserAndDay(
 }
 
 export async function scheduleUpdateMany(
-  params: { userId: number; schedules: Schedule[] },
+  params: { userId: number; schedules: ScheduleUpdateInput[] },
   bindings: Bindings
 ) {
   let { userId, schedules } = params;
@@ -90,13 +92,16 @@ export async function scheduleUpdateMany(
   }
 
   // Fix day & time format
-  schedules = schedules.map((schedule) => {
+  const newSchedules = schedules.map((schedule) => {
+    const day = new Date(schedule.startTime).getUTCDay();
     const startTime =
       utilGetTimestampTimeOnly(schedule.startTime) +
       utilGetTimestampDateOnly(schedule.startTime);
     const endTime = startTime + (schedule.endTime - schedule.startTime);
     return {
-      ...schedule,
+      id: schedule.id,
+      teacherId: userId,
+      day,
       startTime,
       endTime,
     };
@@ -104,7 +109,7 @@ export async function scheduleUpdateMany(
 
   // Merge old and new schedules
   const combinedSchedules = oldSchedules.map((schedule) => {
-    const newSchedule = schedules.find((s) => s.id === schedule.id);
+    const newSchedule = newSchedules.find((s) => s.id === schedule.id);
     return newSchedule ?? schedule;
   });
 
@@ -115,7 +120,7 @@ export async function scheduleUpdateMany(
   }
 
   // Update schedules
-  const transaction = await scheduleDbUpdateMany(schedules, bindings);
+  const transaction = await scheduleDbUpdateMany(newSchedules, bindings);
   if (!transaction) {
     throw utilFailedResponse("Failed to update schedules", 500);
   }
@@ -136,31 +141,32 @@ export async function scheduleDeleteMany(
 }
 
 export async function scheduleCreateMany(
-  data: { startTime: number; endTime: number; teacherId: number }[],
+  data: { userId: number; schedules: ScheduleCreateInput[] },
   bindings: Bindings
 ) {
-  // Fix day & time format
-  const schedules = data.map((schedule) => {
-    const startTime =
-      utilGetTimestampTimeOnly(schedule.startTime) +
-      utilGetTimestampDateOnly(schedule.startTime);
-    const endTime = startTime + (schedule.endTime - schedule.startTime);
+  let { userId, schedules } = data;
 
+  // Fix day & time format
+  const newSchedules = schedules.map((schedule) => {
+    const day = new Date(schedule.startTime).getUTCDay();
+    const startTime = utilGetTimestampTimeOnly(schedule.startTime);
+    const endTime = startTime + (schedule.endTime - schedule.startTime);
     return {
-      ...schedule,
+      teacherId: userId,
       startTime,
       endTime,
+      day,
     };
   });
 
   let overlapped =
-    (await scheduleDbGetOverlapMany(schedules, bindings)) ||
-    utilCheckScheduleOverlap(schedules);
+    (await scheduleDbGetOverlapMany(newSchedules, bindings)) ||
+    utilCheckScheduleOverlap(newSchedules);
   if (overlapped) {
     throw utilFailedResponse("Schedule overlaps", 400);
   }
 
-  const success = await scheduleDbInsertMany(schedules, bindings);
+  const success = await scheduleDbInsertMany(newSchedules, bindings);
   if (!success) {
     throw utilFailedResponse("Failed to create schedules", 500);
   }

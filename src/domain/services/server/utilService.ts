@@ -124,11 +124,10 @@ export function utilValidateCommonParams(params?: any) {
   return params;
 }
 
-export function utilCheckScheduleOverlap(
-  schedules: (ScheduleCreate & { id?: number })[]
-) {
+export function utilCheckScheduleOverlap(schedules: ScheduleCreate[]) {
   let overlapped = false;
-  schedules = schedules.map((schedule, index) => {
+  // Fix the day and convert the time to timestamp
+  const newSchedules = schedules.map((schedule, index) => {
     const day = new Date(schedule.startTime).getUTCDay();
     const startTime = utilGetTimestampTimeOnly(schedule.startTime);
     const endTime = startTime + (schedule.endTime - schedule.startTime);
@@ -141,10 +140,11 @@ export function utilCheckScheduleOverlap(
     };
   });
 
-  schedules.forEach((old) => {
-    const overlap = schedules.find((schedule) => {
+  newSchedules.forEach((old) => {
+    const overlap = newSchedules.find((schedule) => {
       return (
         schedule.id !== old.id &&
+        schedule.day === old.day &&
         ((schedule.startTime >= old.startTime &&
           schedule.startTime < old.endTime) ||
           (schedule.endTime > old.startTime && schedule.endTime <= old.endTime))
