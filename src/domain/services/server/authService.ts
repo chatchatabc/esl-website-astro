@@ -137,7 +137,7 @@ export async function authGetPhoneToken(
   // Send message
   const message = {
     mobile: user.phone,
-    content: `【恰恰英语】您的手机验证码是${randomToken}，有效期仅5分钟。`,
+    content: `【智能云】您的验证码是${randomToken}。如非本人操作，请忽略本短信`,
   };
   const response = await messageSend(message);
 

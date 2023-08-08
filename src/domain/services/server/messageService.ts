@@ -1,28 +1,29 @@
-import type { Bindings } from "src/server";
+const baseUrl = "https://smsv2.market.alicloudapi.com/sms/sendv2";
 
-export async function messageSend(
-  params: { body: string; to: string },
-  bindings: Bindings
-) {
-  const endpoint = "https://rest.nexmo.com/sms/json";
-
-  let encoded = new URLSearchParams();
-  encoded.append("from", "Vonage APIs");
-  encoded.append("text", params.body);
-  encoded.append("to", params.to);
-  encoded.append("api_key", bindings.NEXMO_API_KEY);
-  encoded.append("api_secret", bindings.NEXMO_API_SECRET);
-
+/**
+ * Send a message to the given mobile number
+ * @param params {content: string, mobile: string}
+ * @returns {Promise<null|Response>}
+ * @seeMore https://market.aliyun.com/products/57000002/cmapi00046952.html
+ */
+export async function messageSend(params: { content: string; mobile: string }) {
   const request = {
-    method: "POST",
+    method: "GET",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: "APPCODE b567b7be3fe7490c853ef2b222623294",
     },
-    body: encoded,
   };
 
+  // Remove the country code
+  params.mobile = params.mobile.replace("+86", "");
+
+  const url = new URL(baseUrl);
+  url.search = new URLSearchParams(params).toString();
+
+  console.log(url.toString());
+
   try {
-    const response = await fetch(endpoint, request);
+    const response = await fetch(url, request);
     const data = await response.json();
     return data;
   } catch (e) {
