@@ -6,7 +6,9 @@ import type { CommonParams } from "src/domain/models/CommonModel";
 import type {
   Schedule,
   ScheduleCreate,
+  ScheduleCreateInput,
   ScheduleDayAndUser,
+  ScheduleUpdateInput,
 } from "src/domain/models/ScheduleModel";
 import {
   scheduleCreate,
@@ -93,7 +95,7 @@ export const scheduleRouter = trpcRouterCreate({
 
       return values as {
         userId?: number;
-        schedules: Schedule[];
+        schedules: ScheduleUpdateInput[];
       };
     })
     .mutation((opts) => {
@@ -106,13 +108,6 @@ export const scheduleRouter = trpcRouterCreate({
           env
         );
       }
-
-      // Check if the user is updating their own schedule
-      opts.input.schedules.forEach((schedule) => {
-        if (schedule.teacherId !== userId) {
-          throw utilFailedResponse("Unauthorized", 401);
-        }
-      });
 
       return scheduleUpdateMany({ ...opts.input, userId }, env);
     }),
@@ -140,10 +135,17 @@ export const scheduleRouter = trpcRouterCreate({
     }),
 
   createMany: trpcProcedure
-    .input((values: any = []) => {
-      const data = values.map((value: any) => {
+    .input((values: any = {}) => {
+      if (!values.schedules) {
+        throw utilFailedResponse("Missing schedules", 400);
+      }
+
+      values.schedules = values.schedules.map((value: any) => {
         if (!value.teacherId || !value.startTime || !value.endTime) {
-          throw utilFailedResponse("Missing fields", 400);
+          throw utilFailedResponse(
+            "Missing fields teacherId, startTime, and endTime",
+            400
+          );
         } else if (value.startTime > value.endTime) {
           throw utilFailedResponse("Start time cannot be after end time", 400);
         }
@@ -155,14 +157,24 @@ export const scheduleRouter = trpcRouterCreate({
         };
       });
 
-      return data as {
-        teacherId: number;
-        startTime: number;
-        endTime: number;
-      }[];
+      return values as {
+        schedules: ScheduleCreateInput[];
+        userId?: number;
+      };
     })
     .mutation((opts) => {
-      return scheduleCreateMany(opts.input, opts.ctx.env);
+      const { userId = 0, env } = opts.ctx;
+      const { schedules } = opts.input;
+
+      // If admin is creating a user's schedule
+      if (opts.input.userId && userId === 1) {
+        return scheduleCreateMany(
+          { userId: opts.input.userId, schedules },
+          env
+        );
+      }
+
+      return scheduleCreateMany({ userId, schedules }, opts.ctx.env);
     }),
 
   deleteMany: trpcProcedure
