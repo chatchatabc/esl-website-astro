@@ -6,8 +6,6 @@ import { trpcContext } from "./domain/infra/trpcServerActions";
 export type Bindings = {
   DB: D1Database;
   KV: KVNamespace;
-  NEXMO_API_KEY: string;
-  NEXMO_API_SECRET: string;
 };
 
 export default {

@@ -10,7 +10,3 @@ kv_namespaces = [
 binding = "DB"
 database_name = "esl"
 database_id = "5ac1b98b-3ca6-4079-8064-44e00c6d7f92"
-
-[vars]
-NEXMO_API_KEY = "2a470f3f"
-NEXMO_API_SECRET = "hEecu0inO94i8Uuu"
