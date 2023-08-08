@@ -67,38 +67,28 @@
       calendar.removeAllEvents();
 
       schedules.map((schedule) => {
-        const currentDate = new Date(calendarDate);
-        console.log(currentDate);
-        currentDate.setDate(currentDate.getDate() + schedule.day);
-        const startTime = new Date(schedule.startTime);
-        const endTime = new Date(schedule.endTime);
-        let start = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          currentDate.getDate(),
-          startTime.getHours(),
-          startTime.getMinutes()
-        );
-        let end = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          currentDate.getDate(),
-          endTime.getHours(),
-          endTime.getMinutes()
-        );
+        let start = new Date(schedule.startTime);
+        start.setFullYear(calendarDate.getFullYear());
+        start.setMonth(calendarDate.getMonth());
+        start.setUTCDate(calendarDate.getUTCDate() + schedule.day);
+        const diff = schedule.endTime - schedule.startTime;
+        const end = new Date(start.getTime() + diff);
 
+        // Create event for each 30 minutes
         while (start < end) {
+          // Only add events that are in the future
+          if (start < new Date()) {
+            start = new Date(start.getTime() + 30 * 60000);
+            continue;
+          }
+
           const event = {
             id: `open-${start.getTime()}`,
             title: "Open Schedule",
             start,
             end: start.getTime() + 30 * 60000,
           };
-
-          if (start > new Date()) {
-            calendar?.addEvent(event);
-          }
-
+          calendar?.addEvent(event);
           start = new Date(start.getTime() + 30 * 60000);
         }
       });
