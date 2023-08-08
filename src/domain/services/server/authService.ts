@@ -3,9 +3,8 @@ import CryptoJS from "crypto-js";
 import {
   utilFailedApiResponse,
   utilFailedResponse,
-  utilSuccessApiResponse,
 } from "../server/utilService";
-import type { UserLogin, UserRegister } from "../../models/UserModel";
+import type { UserLogin, UserRegisterInput } from "../../models/UserModel";
 import type { Bindings } from "src/server";
 
 const secret = "I)0Don't!1Care@2";
@@ -63,23 +62,22 @@ export function authGetTokenPayload(token: string) {
   return data.id;
 }
 
-export async function authRegister(input: UserRegister, env: Bindings) {
+export async function authRegister(input: UserRegisterInput, env: Bindings) {
   let user = await userDbGetByUsername(input.username, env);
   if (user) {
-    return utilFailedApiResponse("User already exists", 400);
+    throw utilFailedApiResponse("User already exists", 400);
   }
 
-  user = await userDbInsert(input, env);
-  if (!user) {
-    return utilFailedApiResponse("Failed to create user", 500);
+  const password = authCreateHash(input.password).toString();
+
+  // Insert user with role of 2 (student)
+  const query = await userDbInsert({ ...input, roleId: 2, password }, env);
+  if (!query) {
+    throw utilFailedApiResponse("Failed to create user", 500);
   }
 
-  const token = authCreateToken(user.id);
-  delete user.password;
-  const response = utilSuccessApiResponse({ data: user }, 200);
-  response.headers.append("x-access-token", token);
-  response.headers.append("Access-Control-Expose-Headers", "x-access-token");
-  return response;
+  user = await userDbGetByUsername(input.username, env);
+  return user;
 }
 
 export async function authLogin(body: UserLogin, env: Bindings) {

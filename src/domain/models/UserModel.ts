@@ -40,11 +40,13 @@ export type UserRole = {
 };
 
 export type UserRegister = {
+  roleId: number;
+} & UserRegisterInput;
+
+export type UserRegisterInput = {
   username: string;
   password: string;
   confirmPassword: string;
-
-  role: number;
 };
 
 export type UserLogin = {

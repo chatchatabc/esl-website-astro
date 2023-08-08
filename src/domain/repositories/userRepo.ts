@@ -99,25 +99,17 @@ export async function userDbGetByUsername(value: string, bindings: Bindings) {
 }
 
 export async function userDbInsert(body: UserRegister, bindings: Bindings) {
-  const { username, password, role } = body;
+  const { username, password, roleId } = body;
   const date = new Date();
-
   try {
     await bindings.DB.prepare(
-      "INSERT INTO users (username, password, createdAt, updatedAt, role) VALUES (?, ?, ?, ?, ?)"
+      "INSERT INTO users (username, password, createdAt, updatedAt, roleId, credit) VALUES (?, ?, ?, ?, ?, ?)"
     )
-      .bind(
-        username,
-        authCreateHash(password),
-        date.toISOString(),
-        date.toISOString(),
-        role
-      )
+      .bind(username, password, date.getTime(), date.getTime(), roleId, 0)
       .run();
-
-    return await userDbGetByUsername(username, bindings);
+    return true;
   } catch (e) {
     console.log(e);
-    return null;
+    return false;
   }
 }
