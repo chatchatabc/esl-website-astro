@@ -16,12 +16,13 @@ export async function authLogout() {
   try {
     const response = await trpcClient.auth.logout.query();
     if (response) {
-      sessionStorage.removeItem("userId");
+      document.cookie = `userId=; path=/; max-age=0`;
       return true;
     }
     return false;
   } catch (e) {
     console.log(e);
+    document.cookie = `userId=; path=/; max-age=0`;
     return null;
   }
 }
@@ -29,6 +30,9 @@ export async function authLogout() {
 export async function authRegister(data: UserRegisterInput) {
   try {
     const response = await trpcClient.auth.register.mutate(data);
+    if (response) {
+      document.cookie = `userId=${response.id}; path=/; max-age=31536000`;
+    }
     return response;
   } catch (e) {
     console.log(e);
@@ -37,10 +41,14 @@ export async function authRegister(data: UserRegisterInput) {
 }
 
 export function authGetUserId() {
-  const userId = sessionStorage.getItem("userId");
+  const cookie = document.cookie;
+  const userId = cookie
+    .split("; ")
+    .find((item) => item.includes("userId="))
+    ?.split("=")[1];
 
   if (!userId) {
-    return null;
+    return undefined;
   }
 
   return Number(userId);
