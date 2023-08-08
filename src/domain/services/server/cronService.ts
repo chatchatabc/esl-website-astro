@@ -12,22 +12,37 @@ export async function cronRemindClass(bindings: Bindings) {
     throw new Error("Failed to get bookings");
   }
 
+  const timeFormatter = new Intl.DateTimeFormat("en-US", {
+    timeStyle: "short",
+  });
+  const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+  });
+  const userIds: number[] = [];
+
   for (const booking of bookings) {
     const userId = booking.studentId ?? 0;
-    const user = await userDbGet({ userId }, bindings);
+    const student = await userDbGet({ userId }, bindings);
     const teacher = await userDbGet({ userId: booking.teacherId }, bindings);
 
-    if (user && teacher && user.phone) {
-      const classTime = new Date(booking.start).toLocaleString("en-US", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      });
+    if (!userIds.includes(userId) && student && teacher && student.phone) {
+      const classes = bookings.filter((b) => b.studentId === userId);
+      const message = `Hi ${student.username}, soon you will have ${classes.length} classes in this following time:`;
 
-      const message = `You have a class with teacher ${booking.teacher?.firstName} ${booking.teacher?.lastName} at ${classTime}!`;
+      for (const c of classes) {
+        const startTime = timeFormatter.format(new Date(booking.start));
+        const endTime = timeFormatter.format(new Date(booking.end));
+        const date = dateFormatter.format(new Date(booking.start));
+        message.concat(
+          `\n${startTime}-${endTime}@${date} with teacher ${teacher.firstName} ${teacher.lastName}}`
+        );
+      }
+
       await messageSend({
         content: message,
-        mobile: user.phone,
+        mobile: student.phone,
       });
+      userIds.push(userId);
     }
   }
 
