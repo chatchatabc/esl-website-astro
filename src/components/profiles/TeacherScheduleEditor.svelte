@@ -6,7 +6,10 @@
   import interactionPlugin from "@fullcalendar/interaction";
   import timeGridPlugin from "@fullcalendar/timegrid";
   import type { Booking } from "src/domain/models/BookingModel";
-  import type { Schedule } from "src/domain/models/ScheduleModel";
+  import type {
+    Schedule,
+    ScheduleUpdateInput,
+  } from "src/domain/models/ScheduleModel";
   import { bookingGetAll } from "src/domain/services/client/bookingService";
   import {
     scheduleCreateMany,
@@ -38,16 +41,11 @@
       date.setDate(date.getDate() - date.getDay());
 
       const start = new Date(schedule.startTime);
-      const startDay = start.getDay();
       start.setFullYear(date.getFullYear());
       start.setMonth(date.getMonth());
-      start.setDate(date.getDate() + startDay);
-
-      const end = new Date(schedule.endTime);
-      const endDay = end.getDay();
-      end.setFullYear(date.getFullYear());
-      end.setMonth(date.getMonth());
-      end.setDate(date.getDate() + endDay);
+      start.setUTCDate(date.getDate() + schedule.day);
+      const diff = schedule.endTime - schedule.startTime;
+      const end = new Date(start.getTime() + diff);
 
       return {
         start,
@@ -81,7 +79,7 @@
       response = await scheduleDeleteMany(deleteSchedules);
     }
 
-    const updateSchedules: Schedule[] = eventSchedules.filter(
+    const updateSchedules: ScheduleUpdateInput[] = eventSchedules.filter(
       (schedule) => schedule.id
     );
     const responseUpdate = await scheduleUpdateMany({
