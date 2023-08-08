@@ -69,7 +69,7 @@ import MainLayout from "@layouts/MainLayout.astro";
 </MainLayout>
 
 <script>
-  import type { UserRegister } from "src/domain/models/UserModel";
+  import type { UserRegisterInput } from "src/domain/models/UserModel";
   import { authRegister } from "src/domain/services/client/authService";
 
   const form = document.querySelector<HTMLFormElement>("[data-register-form]")!;
@@ -77,20 +77,24 @@ import MainLayout from "@layouts/MainLayout.astro";
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(form);
-    const data: UserRegister = Object.fromEntries(formData.entries()) as any;
+    const objData = Object.fromEntries(formData.entries()) as any;
+    const data: UserRegisterInput = {
+      username: objData.username,
+      password: objData.password,
+      confirmPassword: objData.confirmPassword,
+    };
 
     if (data.password !== data.confirmPassword) {
       alert("Passwords do not match");
       return;
     }
-    data.role = 1;
 
     const response = await authRegister(data);
 
-    if (response.errors) {
-      alert(response.errors[0].message);
+    if (!response) {
+      alert("Something went wrong");
     } else {
-      // alert("Account created successfully")
+      // alert("Account created successfully");
       window.location.href = "/register/completion";
     }
   });

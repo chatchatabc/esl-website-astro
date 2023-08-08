@@ -3,11 +3,13 @@ import {
   trpcProcedure,
   trpcRouterCreate,
 } from "src/domain/infra/trpcServerActions";
-import type { UserLogin } from "src/domain/models/UserModel";
+import type { UserLogin, UserRegisterInput } from "src/domain/models/UserModel";
 import {
   authCreateToken,
   authLogin,
+  authRegister,
 } from "src/domain/services/server/authService";
+import { utilFailedResponse } from "src/domain/services/server/utilService";
 
 export default trpcRouterCreate({
   login: trpc.procedure
@@ -35,4 +37,31 @@ export default trpcRouterCreate({
     );
     return true;
   }),
+
+  register: trpc.procedure
+    .input((values: any = {}) => {
+      if (!values.username || !values.password || !values.confirmPassword) {
+        throw utilFailedResponse("Missing fields for register", 400);
+      }
+
+      return {
+        username: values.username,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      } as UserRegisterInput;
+    })
+    .mutation(async (opts) => {
+      const user = await authRegister(opts.input, opts.ctx.env);
+      if (!user) {
+        throw utilFailedResponse("Failed to register user", 400);
+      }
+
+      const token = authCreateToken(user.id);
+      opts.ctx.resHeaders.append(
+        "Set-Cookie",
+        `token=${token}; Path=/; SameSite=None; Secure; HttpOnly`
+      );
+
+      return user;
+    }),
 });
