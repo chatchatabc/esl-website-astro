@@ -180,6 +180,27 @@ export async function bookingDbUpdate(values: Booking, bindings: Bindings) {
   }
 }
 
+/**
+ * Get all bookings by date range
+ * @param params { start: number, end: number } - timestamp in milliseconds
+ */
+export async function bookingDbGetAllByDate(
+  params: { start: number; end: number },
+  bindings: Bindings
+) {
+  const { start, end } = params;
+  try {
+    const stmt = bindings.DB.prepare(
+      "SELECT * FROM bookings WHERE (start >= ? AND end <= ?) AND status = 1"
+    ).bind(start, end);
+    const results = await stmt.all<Booking>();
+    return results.results;
+  } catch (e) {
+    console.log(e);
+    return undefined;
+  }
+}
+
 export async function bookingDbGetOverlap(
   values: BookingCreate & { id?: number },
   bindings: Bindings

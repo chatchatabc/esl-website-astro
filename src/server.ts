@@ -2,6 +2,7 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { trpcRouter } from "./application/trpc";
 import rest from "./application/rest";
 import { trpcContext } from "./domain/infra/trpcServerActions";
+import { cronRemindClass } from "./domain/services/server/cronService";
 
 export type Bindings = {
   DB: D1Database;
@@ -47,5 +48,10 @@ export default {
     }
 
     return new Response("Not found", { status: 404 });
+  },
+  async scheduled(event: ScheduledEvent, env: Bindings, ctx: ExecutionContext) {
+    if (event.cron === "0 5 * * *") {
+      ctx.waitUntil(cronRemindClass(env));
+    }
   },
 };
