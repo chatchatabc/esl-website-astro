@@ -87,7 +87,7 @@ export async function scheduleDbUpdateMany(
 ) {
   try {
     const stmt = bindings.DB.prepare(
-      "UPDATE schedules SET startTime = ?, endTime = ?, updatedAt = ?, teacherId = ? WHERE id = ?"
+      "UPDATE schedules SET startTime = ?, endTime = ?, updatedAt = ?, teacherId = ?, day = ? WHERE id = ?"
     );
     await bindings.DB.batch(
       schedules.map((schedule) => {
@@ -96,6 +96,7 @@ export async function scheduleDbUpdateMany(
           schedule.endTime,
           Date.now(),
           schedule.teacherId,
+          schedule.day,
           schedule.id
         );
       })
@@ -207,9 +208,10 @@ export async function scheduleDbGetOverlapMany(
     const totals = await bindings.DB.batch<Record<string, any>>(
       schedules.map((schedule) => {
         return bindings.DB.prepare(
-          "SELECT COUNT(*) AS total FROM schedules WHERE (teacherId = ? AND ((startTime <= ? AND endTime > ?) OR (startTime < ? AND endTime >= ?)))"
+          "SELECT COUNT(*) AS total FROM schedules WHERE (teacherId = ? AND day = ? AND ((startTime <= ? AND endTime > ?) OR (startTime < ? AND endTime >= ?)))"
         ).bind(
           schedule.teacherId,
+          schedule.day,
           schedule.startTime,
           schedule.startTime,
           schedule.endTime,
@@ -257,7 +259,7 @@ export async function scheduleDbInsertMany(
 ) {
   try {
     const stmt = bindings.DB.prepare(
-      "INSERT INTO schedules (teacherId, startTime, endTime, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)"
+      "INSERT INTO schedules (teacherId, startTime, endTime, day, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)"
     );
     await bindings.DB.batch(
       schedules.map((schedule) => {
@@ -266,6 +268,7 @@ export async function scheduleDbInsertMany(
           schedule.teacherId,
           schedule.startTime,
           schedule.endTime,
+          schedule.day,
           date,
           date
         );
