@@ -12,7 +12,7 @@ export async function cronRemindClass(bindings: Bindings) {
     throw new Error("Failed to get bookings");
   }
 
-  bookings.forEach(async (booking) => {
+  for (const booking of bookings) {
     const userId = booking.studentId ?? 0;
     const user = await userDbGet({ userId }, bindings);
     const teacher = await userDbGet({ userId: booking.teacherId }, bindings);
@@ -29,5 +29,7 @@ export async function cronRemindClass(bindings: Bindings) {
         mobile: user.phone,
       });
     }
-  });
+  }
+
+  return true;
 }
