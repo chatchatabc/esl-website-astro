@@ -4,7 +4,9 @@ import { trpcClient } from "src/domain/infra/trpcClientActions";
 export async function authLogin(data: UserLogin) {
   try {
     const user = await trpcClient.auth.login.mutate(data);
-    sessionStorage.setItem("userId", user.id.toString());
+    if (user) {
+      document.cookie = `userId=${user.id}; path=/; max-age=31536000`;
+    }
     return user;
   } catch (e) {
     console.log(e);
