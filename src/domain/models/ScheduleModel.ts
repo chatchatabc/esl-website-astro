@@ -3,8 +3,8 @@ export type Schedule = {
 } & ScheduleCreate;
 
 export type ScheduleCreate = {
-  teacherId: number;
-} & ScheduleTime;
+  day: number;
+} & ScheduleCreateInput;
 
 export type ScheduleDayAndUser = {
   day: number;
@@ -15,3 +15,12 @@ export type ScheduleTime = {
   startTime: number;
   endTime: number;
 };
+
+export type ScheduleUpdateInput = {
+  id: number;
+  teacherId: number;
+} & ScheduleTime;
+
+export type ScheduleCreateInput = {
+  teacherId: number;
+} & ScheduleTime;
