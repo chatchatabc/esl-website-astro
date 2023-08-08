@@ -148,7 +148,9 @@
     if (response) {
       showModal = false;
     } else {
-      alert("Something went wrong");
+      alert(
+        "Unable to book schedule. Please refresh the page and try again later."
+      );
     }
 
     loading = true;
@@ -169,9 +171,8 @@
         page: 0,
         size: 100000,
       });
-      if (!responseBooking) {
-        alert("Something went wrong");
-      } else {
+
+      if (responseBooking) {
         bookings = responseBooking.content;
       }
 
@@ -342,7 +343,12 @@
     class="bg-white rounded-xl p-4 flex justify-center items-center h-[40vh]"
   >
     <p class="text-center">
-      Please <a href="/login">login</a> to view this page
+      Please <a
+        class="text-blue-500 underline hover:no-underline"
+        href="/login"
+      >
+        login
+      </a> in order to book a schedule with a teacher.
     </p>
   </div>
 {/if}
