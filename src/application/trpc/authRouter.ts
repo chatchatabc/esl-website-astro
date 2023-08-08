@@ -6,8 +6,10 @@ import {
 import type { UserLogin, UserRegisterInput } from "src/domain/models/UserModel";
 import {
   authCreateToken,
+  authGetPhoneToken,
   authLogin,
   authRegister,
+  authValidatePhoneToken,
 } from "src/domain/services/server/authService";
 import { utilFailedResponse } from "src/domain/services/server/utilService";
 
@@ -63,5 +65,23 @@ export default trpcRouterCreate({
       );
 
       return user;
+    }),
+
+  getPhoneToken: trpcProcedure.query((opts) => {
+    const { userId = 0, env } = opts.ctx;
+    return authGetPhoneToken({ userId }, env);
+  }),
+
+  validatePhoneToken: trpcProcedure
+    .input((values: any = {}) => {
+      if (!values.token) {
+        throw utilFailedResponse("Missing token", 400);
+      }
+      return values as { token: string };
+    })
+    .mutation((opts) => {
+      const { userId = 0, env } = opts.ctx;
+      const { token } = opts.input;
+      return authValidatePhoneToken({ userId, token }, opts.ctx.env);
     }),
 });

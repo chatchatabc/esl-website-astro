@@ -1,4 +1,9 @@
-import { userDbGetByUsername, userDbInsert } from "../../repositories/userRepo";
+import {
+  userDbGet,
+  userDbGetByUsername,
+  userDbInsert,
+  userDbUpdate,
+} from "../../repositories/userRepo";
 import CryptoJS from "crypto-js";
 import {
   utilFailedApiResponse,
@@ -6,6 +11,7 @@ import {
 } from "../server/utilService";
 import type { UserLogin, UserRegisterInput } from "../../models/UserModel";
 import type { Bindings } from "src/server";
+import { messageSend } from "./messageService";
 
 const secret = "I)0Don't!1Care@2";
 const jwtHeader = JSON.stringify({ alg: "HS256", typ: "JWT" });
@@ -100,4 +106,79 @@ export function authGenerateRandomToken(length = 6) {
   }
 
   return token;
+}
+
+export async function authGetPhoneToken(
+  params: { userId: number },
+  bindings: Bindings
+) {
+  // Get user
+  const user = await userDbGet(params, bindings);
+  if (!user) {
+    throw utilFailedResponse("Cannot find user", 404);
+  }
+
+  // Check if user has phone number
+  if (!user.phone) {
+    throw utilFailedResponse("Cannot find phone number", 404);
+  }
+
+  // Generate 6 digits token
+  const randomToken = authGenerateRandomToken();
+
+  // Save token to KV
+  const data = {
+    type: "phone",
+    userId: user.id,
+    exp: new Date().getTime() + 1000 * 60 * 5,
+  };
+  await bindings.KV.put(randomToken, JSON.stringify(data));
+
+  // Send message
+  const message = {
+    mobile: user.phone,
+    content: `【恰恰英语】您的手机验证码是${randomToken}，有效期仅5分钟。`,
+  };
+  const response = await messageSend(message);
+
+  return response;
+}
+
+export async function authValidatePhoneToken(
+  params: { token: string; userId: number },
+  bindings: Bindings
+) {
+  // Get token from KV
+  const data = await bindings.KV.get(params.token);
+  if (!data) {
+    throw utilFailedResponse("Invalid token", 400);
+  }
+
+  // Validate token
+  const parsedData = JSON.parse(data);
+  if (parsedData.type !== "phone") {
+    throw utilFailedResponse("Invalid token", 400);
+  } else if (parsedData.exp < new Date().getTime()) {
+    throw utilFailedResponse("Expired token", 400);
+  } else if (parsedData.userId !== params.userId) {
+    throw utilFailedResponse("Invalid token", 400);
+  }
+
+  // Get user
+  const user = await userDbGet({ userId: params.userId }, bindings);
+  if (!user) {
+    throw utilFailedResponse("Cannot find user", 404);
+  }
+  // Verify user phone
+  user.phoneVerifiedAt = new Date().getTime();
+  // Update user
+  const update = await userDbUpdate(user, bindings);
+  if (!update) {
+    throw utilFailedResponse("Error", 500);
+  }
+
+  // Delete token from KV
+  await bindings.KV.delete(params.token);
+
+  return true;
 }

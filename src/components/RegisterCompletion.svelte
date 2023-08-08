@@ -1,14 +1,16 @@
 <script lang="ts">
   import type { User } from "src/domain/models/UserModel";
   import {
-    userGetPhoneToken,
     userGetProfile,
     userUpdateProfile,
-    userValidatePhone,
   } from "src/domain/services/client/userService";
   import { onMount } from "svelte";
   import LoadingComp from "./LoadingComp.svelte";
   import { validatePhoneNumber } from "src/domain/services/validationService";
+  import {
+    authGetPhoneToken,
+    authValidatePhoneToken,
+  } from "src/domain/services/client/authService";
 
   let sendLoading = false;
   let interval: any = null;
@@ -19,7 +21,7 @@
 
   async function handleGetPhoneToken() {
     sendLoading = true;
-    const response = await userGetPhoneToken();
+    const response = await authGetPhoneToken();
     if (response) {
       timer = 60;
       interval = setInterval(() => {
@@ -37,10 +39,10 @@
   async function handleValidatePhoneToken(e: any) {
     const formData = new FormData(e.target);
     const objData = Object.fromEntries(formData.entries());
-
-    const response = await userValidatePhone({
+    const response = await authValidatePhoneToken({
       token: objData.token as string,
     });
+
     if (!response) {
       alert("Failed to validate phone");
     } else {

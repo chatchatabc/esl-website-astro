@@ -55,3 +55,23 @@ export function authGetUserId() {
 
   return Number(userId);
 }
+
+export async function authGetPhoneToken() {
+  try {
+    const response = await trpcClient.auth.getPhoneToken.query();
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function authValidatePhoneToken(params: { token: string }) {
+  try {
+    const response = await trpcClient.auth.validatePhoneToken.mutate(params);
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
