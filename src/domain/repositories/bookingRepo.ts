@@ -181,18 +181,39 @@ export async function bookingDbUpdate(values: Booking, bindings: Bindings) {
 }
 
 /**
- * Get all bookings by date range
+ * Get all bookings by date range based on start date
  * @param params { start: number, end: number } - timestamp in milliseconds
  */
-export async function bookingDbGetAllByDate(
+export async function bookingDbGetAllByDateStart(
   params: { start: number; end: number },
   bindings: Bindings
 ) {
   const { start, end } = params;
   try {
     const stmt = bindings.DB.prepare(
-      "SELECT * FROM bookings WHERE start >= ? AND status = 1"
-    ).bind(start);
+      "SELECT * FROM bookings WHERE (start >= ? AND start <= ?) AND status = 1"
+    ).bind(start, end);
+    const results = await stmt.all<Booking>();
+    return results.results;
+  } catch (e) {
+    console.log(e);
+    return undefined;
+  }
+}
+
+/**
+ * Get all bookings by date range based on end date
+ * @param params { start: number, end: number } - timestamp in milliseconds
+ */
+export async function bookingDbGetAllByDateEnd(
+  params: { start: number; end: number },
+  bindings: Bindings
+) {
+  const { start, end } = params;
+  try {
+    const stmt = bindings.DB.prepare(
+      "SELECT * FROM bookings WHERE (end >= ? AND end <= ?) AND status = 1"
+    ).bind(start, end);
     const results = await stmt.all<Booking>();
     return results.results;
   } catch (e) {
@@ -232,5 +253,29 @@ export async function bookingDbGetTotalByUser(
   } catch (e) {
     console.log(e);
     return null;
+  }
+}
+
+export async function bookingDbUpdateMany(
+  bookings: Booking[],
+  bindings: Bindings
+) {
+  try {
+    const stmt = bindings.DB.prepare(
+      "UPDATE bookings SET start = ?, end = ?, teacherId = ?, status = ?, studentId = ?, updatedAt = ? WHERE id = ?"
+    );
+
+    await bindings.DB.batch(
+      bookings.map((b) => {
+        const { start, end, teacherId, studentId, status, id } = b;
+        const date = Date.now();
+        return stmt.bind(start, end, teacherId, status, studentId, date, id);
+      })
+    );
+
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
   }
 }

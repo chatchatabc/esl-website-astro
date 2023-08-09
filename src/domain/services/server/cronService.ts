@@ -1,13 +1,17 @@
-import { bookingDbGetAllByDate } from "src/domain/repositories/bookingRepo";
 import { userDbGet } from "src/domain/repositories/userRepo";
 import type { Bindings } from "src/server";
 import { messageSend } from "./messageService";
+import {
+  bookingDbGetAllByDateEnd,
+  bookingDbGetAllByDateStart,
+  bookingDbUpdateMany,
+} from "src/domain/repositories/bookingRepo";
 
 export async function cronRemindClass(bindings: Bindings) {
   const start = Date.now();
   const end = start + 20 * 60 * 1000;
 
-  const bookings = await bookingDbGetAllByDate({ start, end }, bindings);
+  const bookings = await bookingDbGetAllByDateStart({ start, end }, bindings);
   if (!bookings) {
     throw new Error("Failed to get bookings");
   }
@@ -41,6 +45,35 @@ export async function cronRemindClass(bindings: Bindings) {
       // });
       userIds.push(userId);
     }
+  }
+
+  return true;
+}
+
+/**
+ * Validate class when class is finished
+ * @param bindings { Bindings }
+ * @returns { boolean }
+ */
+export async function cronValidateClass(bindings: Bindings) {
+  const start = 0;
+  const end = Date.now() + 10 * 60 * 1000;
+
+  const bookings = await bookingDbGetAllByDateEnd({ start, end }, bindings);
+  if (!bookings) {
+    throw new Error("Failed to get bookings");
+  }
+
+  bookings.map((booking) => {
+    return {
+      ...booking,
+      status: 2,
+    };
+  });
+
+  const update = bookingDbUpdateMany(bookings, bindings);
+  if (!update) {
+    throw new Error("Failed to update bookings");
   }
 
   return true;

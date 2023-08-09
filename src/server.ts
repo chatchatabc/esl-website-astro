@@ -2,7 +2,10 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { trpcRouter } from "./application/trpc";
 import rest from "./application/rest";
 import { trpcContext } from "./domain/infra/trpcServerActions";
-import { cronRemindClass } from "./domain/services/server/cronService";
+import {
+  cronRemindClass,
+  cronValidateClass,
+} from "./domain/services/server/cronService";
 
 export type Bindings = {
   DB: D1Database;
@@ -52,6 +55,8 @@ export default {
   async scheduled(event: ScheduledEvent, env: Bindings, ctx: ExecutionContext) {
     if (event.cron === "20,50 * * * *") {
       ctx.waitUntil(cronRemindClass(env));
+    } else if (event.cron === "*/30 * * * *") {
+      ctx.waitUntil(cronValidateClass(env));
     }
   },
 };
