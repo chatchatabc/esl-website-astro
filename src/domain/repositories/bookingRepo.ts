@@ -191,8 +191,8 @@ export async function bookingDbGetAllByDate(
   const { start, end } = params;
   try {
     const stmt = bindings.DB.prepare(
-      "SELECT * FROM bookings WHERE (start >= ? AND end <= ?) AND status = 1"
-    ).bind(start, end);
+      "SELECT * FROM bookings WHERE start >= ? AND status = 1"
+    ).bind(start);
     const results = await stmt.all<Booking>();
     return results.results;
   } catch (e) {
