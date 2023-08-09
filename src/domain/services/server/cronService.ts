@@ -64,14 +64,14 @@ export async function cronValidateClass(bindings: Bindings) {
     throw new Error("Failed to get bookings");
   }
 
-  bookings.map((booking) => {
+  const newBookings = bookings.map((booking) => {
     return {
       ...booking,
       status: 2,
     };
   });
 
-  const update = bookingDbUpdateMany(bookings, bindings);
+  const update = bookingDbUpdateMany(newBookings, bindings);
   if (!update) {
     throw new Error("Failed to update bookings");
   }
