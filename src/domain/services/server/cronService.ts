@@ -5,17 +5,19 @@ import { messageSend } from "./messageService";
 
 export async function cronRemindClass(bindings: Bindings) {
   const start = Date.now();
-  const end = start + 24 * 60 * 60 * 1000;
+  const end = start + 20 * 60 * 1000;
 
   const bookings = await bookingDbGetAllByDate({ start, end }, bindings);
   if (!bookings) {
     throw new Error("Failed to get bookings");
   }
 
-  const timeFormatter = new Intl.DateTimeFormat("en-US", {
+  // Chinese time
+  const timeFormatter = new Intl.DateTimeFormat("zh-CN", {
     timeStyle: "short",
   });
-  const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
+    timeStyle: "short",
     dateStyle: "medium",
   });
   const userIds: number[] = [];
@@ -26,22 +28,17 @@ export async function cronRemindClass(bindings: Bindings) {
     const teacher = await userDbGet({ userId: booking.teacherId }, bindings);
 
     if (!userIds.includes(userId) && student && teacher && student.phone) {
-      const classes = bookings.filter((b) => b.studentId === userId);
-      const message = `Hi ${student.username}, soon you will have ${classes.length} classes in this following time:`;
+      const startTime = dateFormatter.format(new Date(booking.start));
+      const endTime = timeFormatter.format(new Date(booking.end));
+      const message = `你好，${student.firstName} ${student.lastName}，提醒您：您与${teacher.firstName} ${teacher.lastName}的课程安排在${startTime}-${endTime}。`;
 
-      for (const c of classes) {
-        const startTime = timeFormatter.format(new Date(booking.start));
-        const endTime = timeFormatter.format(new Date(booking.end));
-        const date = dateFormatter.format(new Date(booking.start));
-        message.concat(
-          `\n${startTime}-${endTime}@${date} with teacher ${teacher.firstName} ${teacher.lastName}}`
-        );
-      }
+      console.log(message);
+      bindings.KV.put("message", message);
 
-      await messageSend({
-        content: message,
-        mobile: student.phone,
-      });
+      // await messageSend({
+      //   content: message,
+      //   mobile: student.phone,
+      // });
       userIds.push(userId);
     }
   }
