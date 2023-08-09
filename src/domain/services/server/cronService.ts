@@ -33,7 +33,7 @@ export async function cronRemindClass(bindings: Bindings) {
       const message = `你好，${student.firstName} ${student.lastName}，提醒您：您与${teacher.firstName} ${teacher.lastName}的课程安排在${startTime}-${endTime}。`;
 
       console.log(message);
-      bindings.KV.put("message", message);
+      await bindings.KV.put("message", message);
 
       // await messageSend({
       //   content: message,
