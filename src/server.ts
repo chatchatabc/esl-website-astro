@@ -50,7 +50,7 @@ export default {
     return new Response("Not found", { status: 404 });
   },
   async scheduled(event: ScheduledEvent, env: Bindings, ctx: ExecutionContext) {
-    if (event.cron === "0 5 * * *") {
+    if (event.cron === "20,50 * * * *") {
       ctx.waitUntil(cronRemindClass(env));
     }
   },
