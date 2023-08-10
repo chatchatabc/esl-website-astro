@@ -1,16 +1,14 @@
 <script lang="ts">
-  import type { User } from "src/domain/models/UserModel";
-  import {
-    userGetProfile,
-    userUpdateProfile,
-  } from "src/domain/services/client/userService";
   import { onMount } from "svelte";
   import LoadingComp from "./LoadingComp.svelte";
-  import { validatePhoneNumber } from "src/domain/services/validationService";
+  import { validatePhoneNumber } from "@services/validationService";
+  import type { User } from "../../../esl-workers/src/domain/models/UserModel";
   import {
     authGetPhoneToken,
+    authGetProfile,
+    authUpdateProfile,
     authValidatePhoneToken,
-  } from "src/domain/services/client/authService";
+  } from "@services/authService";
 
   let sendLoading = false;
   let interval: any = null;
@@ -46,7 +44,7 @@
     if (!response) {
       alert("Failed to validate phone");
     } else {
-      user = await userGetProfile();
+      user = await authGetProfile();
       step = 2;
     }
   }
@@ -64,10 +62,10 @@
       return;
     }
 
-    const response = await userUpdateProfile(data);
+    const response = await authUpdateProfile(data);
 
     if (response) {
-      user = await userGetProfile();
+      user = await authGetProfile();
       step = 1;
     } else {
       alert("Failed to update profile");
@@ -75,7 +73,7 @@
   }
 
   onMount(async () => {
-    user = await userGetProfile();
+    user = await authGetProfile();
 
     if (!user) {
       sessionStorage.clear();
@@ -210,7 +208,7 @@
             on:click={async () => {
               loading = true;
 
-              user = await userGetProfile();
+              user = await authGetProfile();
               step = 0;
 
               loading = false;

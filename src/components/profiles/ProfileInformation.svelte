@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { User } from "src/domain/models/UserModel";
+  import type { User } from "../../../../esl-workers/src/domain/models/UserModel";
 
   export let user: User;
 </script>

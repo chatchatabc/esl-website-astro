@@ -1,6 +1,6 @@
-import { trpcClient } from "src/domain/infra/trpcClientActions";
-import type { Booking, BookingCreate } from "src/domain/models/BookingModel";
+import { trpcClient } from "src/infra/trpc";
 import { userGet } from "./userService";
+import type { BookingCreate } from "../../../esl-workers/src/domain/models/BookingModel";
 
 export async function bookingGetAll(params: { page?: number; size?: number }) {
   try {
@@ -59,16 +59,6 @@ export async function bookingGetAllByUser(params: {
 export async function bookingCreate(params: BookingCreate) {
   try {
     const response = await trpcClient.booking.create.mutate(params);
-    return response;
-  } catch (e) {
-    console.log(e);
-    return null;
-  }
-}
-
-export async function bookingUpdate(params: Booking) {
-  try {
-    const response = await trpcClient.booking.update.mutate(params);
     return response;
   } catch (e) {
     console.log(e);

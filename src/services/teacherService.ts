@@ -1,4 +1,4 @@
-import { trpcClient } from "src/domain/infra/trpcClientActions";
+import { trpcClient } from "src/infra/trpc";
 
 export async function teacherGet(params: { userId: number }) {
   try {

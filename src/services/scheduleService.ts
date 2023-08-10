@@ -1,9 +1,9 @@
-import { trpcClient } from "src/domain/infra/trpcClientActions";
+import { trpcClient } from "src/infra/trpc";
 import type {
   Schedule,
   ScheduleCreateInput,
   ScheduleUpdateInput,
-} from "src/domain/models/ScheduleModel";
+} from "../../../esl-workers/src/domain/models/ScheduleModel";
 
 export async function scheduleGetAllByUser(params: { userId: number }) {
   try {

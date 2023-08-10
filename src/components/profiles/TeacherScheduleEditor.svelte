@@ -5,18 +5,18 @@
   import type { EventImpl } from "@fullcalendar/core/internal";
   import interactionPlugin from "@fullcalendar/interaction";
   import timeGridPlugin from "@fullcalendar/timegrid";
-  import type { Booking } from "src/domain/models/BookingModel";
-  import type {
-    Schedule,
-    ScheduleUpdateInput,
-  } from "src/domain/models/ScheduleModel";
-  import { bookingGetAll } from "src/domain/services/client/bookingService";
+  import { bookingGetAll } from "@services/bookingService";
   import {
     scheduleCreateMany,
     scheduleDeleteMany,
     scheduleGetAllByUser,
     scheduleUpdateMany,
-  } from "src/domain/services/client/scheduleService";
+  } from "src/services/scheduleService";
+  import type { Booking } from "../../../../esl-workers/src/domain/models/BookingModel";
+  import type {
+    Schedule,
+    ScheduleUpdateInput,
+  } from "../../../../esl-workers/src/domain/models/ScheduleModel";
 
   let calendarEl: any;
   let calendar: Calendar | null = null;

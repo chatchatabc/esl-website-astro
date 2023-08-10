@@ -70,8 +70,8 @@ import MainLayout from "@layouts/MainLayout.astro";
 </MainLayout>
 
 <script>
-  import type { UserLogin } from "src/domain/models/UserModel";
-  import { authLogin } from "src/domain/services/client/authService";
+  import { authLogin } from "@services/authService";
+  import type { UserLogin } from "../../../esl-workers/src/domain/models/UserModel";
 
   const form = document.querySelector<HTMLFormElement>("[data-login-form]");
 

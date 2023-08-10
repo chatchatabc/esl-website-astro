@@ -1,5 +1,8 @@
-import type { UserLogin, UserRegisterInput } from "src/domain/models/UserModel";
-import { trpcClient } from "src/domain/infra/trpcClientActions";
+import { trpcClient } from "src/infra/trpc";
+import type {
+  UserLogin,
+  UserRegisterInput,
+} from "../../../esl-workers/src/domain/models/UserModel";
 
 export async function authLogin(data: UserLogin) {
   try {
@@ -16,7 +19,7 @@ export async function authLogin(data: UserLogin) {
 
 export async function authLogout() {
   try {
-    const response = await trpcClient.auth.logout.query();
+    const response = await trpcClient.auth.logout.mutate();
     if (response) {
       document.cookie = `userId=; path=/; max-age=0`;
       return true;
@@ -69,6 +72,32 @@ export async function authGetPhoneToken() {
 export async function authValidatePhoneToken(params: { token: string }) {
   try {
     const response = await trpcClient.auth.validatePhoneToken.mutate(params);
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function authGetProfile() {
+  try {
+    const response = await trpcClient.auth.getProfile.query();
+    return response;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
+export async function authUpdateProfile(params: Record<string, any>) {
+  const data = {
+    firstName: params.firstName,
+    lastName: params.lastName,
+    phone: params.phone,
+  };
+
+  try {
+    const response = await trpcClient.auth.updateProfile.mutate(data);
     return response;
   } catch (e) {
     console.log(e);

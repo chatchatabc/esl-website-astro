@@ -2,12 +2,12 @@
   export let userId: number;
 
   import Pagination from "@components/widgets/Pagination.svelte";
-  import type { LogsCredit } from "src/domain/models/LogsModel";
   import {
     logsApproveCredit,
     logsGetAllCredit,
     logsRejectCredit,
-  } from "src/domain/services/client/logsService";
+  } from "@services/logsService";
+  import type { LogsCredit } from "../../../../esl-workers/src/domain/models/LogsModel";
 
   const logStatus: Record<number, string> = {
     0: "Requested",

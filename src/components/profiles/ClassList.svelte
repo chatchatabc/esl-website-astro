@@ -6,11 +6,8 @@
   import Pagination from "@components/widgets/Pagination.svelte";
   import { Calendar } from "@fullcalendar/core";
   import listPlugin from "@fullcalendar/list";
-  import type { Booking } from "src/domain/models/BookingModel";
-  import {
-    bookingCancel,
-    bookingGetAll,
-  } from "src/domain/services/client/bookingService";
+  import { bookingCancel, bookingGetAll } from "@services/bookingService";
+  import type { Booking } from "../../../../esl-workers/src/domain/models/BookingModel";
 
   const dateFormatter = new Intl.DateTimeFormat("en", {
     dateStyle: "medium",

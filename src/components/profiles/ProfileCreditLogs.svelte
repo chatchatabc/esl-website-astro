@@ -3,11 +3,8 @@
 
   import LoadingComp from "@components/LoadingComp.svelte";
   import Pagination from "@components/widgets/Pagination.svelte";
-  import type { LogsCredit } from "src/domain/models/LogsModel";
-  import {
-    logsGetAllCredit,
-    logsRequestCredit,
-  } from "src/domain/services/client/logsService";
+  import { logsGetAllCredit, logsRequestCredit } from "@services/logsService";
+  import type { LogsCredit } from "../../../../esl-workers/src/domain/models/LogsModel";
 
   let pagination = {
     page: 1,

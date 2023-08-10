@@ -3,18 +3,15 @@
 
   import { Calendar } from "@fullcalendar/core";
   import listPlugin from "@fullcalendar/list";
-  import type { Booking } from "src/domain/models/BookingModel";
-  import type { Schedule } from "src/domain/models/ScheduleModel";
-  import type { User } from "src/domain/models/UserModel";
-  import {
-    bookingCreate,
-    bookingGetAllByUser,
-  } from "src/domain/services/client/bookingService";
-  import { scheduleGetAllByUser } from "src/domain/services/client/scheduleService";
-  import { userGetProfile } from "src/domain/services/client/userService";
+  import type { User } from "../../../esl-workers/src/domain/models/UserModel";
+  import type { Schedule } from "../../../esl-workers/src/domain/models/ScheduleModel";
+  import type { Booking } from "../../../esl-workers/src/domain/models/BookingModel";
+  import type { Teacher } from "../../../esl-workers/src/domain/models/TeacherModel";
+  import { bookingCreate, bookingGetAllByUser } from "@services/bookingService";
+  import { teacherGet } from "@services/teacherService";
+  import { scheduleGetAllByUser } from "@services/scheduleService";
+  import { authGetProfile } from "@services/authService";
   import LoadingComp from "./LoadingComp.svelte";
-  import { teacherGet } from "src/domain/services/client/teacherService";
-  import type { Teacher } from "src/domain/models/TeacherModel";
 
   const timeFormatter = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
@@ -159,7 +156,7 @@
   $: if (loading) {
     (async () => {
       if (!user) {
-        user = await userGetProfile();
+        user = await authGetProfile();
         calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
       }
 

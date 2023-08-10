@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { User } from "src/domain/models/UserModel";
-  import { userGetProfile } from "src/domain/services/client/userService";
   import { onMount } from "svelte";
   import TeacherScheduleEditor from "./TeacherScheduleEditor.svelte";
   import LoadingComp from "@components/LoadingComp.svelte";
@@ -8,6 +6,8 @@
   import ClassList from "./ClassList.svelte";
   import StudentCashList from "./ProfileCreditLogs.svelte";
   import AdminCreditList from "./AdminCreditList.svelte";
+  import type { User } from "../../../../esl-workers/src/domain/models/UserModel";
+  import { authGetProfile } from "@services/authService";
 
   let reset = 0;
   let loading = true;
@@ -19,12 +19,12 @@
 
   $: if (reset) {
     (async () => {
-      user = await userGetProfile();
+      user = await authGetProfile();
     })();
   }
 
   onMount(async () => {
-    user = await userGetProfile();
+    user = await authGetProfile();
 
     if (!user) {
       sessionStorage.clear();

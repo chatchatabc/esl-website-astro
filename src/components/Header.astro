@@ -138,10 +138,7 @@ const { links } = headerJson;
 </section>
 
 <script>
-  import {
-    authGetUserId,
-    authLogout,
-  } from "src/domain/services/client/authService";
+  import { authGetUserId, authLogout } from "@services/authService";
 
   const links =
     document.querySelectorAll<HTMLButtonElement>("[data-navbar-link]");
