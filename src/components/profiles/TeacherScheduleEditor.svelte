@@ -82,10 +82,12 @@
     const updateSchedules: ScheduleUpdateInput[] = eventSchedules.filter(
       (schedule) => schedule.id
     );
-    const responseUpdate = await scheduleUpdateMany({
-      userId,
-      schedules: updateSchedules,
-    });
+    const responseUpdate = updateSchedules.length
+      ? await scheduleUpdateMany({
+          userId,
+          schedules: updateSchedules,
+        })
+      : true;
 
     const newSchedules = eventSchedules.filter((schedule) => !schedule.id);
     if (newSchedules.length) {
