@@ -7,6 +7,7 @@
   import StudentCashList from "./ProfileCreditLogs.svelte";
   import type { User } from "../../../../esl-workers/src/domain/models/UserModel";
   import { authGetProfile } from "@services/authService";
+  import { utilCookieSave } from "@services/utilService";
 
   let reset = 0;
   let loading = true;
@@ -26,7 +27,7 @@
     user = await authGetProfile();
 
     if (!user) {
-      sessionStorage.clear();
+      utilCookieSave("userId", "", 0);
       window.location.href = "/login";
     }
 

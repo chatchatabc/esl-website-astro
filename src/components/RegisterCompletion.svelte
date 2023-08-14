@@ -9,6 +9,7 @@
     authUpdateProfile,
     authValidatePhoneToken,
   } from "@services/authService";
+  import { utilCookieSave } from "@services/utilService";
 
   let sendLoading = false;
   let interval: any = null;
@@ -76,7 +77,7 @@
     user = await authGetProfile();
 
     if (!user) {
-      sessionStorage.clear();
+      utilCookieSave("userId", "", 0);
       window.location.href = "/login";
       return;
     }
