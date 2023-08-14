@@ -5,7 +5,6 @@
   import ProfileInformation from "./ProfileInformation.svelte";
   import ClassList from "./ClassList.svelte";
   import StudentCashList from "./ProfileCreditLogs.svelte";
-  import AdminCreditList from "./AdminCreditList.svelte";
   import type { User } from "../../../../esl-workers/src/domain/models/UserModel";
   import { authGetProfile } from "@services/authService";
 
@@ -73,12 +72,6 @@
           <StudentCashList userId={user.id} {reset} />
         </section>
       </section>
-    </section>
-  {/if}
-
-  {#if user.roleId === 1}
-    <section class="bg-white rounded-xl p-4 mt-4">
-      <AdminCreditList userId={user.id} />
     </section>
   {/if}
 {:else}
