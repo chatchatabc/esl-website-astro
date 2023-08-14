@@ -70,10 +70,19 @@ import MainLayout from "@layouts/MainLayout.astro";
 </MainLayout>
 
 <script>
-  import { authLogin } from "@services/authService";
+  import { authGetProfile, authLogin } from "@services/authService";
+  import { utilCookieSave } from "@services/utilService";
   import type { UserLogin } from "../../../esl-workers/src/domain/models/UserModel";
 
   const form = document.querySelector<HTMLFormElement>("[data-login-form]");
+
+  (async () => {
+    const user = await authGetProfile();
+    if (user) {
+      utilCookieSave("userId", user.id);
+      window.location.href = "/profile";
+    }
+  })();
 
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
