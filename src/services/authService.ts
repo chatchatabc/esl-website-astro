@@ -3,6 +3,7 @@ import type {
   UserLogin,
   UserRegisterInput,
 } from "../../../esl-workers/src/domain/models/UserModel";
+import { utilCookieSave } from "./utilService";
 
 export async function authLogin(data: UserLogin) {
   try {
@@ -21,13 +22,13 @@ export async function authLogout() {
   try {
     const response = await trpcClient.auth.logout.mutate();
     if (response) {
-      document.cookie = `userId=; path=/; max-age=0`;
+      utilCookieSave("userId", "", 0);
       return true;
     }
     return false;
   } catch (e) {
     console.log(e);
-    document.cookie = `userId=; path=/; max-age=0`;
+    utilCookieSave("userId", "", 0);
     return null;
   }
 }
