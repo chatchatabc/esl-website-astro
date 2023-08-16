@@ -1,8 +1,9 @@
 import { trpcClient } from "src/infra/trpc";
 import { userGet } from "./userService";
 import type { BookingCreate } from "../../../esl-workers/src/domain/models/BookingModel";
+import type { CommonPaginationInput } from "../../../esl-workers/src/domain/models/CommonModel";
 
-export async function bookingGetAll(params: { page?: number; size?: number }) {
+export async function bookingGetAll(params: CommonPaginationInput) {
   try {
     const response = await trpcClient.booking.getAll.query(params);
 

@@ -75,7 +75,7 @@
 
   $: if (loading) {
     (async () => {
-      const response = await bookingGetAll(pagination);
+      const response = await bookingGetAll({ ...pagination, status: 1 });
       if (!response) {
         alert("Unable to fetch bookings");
       } else {
