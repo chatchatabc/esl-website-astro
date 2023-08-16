@@ -8,7 +8,6 @@ import type {
 export async function scheduleGetAll(params: { userId: number }) {
   try {
     const response = await trpcClient.schedule.getAll.query(params);
-    console.log(response);
     return response;
   } catch (e) {
     console.log(e);
