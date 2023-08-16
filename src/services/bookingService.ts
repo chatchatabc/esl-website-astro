@@ -34,7 +34,7 @@ export async function bookingGetAllByUser(params: {
   size?: number;
 }) {
   try {
-    const response = await trpcClient.booking.getAllByUser.query(params);
+    const response = await trpcClient.booking.getAll.query(params);
 
     const contentPromise = response.content.map(async (booking) => {
       const student = await userGet({ userId: booking.studentId ?? 0 });

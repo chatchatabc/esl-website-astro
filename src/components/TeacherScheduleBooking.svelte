@@ -7,11 +7,11 @@
   import type { Schedule } from "../../../esl-workers/src/domain/models/ScheduleModel";
   import type { Booking } from "../../../esl-workers/src/domain/models/BookingModel";
   import type { Teacher } from "../../../esl-workers/src/domain/models/TeacherModel";
-  import { bookingCreate, bookingGetAllByUser } from "@services/bookingService";
+  import { bookingCreate, bookingGetAll } from "@services/bookingService";
   import { teacherGet } from "@services/teacherService";
-  import { scheduleGetAllByUser } from "@services/scheduleService";
   import { authGetProfile } from "@services/authService";
   import LoadingComp from "./LoadingComp.svelte";
+  import { scheduleGetAll } from "@services/scheduleService";
 
   const timeFormatter = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
@@ -161,11 +161,10 @@
       }
 
       teacher = await teacherGet({ userId: teacherId });
-      schedules =
-        (await scheduleGetAllByUser({ userId: teacherId }))?.content ?? [];
-      const responseBooking = await bookingGetAllByUser({
+      schedules = (await scheduleGetAll({ userId: teacherId }))?.content ?? [];
+      const responseBooking = await bookingGetAll({
         userId: teacherId,
-        page: 0,
+        page: 1,
         size: 100000,
       });
 
