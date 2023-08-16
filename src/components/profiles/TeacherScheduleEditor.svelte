@@ -9,9 +9,9 @@
   import {
     scheduleCreateMany,
     scheduleDeleteMany,
-    scheduleGetAllByUser,
+    scheduleGetAll,
     scheduleUpdateMany,
-  } from "src/services/scheduleService";
+  } from "@services/scheduleService";
   import type { Booking } from "../../../../esl-workers/src/domain/models/BookingModel";
   import type {
     Schedule,
@@ -60,13 +60,12 @@
       const end = new Date(event.end ?? 0);
       const startTime = start.getTime();
       const endTime = end.getTime();
-      const teacherId = userId;
       const id = schedules[index]?.id;
 
       return {
         startTime,
         endTime,
-        teacherId,
+        userId,
         id,
       };
     });
@@ -84,7 +83,6 @@
     );
     const responseUpdate = updateSchedules.length
       ? await scheduleUpdateMany({
-          userId,
           schedules: updateSchedules,
         })
       : true;
@@ -138,11 +136,11 @@
 
   $: if (loading) {
     (async () => {
-      const responseBooking = await bookingGetAll({ page: 0, size: 10000 });
+      const responseBooking = await bookingGetAll({ page: 1, size: 10000 });
       if (!responseBooking) {
         return;
       }
-      const responseSchedule = await scheduleGetAllByUser({ userId });
+      const responseSchedule = await scheduleGetAll({ userId });
       if (!responseSchedule) {
         return;
       }

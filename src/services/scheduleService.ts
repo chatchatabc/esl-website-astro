@@ -5,9 +5,10 @@ import type {
   ScheduleUpdateInput,
 } from "../../../esl-workers/src/domain/models/ScheduleModel";
 
-export async function scheduleGetAllByUser(params: { userId: number }) {
+export async function scheduleGetAll(params: { userId: number }) {
   try {
-    const response = await trpcClient.schedule.getAllByUser.query(params);
+    const response = await trpcClient.schedule.getAll.query(params);
+    console.log(response);
     return response;
   } catch (e) {
     console.log(e);
@@ -54,13 +55,10 @@ export function scheduleConvertToRecurringEvent(schedule: Schedule) {
 }
 
 export async function scheduleUpdateMany(params: {
-  userId: number;
   schedules: ScheduleUpdateInput[];
 }) {
   try {
-    const response = await trpcClient.schedule.updateManyByTeacher.mutate(
-      params
-    );
+    const response = await trpcClient.schedule.updateMany.mutate(params);
     return response;
   } catch (e) {
     console.log(e);
