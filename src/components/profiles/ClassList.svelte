@@ -180,13 +180,7 @@
             {:else}
               <p>
                 {booking.teacher?.firstName}
-                {booking.teacher?.lastName} |
-                <a
-                  class="text-blue-500 underline hover:no-underline"
-                  href={`tel:${booking.teacher?.phone}`}
-                >
-                  {booking.teacher?.phone}
-                </a>
+                {booking.teacher?.lastName}
               </p>
             {/if}
           </div>
