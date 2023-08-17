@@ -77,7 +77,9 @@ export async function scheduleCreateMany(schedules: ScheduleCreateInput[]) {
 
 export async function scheduleDeleteMany(schedules: Schedule[]) {
   try {
-    const response = await trpcClient.schedule.deleteMany.mutate(schedules);
+    const response = await trpcClient.schedule.deleteMany.mutate({
+      scheduleIds: schedules.map((schedule) => schedule.id),
+    });
     return response;
   } catch (e) {
     console.log(e);
