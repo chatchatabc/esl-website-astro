@@ -136,7 +136,11 @@
 
   $: if (loading) {
     (async () => {
-      const responseBooking = await bookingGetAll({ page: 1, size: 10000 });
+      const responseBooking = await bookingGetAll({
+        status: 1,
+        page: 1,
+        size: 10000,
+      });
       if (!responseBooking) {
         return;
       }
