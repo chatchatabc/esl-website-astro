@@ -9,96 +9,58 @@ const teachers = teachersJson.contents;
 ---
 
 <MainLayout>
+  <header class="sr-only">
+    <h1>Homepage</h1>
+  </header>
+
   <!-- Hero Section -->
-  <section>
-    <!-- Navigation purpose -->
-    <div id="home" class="-mt-16 absolute lg:mt-0"></div>
-
-    <div
-      class="mb-2 container sm:rounded-t-[1.75rem] overflow-hidden lg:rounded-t-[3.75rem] lg:mt-5"
-    >
-      <div
-        class="bg-esl-c-2 flex flex-1 justify-between flex-col-reverse lg:rounded-tr-none lg:flex-row"
-      >
-        <div class="px-5 py-10 sm:px-10 bg-esl-c-2 lg:w-5/12">
-          <div class="text-esl-4">
-            <span class="text-esl-c-3">用英语的力量发现世界</span>
-          </div>
-          <div class="">
-            <div class="mt-6 text-esl-2 text-white">
-              欢迎来到 ABC
-              English英语教学网站，在这里我们致力于帮助您实现语言学习目标。无论您是为了工作、旅行还是个人发展而提高英语能力，我们拥有经验丰富、资质齐全的教师团队，将为您在每一步的学习提供帮助。
-              <br />
-              我们提供一个平台，让教师和学生可以在一个自由市场的环境下相互联系和参与。教师可以向广大学员展示他们的技能和专业知识，而学生则有机会浏览和选择最适合他们需求和偏好的教师。我们的平台为教育提供了一个透明和开放的市场，让教师和学生都可以自由参与并从知识和学习经验的交流中获益。
-            </div>
-          </div>
-        </div>
-
-        <!--clipped image -->
-        <div
-          class="overflow-hidden flex relative lg:w-1/2 xl:w-7/12 xl:relative"
-        >
-          <div
-            class="landing-clipped w-full max-h-[15rem] sm:max-h-[20rem] md:max-h-[25rem] lg:max-h-none xl:absolute"
-          >
-            <Img
-              src="/images/teaching-english2.png"
-              alt=""
-              layout="fill"
-              breakpoints={{ count: 1, maxWidth: 768 }}
-            />
-          </div>
-        </div>
-
-        <!-- Clip path -->
-        <div>
-          <svg class="" xmlns="http://www.w3.org/2000/svg" width="0" height="0">
-            <defs>
-              <clipPath id="landing-clip">
-                <path
-                  id="landing-path"
-                  transform="translate(300 -900) rotate(30) scale(5)"
-                  d="M172.871,0a28.906,28.906,0,0,1,25.009,14.412L245.805,97.1a28.906,28.906,0,0,1,0,28.989L197.88,208.784A28.906,28.906,0,0,1,172.871,223.2H76.831a28.906,28.906,0,0,1-25.009-14.412L3.9,126.092A28.906,28.906,0,0,1,3.9,97.1L51.821,14.412A28.906,28.906,0,0,1,76.831,0Z"
-                ></path>
-              </clipPath>
-            </defs>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Teachers Section -->
-  <section class="my-6 container lg:mt-10">
-    <!-- Navigation purpose -->
-    <div id="teachers" class="-mt-16 absolute lg:mt-0"></div>
-
-    <header class="w-full">
-      <!--dashed line -->
-      <div class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block">
-      </div>
-      <h2
-        class="text-esl-4 text-white flex items-center space-x-1 justify-center lg:justify-start"
-      >
-        <span>教师队伍</span>
-        <span class="w-[2.5rem] h-[5px] rounded-full bg-white block"></span>
-        <span class="text-[0.94rem]">寻找最合适你的老师</span>
-      </h2>
+  <section class="container my-8 xl:my-16">
+    <header>
+      <h2 class="sr-only">Hero section</h2>
     </header>
 
-    <!--teacher list collection -->
-    <section class="mt-2 -mx-2">
-      <!--teacher list item -->
-      <ul class="flex flex-wrap">
-        {
-          teachers.map((teacher) => (
-            <li class="w-full p-2 md:w-1/2">
-              <TeacherListItem teacher={teacher} />
-            </li>
-          ))
-        }
-      </ul>
-    </section>
+    <figure class="flex items-center">
+      <figcaption class="w-1/2 space-y-8 pr-4 py-8 lg:py-16 xl:pr-20 xl:py-24">
+        <header>
+          <h3 class="font-black text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+            用英语的力量发现世界
+          </h3>
+        </header>
+
+        <section>
+          <p class="text-gray-600 lg:text-lg">
+            在ABC
+            English，我们致力于培养一个社区，科技、创新和教育专业知识的协同作用将赋予您英语的精湛掌握，为您创造无限机会，促进全球增长。
+          </p>
+        </section>
+
+        <footer class="flex space-x-4 font-medium lg:text-lg">
+          <a
+            href="/signup"
+            class="bg-p px-8 py-2.5 rounded-md text-white hover:bg-p-600"
+          >
+            注册
+          </a>
+          <a
+            href="/login"
+            class="px-8 py-2.5 rounded-md text-p transition hover:bg-p-100"
+          >
+            登录
+          </a>
+        </footer>
+      </figcaption>
+
+      <div class="rounded-3xl w-1/2 overflow-hidden self-stretch relative">
+        <div class="absolute w-full h-full">
+          <Img
+            src="/images/teaching-english2.png"
+            alt="Hero"
+            layout="fill"
+            breakpoints={{ count: 1, maxWidth: 768 }}
+          />
+        </div>
+      </div>
+    </figure>
   </section>
 
   <!-- Resources Section -->
