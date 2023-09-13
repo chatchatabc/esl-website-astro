@@ -1,0 +1,48 @@
+---
+import headerJson from "@data/header.json";
+import { Picture } from "astro-imagetools/components";
+
+const { links } = headerJson;
+---
+
+<footer class="bg-p-950 text-white">
+  <header class="sr-only">
+    <h2>Footer</h2>
+  </header>
+
+  <section class="container space-y-4 py-12">
+    <a class="block w-40 mx-auto brightness-0 invert" href="/">
+      <Picture
+        breakpoints={[360]}
+        objectFit="contain"
+        src="/images/logo/logo-horizontal.png"
+        alt="logo"
+      />
+    </a>
+
+    <p class="text-center text-gray-400">
+      ABC
+      English：让您走上通向语言卓越和全球成功的道路。我们致力于为您提供卓越的语言教育资源和支持，助您实现流利的英语表达，同时获得国际化的成功机会。
+    </p>
+
+    <nav>
+      <ul class="flex justify-center w-full space-x-8">
+        {
+          links.map((link) => {
+            return (
+              <li>
+                <a class="font-medium" href={link.href}>
+                  {link.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <p class="text-sm text-gray-300 text-center">
+      © 2022-2023 ChatChatABC. All Rights Reserved.
+    </p>
+  </section>
+</footer>
