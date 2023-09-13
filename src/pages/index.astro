@@ -100,9 +100,16 @@ const teachers = teachersJson.contents;
 
   <!-- Resources Section -->
   <section class="container my-16">
-    <section class="bg-p bg-opacity-10 p-8 rounded-3xl">
-      <figure class="flex items-center">
-        <figcaption class="w-1/2 space-y-8 p-16">
+    <section class="bg-p bg-opacity-10 rounded-3xl">
+      <figure class="flex flex-wrap flex-row-reverse items-center">
+        <div class="drop-shadow-lg w-full mx-auto h-64 lg:h-[unset] lg:w-1/2">
+          <Picture
+            src="/images/books/resources.png"
+            alt="educational resources"
+          />
+        </div>
+
+        <figcaption class="w-full space-y-8 p-4 md:p-8 lg:w-1/2 xl:p-16">
           <header>
             <h2 class="text-3xl text-p-950 font-bold">
               通过我们丰富的教育资源，提升您的英语之旅
@@ -125,13 +132,6 @@ const teachers = teachersJson.contents;
             </p>
           </section>
         </figcaption>
-
-        <div class="drop-shadow-lg w-1/2">
-          <Picture
-            src="/images/books/resources.png"
-            alt="educational resources"
-          />
-        </div>
       </figure>
     </section>
   </section>
