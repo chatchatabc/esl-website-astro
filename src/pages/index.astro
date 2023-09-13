@@ -67,6 +67,35 @@ const teachers = teachersJson.contents;
     </figure>
   </section>
 
+  <!-- Teachers Section -->
+  <section class="bg-p bg-opacity-10 py-16">
+    <section class="container">
+      <header class="space-y-4 px-4 text-center">
+        <h2 class="text-3xl font-bold">
+          认识我们的英语大师：您语言之旅的设计师
+        </h2>
+        <p class="text-gray-500 text-lg max-w-5xl mx-auto">
+          逐一打开卓越语言，呵护您通往流利之路 —
+          每位教师，都是为您的成功而奋斗的熟练导师，量身定制个性化学习经验，提升您的英语熟练度和自信，确保您具备全球交流成功所需的能力。
+        </p>
+      </header>
+
+      <!--teacher list collection -->
+      <section class="mt-8 -mx-2">
+        <!--teacher list item -->
+        <ul class="flex flex-wrap">
+          {
+            teachers.map((teacher) => (
+              <li class="w-full flex p-2 md:w-1/2">
+                <TeacherListItem teacher={teacher} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </section>
+  </section>
+
   <!-- Resources Section -->
   <section class="container mb-12 lg:mt-10">
     <!-- Navigation purpose -->
