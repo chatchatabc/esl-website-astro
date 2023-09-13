@@ -12,58 +12,62 @@ type Props = {
 const { teacher } = Astro.props as Props;
 ---
 
-<figure class="flex flex-wrap border bg-white rounded-xl shadow-xl">
+<figure
+  class="flex flex-wrap border p-4 bg-p-50 border-p-700 rounded-xl shadow-xl"
+>
   <!-- Teacher Avatar -->
-  <div class="w-full pt-4 lg:p-4 lg:w-[unset]">
-    <div
-      class="w-32 h-32 mx-auto shrink-0 rounded-full overflow-hidden border-4 border-blue-500"
-    >
-      <Img breakpoints={[144]} src={teacher.avatar} alt={teacher.displayName} />
+  <div class="w-1/2 mx-auto xl:w-1/3">
+    <div class="w-full relative overflow-hidden rounded-xl pb-[100%]">
+      <div class="absolute w-full h-full">
+        <Img
+          layout="fill"
+          breakpoints={[144]}
+          src={teacher.avatar}
+          alt={teacher.displayName}
+        />
+      </div>
     </div>
   </div>
 
   <!-- Description -->
-  <figcaption class="p-4 flex-1 text-center lg:text-start">
+  <figcaption
+    class="p-4 space-y-4 w-full flex flex-col text-center xl:text-start xl:w-2/3 xl:py-0"
+  >
     <!-- Title -->
-    <header class="flex justify-center lg:justify-start">
-      <h3>{teacher.displayName}</h3>
-      <div class="h-6 w-6 text-green-500">
-        <VerifiedIcon />
-      </div>
-    </header>
+    <header>
+      <h3
+        class="flex text-xl font-bold items-center justify-center xl:justify-start"
+      >
+        <span>
+          {teacher.displayName}
+        </span>
+        <span class="block h-6 w-6 text-green-500"><VerifiedIcon /></span>
+      </h3>
 
-    <!-- Teacher Alias and Rating -->
-    <section class="mt-2">
-      <div class="flex justify-center lg:justify-start">
-        <p>{teacher.alias}</p>
-
+      <section class="flex justify-center xl:justify-start">
+        <p class="text-gray-500">{teacher.alias}</p>
         <div class="w-6 h-6 text-yellow-500">
           <StarIcon />
         </div>
         <p class="text-yellow-500">{teacher.rating}</p>
-      </div>
-    </section>
+      </section>
+    </header>
 
     <!-- Teacher About me -->
     <section class="mt-2">
-      <p class="line-clamp-1">{teacher.aboutMe}</p>
-    </section>
-
-    <!-- Body Content -->
-    <section class="mt-2">
-      <p class="line-clamp-2 text-gray-500 lg:line-clamp-1">
+      <p class="line-clamp-3">
         {teacher.videoSubtitle}
       </p>
     </section>
 
     <!-- Footer -->
-    <footer class="justify-end mt-6 items-center lg:flex">
+    <footer class="mt-auto justify-end items-center xl:flex">
       <p class="lg:pr-2">
         {teacher.price}
         <span class="text-gray-500">/{teacher.time}</span>
       </p>
       <a
-        class="bg-[#FF4438] block border-2 border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition hover:text-[#ff4438] hover:bg-white"
+        class="bg-p block border-2 border-p py-1 px-[2rem] rounded-full text-white transition hover:text-p hover:bg-white"
         href={`/teachers/${teacher.id}/`}
       >
         了解更多
