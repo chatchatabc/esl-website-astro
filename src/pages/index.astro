@@ -1,6 +1,5 @@
 ---
 import teachersJson from "@data/teachers.json";
-import ResourceCard from "../components/landing-page/ResourceCard.astro";
 import { Img, Picture } from "astro-imagetools/components";
 import TeacherListItem from "@components/landing-page/TeacherListItem.astro";
 import MainLayout from "@layouts/MainLayout.astro";
@@ -15,6 +14,9 @@ const teachers = teachersJson.contents;
 
   <!-- Hero Section -->
   <section class="container my-8 xl:my-16">
+    <!-- Navigation purpose -->
+    <div id="home" class="absolute -mt-32"></div>
+
     <header>
       <h2 class="sr-only">Hero section</h2>
     </header>
@@ -71,6 +73,9 @@ const teachers = teachersJson.contents;
 
   <!-- Teachers Section -->
   <section class="bg-p bg-opacity-10 py-16">
+    <!-- Navigation purpose -->
+    <div id="teachers" class="absolute -mt-32"></div>
+
     <section class="container">
       <header class="space-y-4 px-4 text-center">
         <h2 class="text-3xl text-p-950 font-bold">
@@ -100,6 +105,9 @@ const teachers = teachersJson.contents;
 
   <!-- Resources Section -->
   <section class="container my-16">
+    <!-- Navigation purpose -->
+    <div id="resources" class="absolute -mt-32"></div>
+
     <section class="bg-p bg-opacity-10 rounded-3xl">
       <figure class="flex flex-wrap flex-row-reverse items-center">
         <div class="drop-shadow-lg w-full mx-auto h-64 lg:h-[unset] lg:w-1/2">
