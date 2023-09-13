@@ -1,7 +1,7 @@
 ---
 import teachersJson from "@data/teachers.json";
 import ResourceCard from "../components/landing-page/ResourceCard.astro";
-import { Img } from "astro-imagetools/components";
+import { Img, Picture } from "astro-imagetools/components";
 import TeacherListItem from "@components/landing-page/TeacherListItem.astro";
 import MainLayout from "@layouts/MainLayout.astro";
 
@@ -37,7 +37,9 @@ const teachers = teachersJson.contents;
         class="w-full pr-4 pt-8 space-y-4 md:space-y-8 md:py-8 md:w-1/2 lg:py-16 xl:pr-20 xl:py-24"
       >
         <header>
-          <h3 class="font-black text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+          <h3
+            class="text-p-950 font-black text-2xl md:text-3xl lg:text-4xl xl:text-5xl"
+          >
             用英语的力量发现世界
           </h3>
         </header>
@@ -71,7 +73,7 @@ const teachers = teachersJson.contents;
   <section class="bg-p bg-opacity-10 py-16">
     <section class="container">
       <header class="space-y-4 px-4 text-center">
-        <h2 class="text-3xl font-bold">
+        <h2 class="text-3xl text-p-950 font-bold">
           认识我们的英语大师：您语言之旅的设计师
         </h2>
         <p class="text-gray-500 text-lg max-w-5xl mx-auto">
@@ -97,66 +99,41 @@ const teachers = teachersJson.contents;
   </section>
 
   <!-- Resources Section -->
-  <section class="container mb-12 lg:mt-10">
-    <!-- Navigation purpose -->
-    <div id="resources" class="-mt-16 absolute lg:mt-0"></div>
+  <section class="container my-16">
+    <section class="bg-p bg-opacity-10 p-8 rounded-3xl">
+      <figure class="flex items-center">
+        <figcaption class="w-1/2 space-y-8 p-16">
+          <header>
+            <h2 class="text-3xl text-p-950 font-bold">
+              通过我们丰富的教育资源，提升您的英语之旅
+            </h2>
+          </header>
 
-    <div class="space-y-10 bg-white p-4 rounded-xl md:p-8 lg:p-16">
-      <header>
-        <div class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block">
-        </div>
-        <h2 class="text-esl-4">
-          <span class="text-esl-c-1">教学资源</span>
-        </h2>
-      </header>
+          <section class="space-y-4">
+            <p>
+              在ABC
+              English，我们相信教育的变革力量，因此我们汇集了大量的资源，丰富您的英语掌握之旅。我们精心策划的丰富书籍、课程和数字材料库，旨在增强您的语言学习体验。
+            </p>
 
-      <section class="w-full flex justify-center mx-auto">
-        <div class="w-full grid grid-cols-1 gap-12 md:grid-cols-2">
-          {
-            [
-              {
-                link: "#",
-                image: "/images/new-concept.jpg",
-                imageAlt: "新概念",
-                text: "新概念",
-              },
-              {
-                link: "#",
-                image: "/images/cambridge-english-young-learners-flyers.jpg",
-                imageAlt: "剑桥少儿英语",
-                text: "剑桥少儿英语",
-              },
-              {
-                link: "#",
-                image: "/images/pep-english.jpg",
-                imageAlt: "人教版英语",
-                text: "人教版英语",
-              },
-              {
-                link: "#",
-                image: "/images/jijiao-english.jpg",
-                imageAlt: "冀教版英语",
-                text: "冀教版英语",
-              },
-              {
-                link: "#",
-                image: "/images/toefl.png",
-                imageAlt: "托福",
-                text: "托福",
-              },
-              {
-                link: "#",
-                image: "/images/ielts.png",
-                imageAlt: "雅思",
-                text: "雅思",
-              },
-            ].map((resource: any) => {
-              return <ResourceCard resourceParameter={resource} />;
-            })
-          }
+            <p>
+              借助我们广泛的图书馆，您将深入了解知识的世界，涵盖从语法要点到引人入胜的文学作品。我们的教育资源包括互动电子书、视频课程和适用于各级别和学习风格的语言工具。无论您是刚刚起步还是力争高级流利度，我们都有完美的资源来引导您。
+            </p>
+
+            <p>
+              借助我们的教育武器库，您将获得技能和信心，以在学习英语作为第二语言方面取得卓越成就。在ABC
+              English的支持下，探索、学习并不断成长，我们将一路陪伴您，支持您的教育之旅的每一步。"
+            </p>
+          </section>
+        </figcaption>
+
+        <div class="drop-shadow-lg w-1/2">
+          <Picture
+            src="/images/books/resources.png"
+            alt="educational resources"
+          />
         </div>
-      </section>
-    </div>
+      </figure>
+    </section>
   </section>
 
   <!-- About Section -->
