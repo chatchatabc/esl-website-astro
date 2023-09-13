@@ -1,16 +1,14 @@
 ---
 import Footer from "@components/Footer.astro";
-import Header from "@components/Header.astro";
+import Header from "@components/header/Header.astro";
 import SeoLayout, { SeoProps } from "@layouts/SeoLayout.astro";
 
 const props = Astro.props as SeoProps;
 ---
 
 <SeoLayout {...props}>
-  <header data-body-header class="sticky top-0 z-[5] lg:relative">
-    <Header />
-    <slot name="header" />
-  </header>
+  <Header />
+
   <main>
     <slot />
   </main>
