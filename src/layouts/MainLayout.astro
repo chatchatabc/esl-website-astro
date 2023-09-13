@@ -1,24 +1,9 @@
 ---
 import Footer from "@components/Footer.astro";
 import Header from "@components/Header.astro";
-import SeoLayout from "@layouts/SeoLayout.astro";
+import SeoLayout, { SeoProps } from "@layouts/SeoLayout.astro";
 
-type Props = {
-  pageTitle?: string;
-  pageDescription?: string;
-  pageAuthor?: string;
-  pageKeywords?: string;
-  ogTitle?: string;
-  ogType?: string;
-  ogImage?: string;
-  ogDescription?: string;
-  twitterCardType?: string;
-  twitterImage?: string;
-  twitterDescription?: string;
-  twitterTitle?: string;
-};
-
-const props = Astro.props as Props;
+const props = Astro.props as SeoProps;
 ---
 
 <SeoLayout {...props}>

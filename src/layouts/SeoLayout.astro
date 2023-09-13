@@ -3,7 +3,7 @@ import { SEO } from "astro-seo";
 import siteInfoJson from "@data/site-info.json";
 import { ImageSupportDetection } from "astro-imagetools/components";
 
-type Props = {
+export type SeoProps = {
   pageTitle?: string;
   pageDescription?: string;
   pageAuthor?: string;
@@ -17,25 +17,20 @@ type Props = {
   twitterDescription?: string;
   twitterTitle?: string;
 };
-const props = Astro.props as Props;
 
-// Fallbacks
-const pageTitle = props.pageTitle ?? siteInfoJson.pageTitle;
-const pageDescription = props.pageDescription ?? siteInfoJson.pageDescription;
-const pageAuthor = props.pageAuthor ?? siteInfoJson.pageAuthor;
-const pageKeywords = props.pageKeywords ?? siteInfoJson.pageKeywords;
-const ogTitle = props.ogTitle ?? siteInfoJson.ogTitle ?? pageTitle;
-const ogType = props.ogType ?? siteInfoJson.ogType;
-const ogImage = props.ogImage ?? siteInfoJson.ogImage;
-const ogDescription =
-  props.ogDescription ?? siteInfoJson.ogDescription ?? pageDescription;
-const twitterImage = props.twitterImage ?? siteInfoJson.twitterImage;
-const twitterDescription =
-  props.twitterDescription ??
-  siteInfoJson.twitterDescription ??
-  pageDescription;
-const twitterTitle =
-  props.twitterTitle ?? siteInfoJson.twitterTitle ?? pageTitle;
+const {
+  pageTitle = siteInfoJson.pageTitle,
+  pageDescription = siteInfoJson.pageDescription,
+  pageAuthor = siteInfoJson.pageAuthor,
+  pageKeywords = siteInfoJson.pageKeywords,
+  ogTitle = siteInfoJson.ogTitle ?? pageTitle,
+  ogType = siteInfoJson.ogType,
+  ogImage = siteInfoJson.ogImage,
+  ogDescription = siteInfoJson.ogDescription ?? pageDescription,
+  twitterImage = siteInfoJson.twitterImage,
+  twitterDescription = siteInfoJson.twitterDescription ?? ogDescription,
+  twitterTitle = siteInfoJson.twitterTitle ?? ogTitle,
+} = Astro.props as SeoProps;
 ---
 
 <html lang="en" class="bg-esl-c-1 scroll-smooth">
