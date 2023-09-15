@@ -12,6 +12,8 @@
   import { authGetProfile } from "@services/authService";
   import LoadingComp from "./LoadingComp.svelte";
   import { scheduleGetAll } from "@services/scheduleService";
+  import type { Course } from "../../../esl-workers/src/domain/models/CourseModel";
+  import { courseGetAll } from "@services/courseService";
 
   const timeFormatter = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
@@ -25,16 +27,22 @@
   let showModal = false;
   let schedules = [] as Schedule[];
   let bookings = [] as Booking[];
+  let courses = [] as Course[];
   let calendar = null as Calendar | null;
   let calendarDate = new Date();
   let dateValue = "";
   let startValue = new Date();
+  let courseValue: null | number = null;
   let endValue = new Date(startValue.getTime() + 30 * 60000);
   let user: User | null = null;
   let loading = true;
   let teacher = null as Teacher | null;
   let calendarEl: any;
   let sending = false;
+
+  $: price =
+    (courses.find((course) => course.id === courseValue)?.price ?? 0) *
+    ((endValue.getTime() - startValue.getTime()) / 30 / 60000);
 
   $: if (calendarEl) {
     calendar = new Calendar(calendarEl, {
@@ -123,16 +131,12 @@
       return;
     }
 
-    // const price =
-    //   ((endValue.getTime() - startValue.getTime()) / 30 / 60000) *
-    //   teacher.price;
-
-    // if (price > user.credit ?? 0) {
-    //   alert(
-    //     "Invalid transaction. Booked price cannot be higher than your available credit points."
-    //   );
-    //   return;
-    // }
+    if (price > user.credits ?? 0) {
+      alert(
+        "Invalid transaction. Booked price cannot be higher than your available credit points."
+      );
+      return;
+    }
 
     const data = {
       start: startValue.getTime(),
@@ -140,6 +144,7 @@
       teacherId,
       studentId: user?.id,
     };
+
     // const response = await bookingCreate(data);
 
     // if (response) {
@@ -165,7 +170,6 @@
 
       teacher = await teacherGet({ userId: teacherId });
       schedules = (await scheduleGetAll({ teacherId }))?.content ?? [];
-
       const responseBookings = await bookingGetAll({
         teacherId,
         page: 1,
@@ -174,6 +178,16 @@
         end,
         status: [1, 2],
       });
+      const responseCourse = await courseGetAll({
+        page: 1,
+        size: 10000,
+        teacherId,
+      });
+
+      if (responseCourse) {
+        courses = responseCourse.content;
+        courseValue = courses[0].id;
+      }
 
       if (responseBookings) {
         bookings = responseBookings.content;
@@ -223,14 +237,25 @@
         <div class="-space-y-1">
           <p class="text-xs font-bold">Total Cost</p>
           <p class="text-end">
-            <!-- {teacher?.price &&
-              (teacher.price * (endValue.getTime() - startValue.getTime())) /
-                30 /
-                60000}元 -->
-            0点
+            {price}点
           </p>
         </div>
       </section>
+
+      <label class="flex flex-col w-full p-1">
+        <span class="font-bold text-xs">Course</span>
+
+        <select
+          name="courseId"
+          class="border border-black rounded-md p-2"
+          value={courseValue}
+          required
+        >
+          {#each courses as course}
+            <option value={course.id}>{course.name}</option>
+          {/each}
+        </select>
+      </label>
 
       <label class="flex flex-col w-full p-1">
         <span class="font-bold text-xs">Date</span>
