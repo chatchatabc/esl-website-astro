@@ -161,7 +161,8 @@
       }
 
       teacher = await teacherGet({ userId: teacherId });
-      schedules = (await scheduleGetAll({ userId: teacherId }))?.content ?? [];
+      schedules = (await scheduleGetAll({ teacherId }))?.content ?? [];
+
       const responseBooking = await bookingGetAll({
         userId: teacherId,
         page: 1,
