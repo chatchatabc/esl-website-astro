@@ -248,25 +248,23 @@
       </section>
     </section>
   {:else if step === 2}
-    <section class="bg-white rounded-3xl p-4">
+    <section class="bg-white rounded-3xl p-4 my-8">
       <ProfileInformation {user} />
     </section>
 
-    {#if user.roleId === 2}
-      <section class="flex -mx-2 flex-wrap">
-        <section class="px-2 w-full lg:w-1/2">
-          <section class="bg-white rounded-xl p-4 mt-4">
-            <ClassList {reset} {handleReset} roleId={user.roleId} />
-          </section>
-        </section>
-
-        <section class="px-2 w-full lg:w-1/2">
-          <section class="bg-white rounded-xl p-4 mt-4">
-            <StudentCashList userId={user.id} {reset} />
-          </section>
+    <section class="flex -mx-2 flex-wrap my-8">
+      <section class="px-2 w-full lg:w-1/2">
+        <section class="bg-white rounded-xl p-4">
+          <ClassList {reset} {handleReset} roleId={user.roleId} />
         </section>
       </section>
-    {/if}
+
+      <section class="px-2 w-full lg:w-1/2">
+        <section class="bg-white rounded-xl p-4">
+          <StudentCashList userId={user.id} {reset} />
+        </section>
+      </section>
+    </section>
   {/if}
 
   <!-- {#if user.roleId === 3}
