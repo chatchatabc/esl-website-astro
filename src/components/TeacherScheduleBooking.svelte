@@ -160,17 +160,23 @@
         calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
       }
 
+      const start = calendarDate.getTime();
+      const end = start + 7 * 24 * 60 * 60 * 1000;
+
       teacher = await teacherGet({ userId: teacherId });
       schedules = (await scheduleGetAll({ teacherId }))?.content ?? [];
 
-      const responseBooking = await bookingGetAll({
-        userId: teacherId,
+      const responseBookings = await bookingGetAll({
+        teacherId,
         page: 1,
         size: 100000,
+        start,
+        end,
+        status: [1, 2],
       });
 
-      if (responseBooking) {
-        bookings = responseBooking.content;
+      if (responseBookings) {
+        bookings = responseBookings.content;
       }
 
       generateOpenSchedules();
