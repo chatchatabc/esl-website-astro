@@ -1,19 +1,23 @@
 import { trpcClient } from "src/infra/trpc";
 import { userGet } from "./userService";
-import type { BookingCreate } from "../../../esl-workers/src/domain/models/BookingModel";
+import type {
+  BookingCreate,
+  BookingCreateInput,
+} from "../../../esl-workers/src/domain/models/BookingModel";
 import type { CommonPaginationInput } from "../../../esl-workers/src/domain/models/CommonModel";
+import { teacherGet } from "./teacherService";
 
 export async function bookingGetAll(params: CommonPaginationInput) {
   try {
     const response = await trpcClient.booking.getAll.query(params);
 
     const contentPromise = response.content.map(async (booking) => {
-      const student = await userGet({ userId: booking.studentId ?? 0 });
-      if (student) {
-        booking.student = student;
+      const user = await userGet({ userId: booking.userId ?? 0 });
+      if (user) {
+        booking.user = user;
       }
 
-      const teacher = await userGet({ userId: booking.teacherId ?? 0 });
+      const teacher = await teacherGet({ teacherId: booking.teacherId ?? 0 });
       if (teacher) {
         booking.teacher = teacher;
       }
@@ -37,12 +41,12 @@ export async function bookingGetAllByUser(params: {
     const response = await trpcClient.booking.getAll.query(params);
 
     const contentPromise = response.content.map(async (booking) => {
-      const student = await userGet({ userId: booking.studentId ?? 0 });
-      if (student) {
-        booking.student = student;
+      const user = await userGet({ userId: booking.userId ?? 0 });
+      if (user) {
+        booking.user = user;
       }
 
-      const teacher = await userGet({ userId: booking.teacherId ?? 0 });
+      const teacher = await teacherGet({ teacherId: booking.teacherId ?? 0 });
       if (teacher) {
         booking.teacher = teacher;
       }
@@ -57,7 +61,7 @@ export async function bookingGetAllByUser(params: {
   }
 }
 
-export async function bookingCreate(params: BookingCreate) {
+export async function bookingCreate(params: BookingCreateInput) {
   try {
     const response = await trpcClient.booking.create.mutate(params);
     return response;
@@ -67,7 +71,7 @@ export async function bookingCreate(params: BookingCreate) {
   }
 }
 
-export async function bookingCancel(params: { bookingId: number }) {
+export async function bookingCancel(params: { id: number }) {
   try {
     const response = await trpcClient.booking.cancel.mutate(params);
     return response;
