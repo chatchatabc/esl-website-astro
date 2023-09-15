@@ -24,6 +24,8 @@
     month: "2-digit",
     day: "2-digit",
   });
+  let reset = true;
+  let loading = true;
   let showModal = false;
   let schedules = [] as Schedule[];
   let bookings = [] as Booking[];
@@ -35,7 +37,6 @@
   let courseValue: null | number = null;
   let endValue = new Date(startValue.getTime() + 30 * 60000);
   let user: User | null = null;
-  let loading = true;
   let teacher = null as Teacher | null;
   let calendarEl: any;
   let sending = false;
@@ -65,6 +66,24 @@
     });
 
     calendar.render();
+  }
+
+  async function fetchBookings() {
+    const start = calendarDate.getTime();
+    const end = start + 7 * 24 * 60 * 60 * 1000;
+
+    const responseBookings = await bookingGetAll({
+      teacherId,
+      page: 1,
+      size: 100000,
+      start,
+      end,
+      status: [1, 2],
+    });
+
+    if (responseBookings) {
+      bookings = responseBookings.content;
+    }
   }
 
   function generateOpenSchedules() {
@@ -151,6 +170,8 @@
       courseId,
     };
 
+    loading = true;
+
     const response = await bookingCreate(data);
 
     if (response) {
@@ -161,29 +182,19 @@
       );
     }
 
-    loading = true;
+    reset = true;
   }
 
-  $: if (loading) {
+  $: if (reset) {
     (async () => {
       if (!user) {
         user = await authGetProfile();
         calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
       }
 
-      const start = calendarDate.getTime();
-      const end = start + 7 * 24 * 60 * 60 * 1000;
-
       teacher = await teacherGet({ teacherId });
       schedules = (await scheduleGetAll({ teacherId }))?.content ?? [];
-      const responseBookings = await bookingGetAll({
-        teacherId,
-        page: 1,
-        size: 100000,
-        start,
-        end,
-        status: [1, 2],
-      });
+      await fetchBookings();
       const responseCourse = await courseGetAll({
         page: 1,
         size: 10000,
@@ -195,12 +206,9 @@
         courseValue = courses[0].id;
       }
 
-      if (responseBookings) {
-        bookings = responseBookings.content;
-      }
-
       generateOpenSchedules();
       loading = false;
+      reset = false;
     })();
   }
 </script>
@@ -354,9 +362,12 @@
       <section class="flex space-x-2">
         <button
           class="bg-p text-white px-4 py-2 rounded-md transition hover:bg-p-600"
-          on:click={() => {
+          on:click={async () => {
             calendarDate.setDate(calendarDate.getDate() - 7);
             calendarDate = new Date(calendarDate);
+            loading = true;
+            await fetchBookings();
+            loading = false;
 
             generateOpenSchedules();
           }}
@@ -365,9 +376,12 @@
         </button>
         <button
           class="bg-p text-white px-4 py-2 rounded-md transition hover:bg-p-600"
-          on:click={() => {
+          on:click={async () => {
             calendarDate.setDate(calendarDate.getDate() + 7);
             calendarDate = new Date(calendarDate);
+            loading = true;
+            await fetchBookings();
+            loading = false;
 
             generateOpenSchedules();
           }}
