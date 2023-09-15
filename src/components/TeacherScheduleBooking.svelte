@@ -138,22 +138,28 @@
       return;
     }
 
+    const courseId = courseValue;
+    if (!courseId) {
+      alert("Invalid transaction. Please select a course.");
+      return;
+    }
+
     const data = {
       start: startValue.getTime(),
       end: endValue.getTime(),
       teacherId,
-      studentId: user?.id,
+      courseId,
     };
 
-    // const response = await bookingCreate(data);
+    const response = await bookingCreate(data);
 
-    // if (response) {
-    //   showModal = false;
-    // } else {
-    //   alert(
-    //     "Unable to book schedule. Please refresh the page and try again later."
-    //   );
-    // }
+    if (response) {
+      showModal = false;
+    } else {
+      alert(
+        "Unable to book schedule. Please refresh the page and try again later."
+      );
+    }
 
     loading = true;
   }
@@ -168,7 +174,7 @@
       const start = calendarDate.getTime();
       const end = start + 7 * 24 * 60 * 60 * 1000;
 
-      teacher = await teacherGet({ userId: teacherId });
+      teacher = await teacherGet({ teacherId });
       schedules = (await scheduleGetAll({ teacherId }))?.content ?? [];
       const responseBookings = await bookingGetAll({
         teacherId,
