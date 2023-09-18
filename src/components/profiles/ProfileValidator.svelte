@@ -68,7 +68,8 @@
     if (
       data.firstName === user?.firstName &&
       data.lastName === user?.lastName &&
-      data.phone === user?.phone
+      data.phone === user?.phone &&
+      data.alias === user?.alias
     ) {
       step = 1;
       return;
@@ -154,6 +155,16 @@
               class="border rounded-md p-2"
               placeholder="Last name"
               value={user?.lastName}
+            />
+          </label>
+          <label class="flex flex-col p-1">
+            <span class="text-xs font-bold">Alias</span>
+            <input
+              required
+              name="alias"
+              class="border rounded-md p-2"
+              placeholder="Alias"
+              value={user?.alias}
             />
           </label>
           <label class="flex flex-col p-1">
