@@ -9,7 +9,7 @@ export async function authLogin(data: UserLogin) {
   try {
     const user = await trpcClient.auth.login.mutate(data);
     if (user) {
-      document.cookie = `userId=${user.id}; path=/; max-age=31536000`;
+      utilCookieSave("user", JSON.stringify(user), 31536000);
     }
     return user;
   } catch (e) {
@@ -22,13 +22,12 @@ export async function authLogout() {
   try {
     const response = await trpcClient.auth.logout.mutate();
     if (response) {
-      utilCookieSave("userId", "", 0);
+      utilCookieSave("user", "", 0);
       return true;
     }
     return false;
   } catch (e) {
-    console.log(e);
-    utilCookieSave("userId", "", 0);
+    utilCookieSave("user", "", 0);
     return null;
   }
 }
@@ -37,7 +36,7 @@ export async function authRegister(data: UserRegisterInput) {
   try {
     const response = await trpcClient.auth.register.mutate(data);
     if (response) {
-      document.cookie = `userId=${response.id}; path=/; max-age=31536000`;
+      utilCookieSave("user", JSON.stringify(response), 31536000);
     }
     return response;
   } catch (e) {
