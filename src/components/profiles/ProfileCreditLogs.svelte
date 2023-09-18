@@ -141,7 +141,11 @@
             <p>{log.title}</p>
           </div>
 
-          <div class={`w-1/3 text-end`}>
+          <div
+            class={`w-1/3 text-end ${
+              log.amount < 0 ? "text-red-500" : "text-green-500"
+            }`}
+          >
             <p>
               {log.amount}点
             </p>
