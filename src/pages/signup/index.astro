@@ -70,7 +70,7 @@ import MainLayout from "@layouts/MainLayout.astro";
 
 <script>
   import { authRegister } from "@services/authService";
-  import type { UserRegisterInput } from "../../../../esl-workers/src/domain/models/UserModel";
+  import { type UserRegisterInput } from "../../../../esl-workers/src/domain/models/UserModel";
 
   const form = document.querySelector<HTMLFormElement>("[data-register-form]")!;
 
