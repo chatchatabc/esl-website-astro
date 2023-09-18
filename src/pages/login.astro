@@ -91,7 +91,7 @@ import { Picture } from "astro-imagetools/components";
   (async () => {
     const user = await authGetProfile();
     if (user) {
-      utilCookieSave("userId", user.id);
+      utilCookieSave("user", user);
       window.location.href = "/profile";
     }
   })();
@@ -106,7 +106,7 @@ import { Picture } from "astro-imagetools/components";
     if (!response) {
       alert("Login failed!");
     } else {
-      // alert("Login successful!");
+      utilCookieSave("user", response);
       window.location.href = "/profile";
     }
   });
