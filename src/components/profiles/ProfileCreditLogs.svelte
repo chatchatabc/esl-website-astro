@@ -3,7 +3,7 @@
 
   import LoadingComp from "@components/LoadingComp.svelte";
   import Pagination from "@components/widgets/Pagination.svelte";
-  import { logsGetAllCredit, logsRequestCredit } from "@services/logsService";
+  import { logsGetAllCredit } from "@services/logsService";
   import type { LogsCredit } from "../../../../esl-workers/src/domain/models/LogsModel";
 
   let pagination = {
@@ -31,13 +31,13 @@
     const data = {
       amount: Number(objData.amount),
     };
-    const response = await logsRequestCredit(data);
-    if (!response) {
-      alert("Unable to make a request.");
-    } else {
-      loading = true;
-      showModal = false;
-    }
+    // const response = await logsRequestCredit(data);
+    // if (!response) {
+    //   alert("Unable to make a request.");
+    // } else {
+    //   loading = true;
+    //   showModal = false;
+    // }
   }
 
   $: if (reset) {
@@ -104,7 +104,7 @@
   </div>
 </div>
 
-<header class="justify-between flex">
+<header class="justify-between flex py-1">
   <h2 class="text-2xl">Transaction History</h2>
   <!-- <button
     class="bg-blue-500 text-white px-4 py-2 rounded-md"
@@ -141,24 +141,7 @@
             <p>{log.title}</p>
           </div>
 
-          <div
-            class={`${
-              log.status === 1 || log.status === 3
-                ? ""
-                : userId === log.receiverId
-                ? "text-green-500"
-                : "text-red-500"
-            } w-1/3 text-end`}
-          >
-            <p class="text-xs font-bold">
-              {log.status === 1
-                ? "Pending"
-                : log.status === 3
-                ? "Rejected"
-                : userId === log.receiverId
-                ? "Added Points"
-                : "Deducted Points"}
-            </p>
+          <div class={`w-1/3 text-end`}>
             <p>
               {log.amount}点
             </p>

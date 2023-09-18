@@ -50,9 +50,7 @@
       bookings.forEach((booking) => {
         calendar?.addEvent({
           id: String(booking.id),
-          title: `${booking.teacher?.firstName ?? booking.teacher?.username} ${
-            booking.teacher?.lastName ?? ""
-          }`,
+          title: `${booking.teacher?.alias}`,
           start: booking.start,
           end: booking.end,
         });
@@ -61,7 +59,7 @@
   }
 
   async function handleCancel() {
-    const response = await bookingCancel({ bookingId });
+    const response = await bookingCancel({ id: bookingId });
     if (!response) {
       alert("Unable to cancel");
     }
@@ -75,7 +73,11 @@
 
   $: if (loading) {
     (async () => {
-      const response = await bookingGetAll({ ...pagination, status: 1 });
+      const response = await bookingGetAll({
+        ...pagination,
+        status: [1, 2],
+        sort: "start,DESC",
+      });
       if (!response) {
         alert("Unable to fetch bookings");
       } else {
@@ -168,19 +170,18 @@
             </p>
             {#if roleId === 3}
               <p>
-                {booking.student?.firstName}
-                {booking.student?.lastName} |
+                {booking.user?.firstName}
+                {booking.user?.lastName} |
                 <a
                   class="text-blue-500 underline hover:no-underline"
-                  href={`tel:${booking.student?.phone}`}
+                  href={`tel:${booking.user?.phone}`}
                 >
-                  {booking.student?.phone}
+                  {booking.user?.phone}
                 </a>
               </p>
             {:else}
               <p>
-                {booking.teacher?.firstName}
-                {booking.teacher?.lastName}
+                {booking.teacher?.alias}
               </p>
             {/if}
           </div>

@@ -1,7 +1,6 @@
 ---
 import teachersJson from "@data/teachers.json";
-import ResourceCard from "../components/landing-page/ResourceCard.astro";
-import { Img } from "astro-imagetools/components";
+import { Img, Picture } from "astro-imagetools/components";
 import TeacherListItem from "@components/landing-page/TeacherListItem.astro";
 import MainLayout from "@layouts/MainLayout.astro";
 
@@ -9,159 +8,140 @@ const teachers = teachersJson.contents;
 ---
 
 <MainLayout>
+  <header class="sr-only">
+    <h1>Homepage</h1>
+  </header>
+
   <!-- Hero Section -->
-  <section>
+  <section class="container my-8 xl:my-16">
     <!-- Navigation purpose -->
-    <div id="home" class="-mt-16 absolute lg:mt-0"></div>
+    <div id="home" class="absolute -mt-32"></div>
 
-    <div
-      class="mb-2 container sm:rounded-t-[1.75rem] overflow-hidden lg:rounded-t-[3.75rem] lg:mt-5"
-    >
+    <header>
+      <h2 class="sr-only">Hero section</h2>
+    </header>
+
+    <figure class="flex items-center flex-row-reverse flex-wrap">
       <div
-        class="bg-esl-c-2 flex flex-1 justify-between flex-col-reverse lg:rounded-tr-none lg:flex-row"
+        class="rounded-3xl w-full overflow-hidden self-stretch relative md:w-1/2"
       >
-        <div class="px-5 py-10 sm:px-10 bg-esl-c-2 lg:w-5/12">
-          <div class="text-esl-4">
-            <span class="text-esl-c-3">用英语的力量发现世界</span>
-          </div>
-          <div class="">
-            <div class="mt-6 text-esl-2 text-white">
-              欢迎来到 ABC
-              English英语教学网站，在这里我们致力于帮助您实现语言学习目标。无论您是为了工作、旅行还是个人发展而提高英语能力，我们拥有经验丰富、资质齐全的教师团队，将为您在每一步的学习提供帮助。
-              <br />
-              我们提供一个平台，让教师和学生可以在一个自由市场的环境下相互联系和参与。教师可以向广大学员展示他们的技能和专业知识，而学生则有机会浏览和选择最适合他们需求和偏好的教师。我们的平台为教育提供了一个透明和开放的市场，让教师和学生都可以自由参与并从知识和学习经验的交流中获益。
-            </div>
-          </div>
-        </div>
-
-        <!--clipped image -->
-        <div
-          class="overflow-hidden flex relative lg:w-1/2 xl:w-7/12 xl:relative"
-        >
-          <div
-            class="landing-clipped w-full max-h-[15rem] sm:max-h-[20rem] md:max-h-[25rem] lg:max-h-none xl:absolute"
-          >
-            <Img
-              src="/images/teaching-english2.png"
-              alt=""
-              layout="fill"
-              breakpoints={{ count: 1, maxWidth: 768 }}
-            />
-          </div>
-        </div>
-
-        <!-- Clip path -->
-        <div>
-          <svg class="" xmlns="http://www.w3.org/2000/svg" width="0" height="0">
-            <defs>
-              <clipPath id="landing-clip">
-                <path
-                  id="landing-path"
-                  transform="translate(300 -900) rotate(30) scale(5)"
-                  d="M172.871,0a28.906,28.906,0,0,1,25.009,14.412L245.805,97.1a28.906,28.906,0,0,1,0,28.989L197.88,208.784A28.906,28.906,0,0,1,172.871,223.2H76.831a28.906,28.906,0,0,1-25.009-14.412L3.9,126.092A28.906,28.906,0,0,1,3.9,97.1L51.821,14.412A28.906,28.906,0,0,1,76.831,0Z"
-                ></path>
-              </clipPath>
-            </defs>
-          </svg>
+        <div class="w-full h-full md:absolute">
+          <Img
+            src="/images/teaching-english2.png"
+            alt="Hero"
+            layout="fill"
+            breakpoints={{ count: 1, maxWidth: 768 }}
+          />
         </div>
       </div>
-    </div>
+
+      <figcaption
+        class="w-full pr-4 pt-8 space-y-4 md:space-y-8 md:py-8 md:w-1/2 lg:py-16 xl:pr-20 xl:py-24"
+      >
+        <header>
+          <h3
+            class="text-p-950 font-black text-2xl md:text-3xl lg:text-4xl xl:text-5xl"
+          >
+            用英语的力量发现世界
+          </h3>
+        </header>
+
+        <section>
+          <p class="text-gray-600 lg:text-lg">
+            在ABC
+            English，我们致力于培养一个社区，科技、创新和教育专业知识的协同作用将赋予您英语的精湛掌握，为您创造无限机会，促进全球增长。
+          </p>
+        </section>
+
+        <footer class="flex space-x-4 font-medium lg:text-lg">
+          <a
+            href="/signup"
+            class="bg-p px-8 py-2.5 rounded-md text-white hover:bg-p-600"
+          >
+            注册
+          </a>
+          <a
+            href="/login"
+            class="px-8 py-2.5 rounded-md text-p transition hover:bg-p-100"
+          >
+            登录
+          </a>
+        </footer>
+      </figcaption>
+    </figure>
   </section>
 
   <!-- Teachers Section -->
-  <section class="my-6 container lg:mt-10">
+  <section class="bg-p bg-opacity-10 py-16">
     <!-- Navigation purpose -->
-    <div id="teachers" class="-mt-16 absolute lg:mt-0"></div>
+    <div id="teachers" class="absolute -mt-32"></div>
 
-    <header class="w-full">
-      <!--dashed line -->
-      <div class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block">
-      </div>
-      <h2
-        class="text-esl-4 text-white flex items-center space-x-1 justify-center lg:justify-start"
-      >
-        <span>教师队伍</span>
-        <span class="w-[2.5rem] h-[5px] rounded-full bg-white block"></span>
-        <span class="text-[0.94rem]">寻找最合适你的老师</span>
-      </h2>
-    </header>
+    <section class="container">
+      <header class="space-y-4 px-4 text-center">
+        <h2 class="text-3xl text-p-950 font-bold">
+          认识我们的英语大师：您语言之旅的设计师
+        </h2>
+        <p class="text-gray-500 text-lg max-w-5xl mx-auto">
+          逐一打开卓越语言，呵护您通往流利之路 —
+          每位教师，都是为您的成功而奋斗的熟练导师，量身定制个性化学习经验，提升您的英语熟练度和自信，确保您具备全球交流成功所需的能力。
+        </p>
+      </header>
 
-    <!--teacher list collection -->
-    <section class="mt-2 -mx-2">
-      <!--teacher list item -->
-      <ul class="flex flex-wrap">
-        {
-          teachers.map((teacher) => (
-            <li class="w-full p-2 md:w-1/2">
-              <TeacherListItem teacher={teacher} />
-            </li>
-          ))
-        }
-      </ul>
+      <!--teacher list collection -->
+      <section class="mt-8 -mx-2">
+        <!--teacher list item -->
+        <ul class="flex flex-wrap">
+          {
+            teachers.map((teacher) => (
+              <li class="w-full flex p-2 md:w-1/2">
+                <TeacherListItem teacher={teacher} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
     </section>
   </section>
 
   <!-- Resources Section -->
-  <section class="container mb-12 lg:mt-10">
+  <section class="container my-16">
     <!-- Navigation purpose -->
-    <div id="resources" class="-mt-16 absolute lg:mt-0"></div>
+    <div id="resources" class="absolute -mt-32"></div>
 
-    <div class="space-y-10 bg-white p-4 rounded-xl md:p-8 lg:p-16">
-      <header>
-        <div class="hidden w-[2.5rem] h-[5px] rounded-full bg-esl-c-3 lg:block">
+    <section class="bg-p bg-opacity-10 rounded-3xl">
+      <figure class="flex flex-wrap flex-row-reverse items-center">
+        <div class="drop-shadow-lg w-full mx-auto h-64 lg:h-[unset] lg:w-1/2">
+          <Picture
+            src="/images/books/resources.png"
+            alt="educational resources"
+          />
         </div>
-        <h2 class="text-esl-4">
-          <span class="text-esl-c-1">教学资源</span>
-        </h2>
-      </header>
 
-      <section class="w-full flex justify-center mx-auto">
-        <div class="w-full grid grid-cols-1 gap-12 md:grid-cols-2">
-          {
-            [
-              {
-                link: "#",
-                image: "/images/new-concept.jpg",
-                imageAlt: "新概念",
-                text: "新概念",
-              },
-              {
-                link: "#",
-                image: "/images/cambridge-english-young-learners-flyers.jpg",
-                imageAlt: "剑桥少儿英语",
-                text: "剑桥少儿英语",
-              },
-              {
-                link: "#",
-                image: "/images/pep-english.jpg",
-                imageAlt: "人教版英语",
-                text: "人教版英语",
-              },
-              {
-                link: "#",
-                image: "/images/jijiao-english.jpg",
-                imageAlt: "冀教版英语",
-                text: "冀教版英语",
-              },
-              {
-                link: "#",
-                image: "/images/toefl.png",
-                imageAlt: "托福",
-                text: "托福",
-              },
-              {
-                link: "#",
-                image: "/images/ielts.png",
-                imageAlt: "雅思",
-                text: "雅思",
-              },
-            ].map((resource: any) => {
-              return <ResourceCard resourceParameter={resource} />;
-            })
-          }
-        </div>
-      </section>
-    </div>
+        <figcaption class="w-full space-y-8 p-4 md:p-8 lg:w-1/2 xl:p-16">
+          <header>
+            <h2 class="text-3xl text-p-950 font-bold">
+              通过我们丰富的教育资源，提升您的英语之旅
+            </h2>
+          </header>
+
+          <section class="space-y-4">
+            <p>
+              在ABC
+              English，我们相信教育的变革力量，因此我们汇集了大量的资源，丰富您的英语掌握之旅。我们精心策划的丰富书籍、课程和数字材料库，旨在增强您的语言学习体验。
+            </p>
+
+            <p>
+              借助我们广泛的图书馆，您将深入了解知识的世界，涵盖从语法要点到引人入胜的文学作品。我们的教育资源包括互动电子书、视频课程和适用于各级别和学习风格的语言工具。无论您是刚刚起步还是力争高级流利度，我们都有完美的资源来引导您。
+            </p>
+
+            <p>
+              借助我们的教育武器库，您将获得技能和信心，以在学习英语作为第二语言方面取得卓越成就。在ABC
+              English的支持下，探索、学习并不断成长，我们将一路陪伴您，支持您的教育之旅的每一步。"
+            </p>
+          </section>
+        </figcaption>
+      </figure>
+    </section>
   </section>
 
   <!-- About Section -->

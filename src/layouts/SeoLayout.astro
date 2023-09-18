@@ -33,7 +33,7 @@ const {
 } = Astro.props as SeoProps;
 ---
 
-<html lang="en" class="bg-esl-c-1 scroll-smooth">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -86,7 +86,8 @@ const {
 
     <ImageSupportDetection />
   </head>
-  <body>
+
+  <body class="bg-p bg-opacity-5 min-h-screen flex flex-col">
     <slot />
   </body>
 </html>

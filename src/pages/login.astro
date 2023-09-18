@@ -1,65 +1,77 @@
 ---
 import MainLayout from "@layouts/MainLayout.astro";
+import { Picture } from "astro-imagetools/components";
 ---
 
 <MainLayout>
-  <section class="max-w-xl mx-auto p-2 lg:p-8">
-    <section class="bg-white rounded-xl overflow-hidden p-8">
+  <header>
+    <h1 class="sr-only">Login page</h1>
+
+    <section class="w-48 mx-auto my-8">
+      <Picture
+        breakpoints={[768]}
+        objectFit="contain"
+        src="/images/logo/logo-horizontal.png"
+        alt="logo"
+      />
+    </section>
+  </header>
+
+  <section class="max-w-xl mx-auto my-8 px-4">
+    <section class="bg-white rounded-3xl shadow-lg overflow-hidden p-8">
       <header>
-        <h1 class="text-2xl">Sign In</h1>
+        <h2 class="text-2xl">登录到您的帐户</h2>
       </header>
 
       <section class="mt-4 mx-auto">
         <form data-login-form class="-mx-1">
           <label class="flex flex-col p-1">
-            <span class="text-xs font-bold">Username</span>
+            <span class="text-xs font-bold">用户名</span>
             <input
               required
               name="username"
               class="border rounded-md p-2"
-              placeholder="Username"
+              placeholder="用户名"
             />
           </label>
           <label class="flex flex-col p-1">
-            <span class="text-xs font-bold">Password</span>
+            <span class="text-xs font-bold">密码</span>
             <input
               required
               name="password"
               type="password"
               class="border rounded-md p-2"
-              placeholder="Password"
+              placeholder="密码"
             />
             <a
               href="/"
-              class="text-xs text-blue-800 ml-auto block w-fit hover:underline"
+              class="text-xs text-p ml-auto block w-fit hover:underline"
             >
-              Forgot password?
+              忘记密码？
             </a>
           </label>
 
           <footer class="p-1 mt-2 space-y-2">
             <button
-              class="mx-auto text-sm w-full block p-2 rounded-md bg-blue-300 transition hover:bg-blue-400"
+              class="mx-auto text-sm w-full block p-2 rounded-md bg-p text-white transition hover:bg-p-600"
             >
-              Sign in
+              登入
             </button>
             <button
-              class="mx-auto text-sm w-full block p-2 rounded-md bg-gray-200"
+              class="mx-auto text-sm w-full block p-2 rounded-md bg-gray-200 hover:bg-gray-300"
             >
-              Sign in with WhatsApp
+              使用 WhatsApp 登录
             </button>
 
             <section class="pt-2 text-xs flex justify-between">
               <div class="flex flex-wrap w-1/2">
-                <p class="mr-1">Not a member?</p>
-                <a class="text-blue-800 hover:underline" href="/register">
-                  Join now
-                </a>
+                <p class="mr-1">非会员？</p>
+                <a class="text-p hover:underline" href="/register">现在加入</a>
               </div>
 
               <div class="flex justify-end flex-wrap w-1/2">
-                <p class="mr-1">Need help?</p>
-                <a class="text-blue-800 hover:underline">Contact us!</a>
+                <p class="mr-1">需要帮忙？</p>
+                <a class="text-p hover:underline">联系我们！</a>
               </div>
             </section>
           </footer>
@@ -79,7 +91,7 @@ import MainLayout from "@layouts/MainLayout.astro";
   (async () => {
     const user = await authGetProfile();
     if (user) {
-      utilCookieSave("userId", user.id);
+      utilCookieSave("user", user);
       window.location.href = "/profile";
     }
   })();
@@ -94,7 +106,7 @@ import MainLayout from "@layouts/MainLayout.astro";
     if (!response) {
       alert("Login failed!");
     } else {
-      // alert("Login successful!");
+      utilCookieSave("user", response);
       window.location.href = "/profile";
     }
   });

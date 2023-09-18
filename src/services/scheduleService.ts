@@ -5,7 +5,7 @@ import type {
   ScheduleUpdateInput,
 } from "../../../esl-workers/src/domain/models/ScheduleModel";
 
-export async function scheduleGetAll(params: { userId: number }) {
+export async function scheduleGetAll(params: { teacherId: number }) {
   try {
     const response = await trpcClient.schedule.getAll.query(params);
     return response;

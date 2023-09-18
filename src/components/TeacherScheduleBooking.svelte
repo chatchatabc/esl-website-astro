@@ -12,6 +12,8 @@
   import { authGetProfile } from "@services/authService";
   import LoadingComp from "./LoadingComp.svelte";
   import { scheduleGetAll } from "@services/scheduleService";
+  import type { Course } from "../../../esl-workers/src/domain/models/CourseModel";
+  import { courseGetAll } from "@services/courseService";
 
   const timeFormatter = new Intl.DateTimeFormat("en", {
     timeStyle: "short",
@@ -22,19 +24,26 @@
     month: "2-digit",
     day: "2-digit",
   });
+  let reset = true;
+  let loading = true;
   let showModal = false;
   let schedules = [] as Schedule[];
   let bookings = [] as Booking[];
+  let courses = [] as Course[];
   let calendar = null as Calendar | null;
   let calendarDate = new Date();
   let dateValue = "";
   let startValue = new Date();
+  let courseValue: null | number = null;
   let endValue = new Date(startValue.getTime() + 30 * 60000);
   let user: User | null = null;
-  let loading = true;
   let teacher = null as Teacher | null;
   let calendarEl: any;
   let sending = false;
+
+  $: price =
+    (courses.find((course) => course.id === courseValue)?.price ?? 0) *
+    ((endValue.getTime() - startValue.getTime()) / 30 / 60000);
 
   $: if (calendarEl) {
     calendar = new Calendar(calendarEl, {
@@ -57,6 +66,24 @@
     });
 
     calendar.render();
+  }
+
+  async function fetchBookings() {
+    const start = calendarDate.getTime();
+    const end = start + 7 * 24 * 60 * 60 * 1000;
+
+    const responseBookings = await bookingGetAll({
+      teacherId,
+      page: 1,
+      size: 100000,
+      start,
+      end,
+      status: [1, 2],
+    });
+
+    if (responseBookings) {
+      bookings = responseBookings.content;
+    }
   }
 
   function generateOpenSchedules() {
@@ -123,14 +150,16 @@
       return;
     }
 
-    const price =
-      ((endValue.getTime() - startValue.getTime()) / 30 / 60000) *
-      teacher.price;
-
-    if (price > user.credit ?? 0) {
+    if (price > user.credits ?? 0) {
       alert(
         "Invalid transaction. Booked price cannot be higher than your available credit points."
       );
+      return;
+    }
+
+    const courseId = courseValue;
+    if (!courseId) {
+      alert("Invalid transaction. Please select a course.");
       return;
     }
 
@@ -138,8 +167,11 @@
       start: startValue.getTime(),
       end: endValue.getTime(),
       teacherId,
-      studentId: user?.id,
+      courseId,
     };
+
+    loading = true;
+
     const response = await bookingCreate(data);
 
     if (response) {
@@ -150,30 +182,33 @@
       );
     }
 
-    loading = true;
+    reset = true;
   }
 
-  $: if (loading) {
+  $: if (reset) {
     (async () => {
       if (!user) {
         user = await authGetProfile();
         calendarDate.setDate(calendarDate.getDate() - calendarDate.getDay());
       }
 
-      teacher = await teacherGet({ userId: teacherId });
-      schedules = (await scheduleGetAll({ userId: teacherId }))?.content ?? [];
-      const responseBooking = await bookingGetAll({
-        userId: teacherId,
+      teacher = await teacherGet({ teacherId });
+      schedules = (await scheduleGetAll({ teacherId }))?.content ?? [];
+      await fetchBookings();
+      const responseCourse = await courseGetAll({
         page: 1,
-        size: 100000,
+        size: 10000,
+        teacherId,
       });
 
-      if (responseBooking) {
-        bookings = responseBooking.content;
+      if (responseCourse) {
+        courses = responseCourse.content;
+        courseValue = courses[0].id;
       }
 
       generateOpenSchedules();
       loading = false;
+      reset = false;
     })();
   }
 </script>
@@ -194,25 +229,49 @@
   } flex z-[5] justify-center items-center transition`}
 >
   <!-- Content -->
-  <div class="bg-white p-8 max-w-xs w-full rounded-lg">
-    <section class="flex justify-between">
-      <div class="-space-y-1">
-        <p class="text-xs font-bold">Available Credits</p>
-        <p>{user?.credit}元</p>
-      </div>
+  <div class="bg-white max-w-xl w-full rounded-lg overflow-hidden">
+    <header class="p-4 border-b border-p flex bg-p-100 justify-between">
+      <h3 class="text-xl font-bold text-p-950">Create booking</h3>
 
-      <div class="-space-y-1">
-        <p class="text-xs font-bold">Payment</p>
-        <p class="text-end">
-          {teacher?.price &&
-            (teacher.price * (endValue.getTime() - startValue.getTime())) /
-              30 /
-              60000}元
-        </p>
-      </div>
-    </section>
-    <form class="space-y-2" on:submit|preventDefault={handleSubmit}>
-      <label class="flex flex-col">
+      <button
+        on:click={() => {
+          showModal = false;
+        }}
+        class="text-p-950 font-bold transition hover:text-p-700">X</button
+      >
+    </header>
+
+    <form class="p-4 flex flex-wrap" on:submit|preventDefault={handleSubmit}>
+      <section class="flex justify-between w-full p-1">
+        <div class="-space-y-1">
+          <p class="text-xs font-bold">Available Credits</p>
+          <p>{user?.credits}点</p>
+        </div>
+
+        <div class="-space-y-1">
+          <p class="text-xs font-bold">Total Cost</p>
+          <p class="text-end">
+            {price}点
+          </p>
+        </div>
+      </section>
+
+      <label class="flex flex-col w-full p-1">
+        <span class="font-bold text-xs">Course</span>
+
+        <select
+          name="courseId"
+          class="border border-black rounded-md p-2"
+          value={courseValue}
+          required
+        >
+          {#each courses as course}
+            <option value={course.id}>{course.name}</option>
+          {/each}
+        </select>
+      </label>
+
+      <label class="flex flex-col w-full p-1">
         <span class="font-bold text-xs">Date</span>
         <input
           value={dateValue}
@@ -223,19 +282,19 @@
         />
       </label>
 
-      <label class="flex flex-col">
+      <label class="flex flex-col w-1/2 p-1">
         <span class="font-bold text-xs">Start Time</span>
         <input
           disabled
           value={timeFormatter.format(startValue)}
           name="start"
-          class="border flex-1 border-black rounded-md p-2"
+          class="border bg-gray-100 cursor-not-allowed flex-1 border-black rounded-md p-2"
           type="time"
           required
         />
       </label>
 
-      <label class="flex flex-col">
+      <label class="flex flex-col w-1/2 p-1">
         <span class="font-bold text-xs">End Time</span>
 
         <div class="flex items-center">
@@ -243,7 +302,7 @@
             disabled
             value={timeFormatter.format(endValue)}
             name="end"
-            class="border border-black rounded-md p-2 flex-1"
+            class="border border-black bg-gray-100 cursor-not-allowed rounded-md p-2 flex-1"
             type="time"
             required
           />
@@ -268,12 +327,14 @@
         </div>
       </label>
 
-      <button
-        class="px-4 border-black py-2 border rounded-md mx-auto block"
-        disabled={loading}
-      >
-        {sending ? "Sending" : "Submit"}
-      </button>
+      <footer class="p-1 pt-4">
+        <button
+          class="px-8 bg-p text-white py-2 border rounded-md transition hover:bg-p-600"
+          disabled={loading}
+        >
+          {sending ? "Sending" : "Submit"}
+        </button>
+      </footer>
     </form>
   </div>
 </div>
@@ -300,10 +361,13 @@
     >
       <section class="flex space-x-2">
         <button
-          class="bg-blue-500 text-white px-4 py-2 rounded-md"
-          on:click={() => {
+          class="bg-p text-white px-4 py-2 rounded-md transition hover:bg-p-600"
+          on:click={async () => {
             calendarDate.setDate(calendarDate.getDate() - 7);
             calendarDate = new Date(calendarDate);
+            loading = true;
+            await fetchBookings();
+            loading = false;
 
             generateOpenSchedules();
           }}
@@ -311,10 +375,13 @@
           Prev
         </button>
         <button
-          class="bg-blue-500 text-white px-4 py-2 rounded-md"
-          on:click={() => {
+          class="bg-p text-white px-4 py-2 rounded-md transition hover:bg-p-600"
+          on:click={async () => {
             calendarDate.setDate(calendarDate.getDate() + 7);
             calendarDate = new Date(calendarDate);
+            loading = true;
+            await fetchBookings();
+            loading = false;
 
             generateOpenSchedules();
           }}

@@ -1,0 +1,89 @@
+---
+import UserIcon from "@assets/UserIcon.astro";
+import headerJson from "@data/header.json";
+import { Picture } from "astro-imagetools/components";
+
+const { links } = headerJson;
+---
+
+<header class="shadow-md sticky top-0 font-medium z-[1] bg-white">
+  <nav class="container py-4 flex items-center space-x-4">
+    <!-- Left -->
+    <section class="flex-1">
+      <a class="block w-28 md:w-40" href="/">
+        <Picture
+          breakpoints={[360]}
+          objectFit="contain"
+          src="/images/logo/logo-horizontal.png"
+          alt="logo"
+        />
+      </a>
+    </section>
+
+    <!-- Middle -->
+    <ul class="shrink-0 items-center space-x-8 hidden lg:flex">
+      {
+        links.map((link) => {
+          const { href, label } = link;
+          return (
+            <li>
+              <a class={`transition hover:text-p`} href={href}>
+                {label}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    <!-- Right -->
+    <section class="flex-1 flex justify-end">
+      <div data-header-spinner>
+        <div
+          class="w-8 h-8 border-t-2 border-black border-r-2 animate-spin rounded-full"
+        >
+        </div>
+      </div>
+
+      <div data-header-login class="items-center hidden space-x-2">
+        <a
+          href="/login"
+          class="px-4 py-2 rounded-md transition hover:bg-gray-100"
+        >
+          登录
+        </a>
+        <a
+          href="/signup"
+          class="bg-p px-4 py-2 rounded-md text-white transition hover:bg-p-600"
+        >
+          注册
+        </a>
+      </div>
+
+      <div data-header-user class="hidden items-center">
+        <a href="/profile" class="w-8 h-8 block rounded-full">
+          <UserIcon />
+        </a>
+      </div>
+    </section>
+  </nav>
+</header>
+
+<script>
+  import { utilCookieGet } from "@services/utilService";
+
+  const user = utilCookieGet("user");
+  const headerLogin = document.querySelector("[data-header-login]");
+  const headerUser = document.querySelector("[data-header-user]");
+  const headerSpinner = document.querySelector("[data-header-spinner]");
+
+  if (user) {
+    headerUser?.classList.remove("hidden");
+    headerUser?.classList.add("flex");
+  } else {
+    headerLogin?.classList.remove("hidden");
+    headerLogin?.classList.add("flex");
+  }
+
+  headerSpinner?.classList.add("hidden");
+</script>

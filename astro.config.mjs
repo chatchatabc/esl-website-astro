@@ -16,4 +16,7 @@ export default defineConfig({
     sitemap(),
     robotsTxt(),
   ],
+  server: {
+    port: 3000,
+  },
 });

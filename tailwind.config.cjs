@@ -7,6 +7,7 @@ module.exports = {
       padding: {
         DEFAULT: "1rem",
         sm: "2rem",
+        md: "3rem",
         lg: "4rem",
         xl: "5rem",
         "2xl": "6rem",
@@ -14,22 +15,20 @@ module.exports = {
     },
     extend: {
       colors: {
-        transparent: "transparent",
-        "esl-c": {
-          1: "#015CB9",
-          2: "#23085A",
-          3: "#00DCFF",
-          5: "#CAECFF",
+        p: {
+          DEFAULT: "#1b98dc",
+          50: "#f1f8fe",
+          100: "#e2f1fc",
+          200: "#bee3f9",
+          300: "#85cbf4",
+          400: "#44b1ec",
+          500: "#1b98dc",
+          600: "#0e79bb",
+          700: "#0e6ba8",
+          800: "#0f527d",
+          900: "#124468",
+          950: "#0c2c45",
         },
-      },
-      fontSize: {
-        //figure based on figma design
-        "esl-1": "0.75rem", //15px
-        "esl-2": "1rem", //20px
-        "esl-3": "1.33rem", //26px
-        "esl-4": "1.77rem", //35.54 px
-        "esl-5": "2.369rem", //47.37 px
-        "esl-6": "3.157rem", //63.15 px
       },
       backgroundPosition: {
         landing: "25% 25%",

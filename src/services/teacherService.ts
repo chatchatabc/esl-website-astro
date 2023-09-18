@@ -1,6 +1,6 @@
 import { trpcClient } from "src/infra/trpc";
 
-export async function teacherGet(params: { userId: number }) {
+export async function teacherGet(params: { teacherId: number }) {
   try {
     const response = await trpcClient.teacher.get.query(params);
     return response;

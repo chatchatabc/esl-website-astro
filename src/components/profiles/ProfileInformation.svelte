@@ -31,6 +31,6 @@
 
   <div class="p-2 w-1/2 md:w-1/3 lg:w-1/5">
     <h3 class="text-xs font-bold">Credit Points</h3>
-    <p class="capitalize">{user.credit}点</p>
+    <p class="capitalize">{user.credits}点</p>
   </div>
 </section>

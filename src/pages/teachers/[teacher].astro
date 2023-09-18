@@ -29,27 +29,44 @@ const { teacher } = Astro.props as Props;
 ---
 
 <MainLayout>
+  <header class="sr-only">
+    <h1>Profile Page</h1>
+  </header>
+
   <!-- Container -->
-  <section class="container mt-2 md:mt-0">
+  <section class="container my-4 md:my-8">
+    <header>
+      <h2 class="sr-only">User Basic Information</h2>
+    </header>
+
     <!-- Section -->
-    <section class="bg-white p-4 md:p-8">
-      <!-- Header -->
-      <header>
+    <section class="bg-p bg-opacity-10 shadow-xl rounded-3xl overflow-hidden">
+      <!-- Banner -->
+      <section class="h-32 bg-gradient-to-tr from-p-200 to-p-800"></section>
+
+      <!-- User Info -->
+      <section class="px-8">
         <figure class="flex flex-wrap">
           <!-- Teacher Avatar -->
-          <div class="w-full md:w-[unset]">
+          <div class="w-1/2 mx-auto -mt-20 md:w-40">
             <div
-              class="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-blue-500"
+              class="w-full relative overflow-hidden shadow-lg rounded-full pb-[100%]"
             >
-              <Img
-                breakpoints={[144]}
-                src={teacher.avatar}
-                alt={teacher.displayName}
-              />
+              <div class="absolute w-full h-full">
+                <Img
+                  layout="fill"
+                  breakpoints={[144]}
+                  src={teacher.avatar}
+                  alt={teacher.displayName}
+                />
+              </div>
             </div>
           </div>
 
-          <figcaption class="flex-1 flex flex-col mt-4 md:mt-0 md:pl-4 lg:pl-8">
+          <!-- Information -->
+          <figcaption
+            class="flex flex-col w-full mt-4 md:mt-0 md:p-4 md:pr-0 md:flex-1"
+          >
             <!-- Header -->
             <header class="flex items-center justify-center md:justify-start">
               <h3 class="text-xl">{teacher.displayName}</h3>
@@ -59,109 +76,113 @@ const { teacher } = Astro.props as Props;
               </div>
             </header>
 
-            <!-- More info -->
-            <section class="flex justify-center md:justify-start">
-              <p>{teacher.alias}</p>
-
-              <div class="flex items-center text-yellow-500">
-                <div class="h-6 w-6">
-                  <StarIcon />
-                </div>
-                <p>{teacher.rating}</p>
-              </div>
-            </section>
-
             <!-- Footer -->
             <footer
-              class="mt-4 items-center justify-center md:flex md:mt-auto md:justify-end"
+              class="flex flex-wrap justify-between mt-2 space-y-8 md:space-y-4 lg:space-y-0"
             >
-              <p class="text-center md:pr-2">
-                {teacher.price}
-                <span class="text-gray-500">/{teacher.time}</span>
-              </p>
-              <button
-                data-teacher-schedule-cta
-                class="bg-[#FF4438] block w-full border-2 text-center border-[#ff4438] py-1 px-[2rem] rounded-full text-white transition md:w-fit hover:text-[#ff4438] hover:bg-white"
-              >
-                预约
-              </button>
+              <ul class="w-full flex divide-x divide-p lg:w-fit">
+                <li class="px-4 py-1 flex-1 text-center lg:flex-[unset]">
+                  <div class="flex items-center justify-center">
+                    <p class="text-xl font-bold">5</p>
+                    <div class="w-6 h-6 text-yellow-500">
+                      <StarIcon />
+                    </div>
+                  </div>
+                  <p>RATING</p>
+                </li>
+
+                <li class="px-4 py-1 flex-1 text-center lg:flex-[unset]">
+                  <p class="text-xl font-bold">2</p>
+                  <p>STUDENTS</p>
+                </li>
+
+                <li class="px-4 py-1 flex-1 text-center lg:flex-[unset]">
+                  <p class="text-xl font-bold">100%</p>
+                  <p>RESPONSE</p>
+                </li>
+              </ul>
+
+              <section class="flex items-center w-full flex-wrap lg:w-fit">
+                <p class="text-center w-full md:pr-2 md:w-fit">
+                  {teacher.price}
+                  <span class="text-gray-500">/{teacher.time}</span>
+                </p>
+                <button
+                  data-teacher-schedule-cta
+                  class="bg-p block w-full border-2 text-center border-p py-1 px-[2rem] rounded-md text-white transition md:w-fit hover:text-p hover:bg-white"
+                >
+                  预约
+                </button>
+              </section>
             </footer>
           </figcaption>
         </figure>
-      </header>
+      </section>
 
       <!-- Details -->
-      <section class="border-blue-500 mt-4 lg:py-4 lg:border-t-2 lg:px-8">
+      <section>
         <!-- Navigations -->
-        <header
-          class="hidden justify-between max-w-5xl mx-auto text-xl font-medium md:flex"
-        >
-          <button data-teacher-nav="aboutMe">
-            <p>About Me</p>
-            <div
-              data-nav-indicator
-              class="w-10 rounded-full mx-auto mt-2 h-1 bg-[#FF4438]"
-            >
-            </div>
-          </button>
-          <button data-teacher-nav="meAsATeacher">
-            <p>Me as a Teacher</p>
-            <div
-              data-nav-indicator
-              class="w-10 rounded-full mx-auto mt-2 h-1 bg-[#FF4438]"
-            >
-            </div>
-          </button>
-          <button data-teacher-nav="teachingPlan">
-            <p>My lessons & Teaching plan</p>
-            <div
-              data-nav-indicator
-              class="w-10 rounded-full mx-auto mt-2 h-1 bg-[#FF4438]"
-            >
-            </div>
-          </button>
+        <header class="hidden border-p border-t-2 py-2 px-16 lg:block">
+          <ul
+            class="max-w-5xl mx-auto text-xl font-medium justify-between flex"
+          >
+            <li>
+              <button data-teacher-nav="aboutMe">
+                <p>About Me</p>
+                <div
+                  data-nav-indicator
+                  class="w-10 rounded-full mx-auto mt-2 h-1 bg-p"
+                >
+                </div>
+              </button>
+            </li>
+
+            <li>
+              <button data-teacher-nav="meAsATeacher">
+                <p>Me as a Teacher</p>
+                <div
+                  data-nav-indicator
+                  class="w-10 rounded-full mx-auto mt-2 h-1 bg-p"
+                >
+                </div>
+              </button>
+            </li>
+
+            <li>
+              <button data-teacher-nav="teachingPlan">
+                <p>My lessons & Teaching plan</p>
+                <div
+                  data-nav-indicator
+                  class="w-10 rounded-full mx-auto mt-2 h-1 bg-p"
+                >
+                </div>
+              </button>
+            </li>
+          </ul>
         </header>
 
         <!-- About Me Content -->
-        <section data-teacher-content>
+        <section data-teacher-content class="p-2 pb-8 md:p-4 lg:px-8">
           <header>
-            <h3 class="text-2xl font-bold mt-8">About Me</h3>
+            <h3 class="text-2xl font-bold mt-8 md:mt-0">About Me</h3>
           </header>
 
           <!-- Details -->
           <section class="mt-2 space-y-2">
-            <p class="whitespace-pre-wrap">{teacher.aboutMe}</p>
-
-            <section class="py-4 max-w-4xl mx-auto">
+            <p class="">{teacher.videoSubtitle}</p>
+            <section class="py-4 max-w-4xl mx-auto hidden">
               <video
                 class="max-h-[24rem] w-full h-full p-1"
                 controls
                 src={teacher.introductionVideo}></video>
-              <!-- <ul class="flex">
-                {
-                  [...Array(5)].map((_, index) => {
-                    return (
-                      <li class="p-1 w-1/5">
-                        <div
-                          class={`pb-[50%] bg-black ${
-                            index === 0 ? "border-blue-500" : "border-black"
-                          } border-4`}
-                        />
-                      </li>
-                    );
-                  })
-                }
-              </ul> -->
             </section>
-
-            <p class="">{teacher.videoSubtitle}</p>
           </section>
         </section>
 
         <!-- Me as a Teacher Content -->
-        <section data-teacher-content>
+        <section data-teacher-content class="p-2 pb-8 md:p-4 lg:px-8">
           <header>
-            <h3 class="text-2xl font-bold mt-8">Me as a Teacher</h3>
+            <h3 class="text-2xl font-bold mt-8 md:mt-0">Me as a Teacher</h3>
           </header>
 
           <!-- Details -->
@@ -171,9 +192,11 @@ const { teacher } = Astro.props as Props;
         </section>
 
         <!-- My lessons & Teaching plan Content -->
-        <section data-teacher-content>
+        <section data-teacher-content class="p-2 pb-8 md:p-4 lg:px-8">
           <header>
-            <h3 class="text-2xl font-bold mt-8">My lessons & Teaching plan</h3>
+            <h3 class="text-2xl font-bold mt-8 md:mt-0">
+              My lessons & Teaching plan
+            </h3>
           </header>
 
           <!-- Details -->
@@ -185,7 +208,7 @@ const { teacher } = Astro.props as Props;
     </section>
 
     <!-- Section -->
-    <section class="bg-white p-4 mt-4">
+    <!-- <section class="bg-white p-4 mt-4">
       <ul class="flex flex-wrap justify-evenly text-center">
         <li class="p-2 w-1/2 md:w-1/5">
           <div
@@ -219,10 +242,10 @@ const { teacher } = Astro.props as Props;
           <p class="text-gray-500">Response</p>
         </li>
       </ul>
-    </section>
+    </section> -->
 
     <!-- English Lesson Section -->
-    <section class="mt-8">
+    <!-- <section class="mt-8">
       <header class="px-2 lg:px-8">
         <h2 class="text-3xl text-white font-bold">English Lessons</h2>
       </header>
@@ -243,21 +266,21 @@ const { teacher } = Astro.props as Props;
           }
         </ul>
       </section>
-    </section>
+    </section> -->
+  </section>
 
-    <!-- Teacher schedules -->
-    <section class="mt-8">
-      <div
-        aria-label="anchor"
-        id="teacher-schedule"
-        class="-mt-24 absolute lg:-mt-8"
-      >
-      </div>
-      <header class="px-2 lg:px-8">
-        <h2 class="text-3xl text-white font-bold">Teacher Schedule</h2>
+  <!-- Teacher schedules -->
+  <section class="container my-8">
+    <!-- Navigation purpose -->
+    <div aria-label="anchor" id="teacher-schedule" class="-mt-20 absolute">
+    </div>
+
+    <section class="mt-4 rounded-3xl overflow-hidden bg-p bg-opacity-10">
+      <header class="p-4">
+        <h2 class="text-3xl font-bold text-p-950">Teacher Schedule</h2>
       </header>
 
-      <section class="mt-4 p-4 bg-white md:px-8">
+      <section class="bg-white p-4">
         <TeacherScheduleBooking client:load teacherId={Number(teacher.id)} />
       </section>
     </section>
