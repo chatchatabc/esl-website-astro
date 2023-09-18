@@ -61,21 +61,49 @@ const { links } = headerJson;
       </div>
 
       <div data-header-user class="hidden items-center">
-        <a href="/profile" class="w-8 h-8 block rounded-full">
+        <button data-header-user-menu-btn class="w-8 h-8 block rounded-full">
           <UserIcon />
-        </a>
+        </button>
       </div>
+
+      <ul
+        data-header-user-menu
+        class="absolute scale-y-0 origin-top transition top-full bg-white shadow"
+      >
+        <li>
+          <a
+            href="/profile"
+            class="block px-8 py-1 transition hover:bg-gray-200">Profile</a
+          >
+        </li>
+        <li>
+          <button
+            data-header-user-menu-logout-btn
+            class="block px-8 py-1 text-red-500 transition hover:bg-red-500 hover:text-white"
+          >
+            Logout
+          </button>
+        </li>
+      </ul>
     </section>
   </nav>
 </header>
 
 <script>
-  import { utilCookieGet } from "@services/utilService";
+  import { authLogout } from "@services/authService";
+  import { utilCookieGet, utilCookieSave } from "@services/utilService";
 
   const user = utilCookieGet("user");
   const headerLogin = document.querySelector("[data-header-login]");
   const headerUser = document.querySelector("[data-header-user]");
   const headerSpinner = document.querySelector("[data-header-spinner]");
+  const headerUserMenu = document.querySelector("[data-header-user-menu]");
+  const headerUserMenuBtn = document.querySelector(
+    "[data-header-user-menu-btn]"
+  );
+  const headerUserMenuLogoutBtn = document.querySelector(
+    "[data-header-user-menu-logout-btn]"
+  );
 
   if (user) {
     headerUser?.classList.remove("hidden");
@@ -85,5 +113,34 @@ const { links } = headerJson;
     headerLogin?.classList.add("flex");
   }
 
+  // Open user menu when click user icon
+  headerUserMenuBtn?.addEventListener("click", () => {
+    headerUserMenu?.classList.toggle("scale-y-0");
+  });
+
+  // Logout
+  headerUserMenuLogoutBtn?.addEventListener("click", async () => {
+    headerSpinner?.classList.remove("hidden");
+    headerUser?.classList.add("hidden");
+
+    const res = await authLogout();
+    if (res) {
+      window.location.href = "/";
+    } else {
+      headerSpinner?.classList.add("hidden");
+      headerUser?.classList.remove("hidden");
+      alert("Logout failed");
+    }
+  });
+
+  // Close user menu when click outside
+  document.addEventListener("click", (e) => {
+    const node = e.target as HTMLElement;
+    if (!headerUserMenu?.contains(node) && !headerUserMenuBtn?.contains(node)) {
+      headerUserMenu?.classList.add("scale-y-0");
+    }
+  });
+
+  // hide spinner
   headerSpinner?.classList.add("hidden");
 </script>
