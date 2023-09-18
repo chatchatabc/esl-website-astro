@@ -37,28 +37,34 @@ const { links } = headerJson;
     </ul>
 
     <!-- Right -->
-    <section
-      data-header-login
-      class="flex-1 items-center flex space-x-2 justify-end"
-    >
-      <a
-        href="/login"
-        class="px-4 py-2 rounded-md transition hover:bg-gray-100"
-      >
-        登录
-      </a>
-      <a
-        href="/signup"
-        class="bg-p px-4 py-2 rounded-md text-white transition hover:bg-p-600"
-      >
-        注册
-      </a>
-    </section>
+    <section class="flex-1 flex justify-end">
+      <div data-header-spinner>
+        <div
+          class="w-8 h-8 border-t-2 border-black border-r-2 animate-spin rounded-full"
+        >
+        </div>
+      </div>
 
-    <section data-header-user class="flex-1 hidden items-center justify-end">
-      <a href="/profile" class="w-8 h-8 block rounded-full">
-        <UserIcon />
-      </a>
+      <div data-header-login class="items-center hidden space-x-2">
+        <a
+          href="/login"
+          class="px-4 py-2 rounded-md transition hover:bg-gray-100"
+        >
+          登录
+        </a>
+        <a
+          href="/signup"
+          class="bg-p px-4 py-2 rounded-md text-white transition hover:bg-p-600"
+        >
+          注册
+        </a>
+      </div>
+
+      <div data-header-user class="hidden items-center">
+        <a href="/profile" class="w-8 h-8 block rounded-full">
+          <UserIcon />
+        </a>
+      </div>
     </section>
   </nav>
 </header>
@@ -69,10 +75,15 @@ const { links } = headerJson;
   const user = utilCookieGet("user");
   const headerLogin = document.querySelector("[data-header-login]");
   const headerUser = document.querySelector("[data-header-user]");
+  const headerSpinner = document.querySelector("[data-header-spinner]");
 
   if (user) {
-    headerLogin?.classList.add("hidden");
     headerUser?.classList.remove("hidden");
     headerUser?.classList.add("flex");
+  } else {
+    headerLogin?.classList.remove("hidden");
+    headerLogin?.classList.add("flex");
   }
+
+  headerSpinner?.classList.add("hidden");
 </script>
