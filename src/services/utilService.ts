@@ -40,7 +40,7 @@ export function utilCookieGet(name: string) {
     .slice(name.length + 1);
 
   if (!value) {
-    return undefined;
+    return null;
   }
 
   return JSON.parse(value);
