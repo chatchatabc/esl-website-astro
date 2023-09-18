@@ -91,7 +91,7 @@ const { links } = headerJson;
 
 <script>
   import { authLogout } from "@services/authService";
-  import { utilCookieGet, utilCookieSave } from "@services/utilService";
+  import { utilCookieGet } from "@services/utilService";
 
   const user = utilCookieGet("user");
   const headerLogin = document.querySelector("[data-header-login]");
