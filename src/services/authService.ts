@@ -91,14 +91,8 @@ export async function authGetProfile() {
 }
 
 export async function authUpdateProfile(params: Record<string, any>) {
-  const data = {
-    firstName: params.firstName,
-    lastName: params.lastName,
-    phone: params.phone,
-  };
-
   try {
-    const response = await trpcClient.auth.updateProfile.mutate(data);
+    const response = await trpcClient.auth.updateProfile.mutate(params as any);
     return response;
   } catch (e) {
     console.log(e);
