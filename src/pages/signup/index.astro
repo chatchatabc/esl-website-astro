@@ -69,10 +69,21 @@ import MainLayout from "@layouts/MainLayout.astro";
 </MainLayout>
 
 <script>
-  import { authRegister } from "@services/authService";
+  import { authGetProfile, authRegister } from "@services/authService";
   import { type UserRegisterInput } from "../../../../esl-workers/src/domain/models/UserModel";
+  import { utilCookieSave } from "@services/utilService";
 
   const form = document.querySelector<HTMLFormElement>("[data-register-form]")!;
+
+  (async () => {
+    const user = await authGetProfile();
+    if (user) {
+      utilCookieSave("user", user);
+      window.location.href = "/profile";
+    } else {
+      utilCookieSave("user", "", 0);
+    }
+  })();
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

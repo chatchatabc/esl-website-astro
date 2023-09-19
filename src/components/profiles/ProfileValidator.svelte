@@ -101,7 +101,7 @@
     user = await authGetProfile();
 
     if (!user) {
-      utilCookieSave("userId", "", 0);
+      utilCookieSave("user", "", 0);
       window.location.href = "/login";
     }
 

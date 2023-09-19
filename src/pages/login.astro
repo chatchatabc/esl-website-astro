@@ -93,6 +93,8 @@ import { Picture } from "astro-imagetools/components";
     if (user) {
       utilCookieSave("user", user);
       window.location.href = "/profile";
+    } else {
+      utilCookieSave("user", "", 0);
     }
   })();
 
