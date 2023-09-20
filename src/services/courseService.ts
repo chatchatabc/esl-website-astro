@@ -1,5 +1,5 @@
 import { trpcClient } from "src/infra/trpc";
-import type { CommonPaginationInput } from "../../../esl-workers/src/domain/models/CommonModel";
+import type { CommonPaginationInput } from "../../../esl-backend-workers/src/domain/models/CommonModel";
 
 export async function courseGetAll(params: CommonPaginationInput) {
   try {

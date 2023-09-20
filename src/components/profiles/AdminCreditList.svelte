@@ -7,7 +7,7 @@
     logsGetAllCredit,
     logsRejectCredit,
   } from "@services/logsService";
-  import type { LogsCredit } from "../../../../esl-workers/src/domain/models/LogsModel";
+  import type { LogsCredit } from "../../../../esl-backend-workers/src/domain/models/LogsModel";
 
   const logStatus: Record<number, string> = {
     0: "Requested",

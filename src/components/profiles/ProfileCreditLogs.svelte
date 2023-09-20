@@ -4,7 +4,7 @@
   import LoadingComp from "@components/LoadingComp.svelte";
   import Pagination from "@components/widgets/Pagination.svelte";
   import { logsGetAllCredit } from "@services/logsService";
-  import type { LogsCredit } from "../../../../esl-workers/src/domain/models/LogsModel";
+  import type { LogsCredit } from "../../../../esl-backend-workers/src/domain/models/LogsModel";
 
   let pagination = {
     page: 1,

@@ -12,11 +12,11 @@
     scheduleGetAll,
     scheduleUpdateMany,
   } from "@services/scheduleService";
-  import type { Booking } from "../../../../esl-workers/src/domain/models/BookingModel";
+  import type { Booking } from "../../../../esl-backend-workers/src/domain/models/BookingModel";
   import type {
     Schedule,
     ScheduleUpdateInput,
-  } from "../../../../esl-workers/src/domain/models/ScheduleModel";
+  } from "../../../../esl-backend-workers/src/domain/models/ScheduleModel";
 
   let calendarEl: any;
   let calendar: Calendar | null = null;

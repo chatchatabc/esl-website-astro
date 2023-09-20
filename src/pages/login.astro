@@ -84,7 +84,7 @@ import { Picture } from "astro-imagetools/components";
 <script>
   import { authGetProfile, authLogin } from "@services/authService";
   import { utilCookieSave } from "@services/utilService";
-  import type { UserLogin } from "../../../esl-workers/src/domain/models/UserModel";
+  import type { UserLogin } from "../../../esl-backend-workers/src/domain/models/UserModel";
 
   const form = document.querySelector<HTMLFormElement>("[data-login-form]");
 

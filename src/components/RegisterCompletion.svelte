@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import LoadingComp from "./LoadingComp.svelte";
   import { validatePhoneNumber } from "@services/validationService";
-  import type { User } from "../../../esl-workers/src/domain/models/UserModel";
+  import type { User } from "../../../esl-backend-workers/src/domain/models/UserModel";
   import {
     authGetPhoneToken,
     authGetProfile,

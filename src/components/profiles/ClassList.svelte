@@ -7,7 +7,7 @@
   import { Calendar } from "@fullcalendar/core";
   import listPlugin from "@fullcalendar/list";
   import { bookingCancel, bookingGetAll } from "@services/bookingService";
-  import type { Booking } from "../../../../esl-workers/src/domain/models/BookingModel";
+  import type { Booking } from "../../../../esl-backend-workers/src/domain/models/BookingModel";
 
   const dateFormatter = new Intl.DateTimeFormat("en", {
     dateStyle: "medium",

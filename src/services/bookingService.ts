@@ -3,8 +3,8 @@ import { userGet } from "./userService";
 import type {
   BookingCreate,
   BookingCreateInput,
-} from "../../../esl-workers/src/domain/models/BookingModel";
-import type { CommonPaginationInput } from "../../../esl-workers/src/domain/models/CommonModel";
+} from "../../../esl-backend-workers/src/domain/models/BookingModel";
+import type { CommonPaginationInput } from "../../../esl-backend-workers/src/domain/models/CommonModel";
 import { teacherGet } from "./teacherService";
 
 export async function bookingGetAll(params: CommonPaginationInput) {

@@ -3,16 +3,16 @@
 
   import { Calendar } from "@fullcalendar/core";
   import listPlugin from "@fullcalendar/list";
-  import type { User } from "../../../esl-workers/src/domain/models/UserModel";
-  import type { Schedule } from "../../../esl-workers/src/domain/models/ScheduleModel";
-  import type { Booking } from "../../../esl-workers/src/domain/models/BookingModel";
-  import type { Teacher } from "../../../esl-workers/src/domain/models/TeacherModel";
+  import type { User } from "../../../esl-backend-workers/src/domain/models/UserModel";
+  import type { Schedule } from "../../../esl-backend-workers/src/domain/models/ScheduleModel";
+  import type { Booking } from "../../../esl-backend-workers/src/domain/models/BookingModel";
+  import type { Teacher } from "../../../esl-backend-workers/src/domain/models/TeacherModel";
   import { bookingCreate, bookingGetAll } from "@services/bookingService";
   import { teacherGet } from "@services/teacherService";
   import { authGetProfile } from "@services/authService";
   import LoadingComp from "./LoadingComp.svelte";
   import { scheduleGetAll } from "@services/scheduleService";
-  import type { Course } from "../../../esl-workers/src/domain/models/CourseModel";
+  import type { Course } from "../../../esl-backend-workers/src/domain/models/CourseModel";
   import { courseGetAll } from "@services/courseService";
 
   const timeFormatter = new Intl.DateTimeFormat("en", {

@@ -3,7 +3,7 @@ import type {
   Schedule,
   ScheduleCreateInput,
   ScheduleUpdateInput,
-} from "../../../esl-workers/src/domain/models/ScheduleModel";
+} from "../../../esl-backend-workers/src/domain/models/ScheduleModel";
 
 export async function scheduleGetAll(params: { teacherId: number }) {
   try {

@@ -4,7 +4,7 @@
   import ProfileInformation from "./ProfileInformation.svelte";
   import ClassList from "./ClassList.svelte";
   import StudentCashList from "./ProfileCreditLogs.svelte";
-  import type { User } from "../../../../esl-workers/src/domain/models/UserModel";
+  import type { User } from "../../../../esl-backend-workers/src/domain/models/UserModel";
   import {
     authGetPhoneToken,
     authGetProfile,

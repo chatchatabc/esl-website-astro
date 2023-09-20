@@ -2,7 +2,7 @@ import { trpcClient } from "src/infra/trpc";
 import type {
   UserLogin,
   UserRegisterInput,
-} from "../../../esl-workers/src/domain/models/UserModel";
+} from "../../../esl-backend-workers/src/domain/models/UserModel";
 import { utilCookieSave } from "./utilService";
 
 export async function authLogin(data: UserLogin) {
