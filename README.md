@@ -1,8 +1,54 @@
-# Astro Starter Kit: Minimal
+# ESL Website Astro
 
-```
-npm create astro@latest -- --template minimal
-```
+ESL Website built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com/). This project is a work in progress. The goal is to build a fast, modern, and accessible website for the users that visit the site.
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/) (v18 or higher)
+- [Git](https://git-scm.com/)
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/chatchatabc/esl-website-astro.git
+   ```
+2. Open the project folder
+   ```sh
+    cd esl-website-astro
+   ```
+3. Install NPM packages
+   ```sh
+    npm install
+   ```
+4. Install wrangler globally **(Optional)**
+   ```sh
+    npm install -g wrangler
+   ```
+   > Wrangler is used to deploy the site to Cloudflare Pages
+
+### Development
+
+1. Start the development server
+   ```sh
+    npm run dev
+   ```
+2. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### Deployment
+
+1. Build the site
+   ```sh
+    npm run build
+   ```
+   > The site will be built to the `dist` folder
+2. Deploy the site
+   ```sh
+    wrangler pages publish dist
+   ```
+   > This will deploy the site to your Cloudflare Pages account
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
 [![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
